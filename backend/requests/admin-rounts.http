@@ -1,0 +1,114 @@
+### =========================================================
+### ADMIN ROUNDS API TESTS
+### =========================================================
+
+
+### ---------------------------------------------------------
+### 0. LOGIN AS ADMIN
+### ---------------------------------------------------------
+
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+
+### ---------------------------------------------------------
+### 1. GET ALL ROUNDS FOR EVENT
+### ---------------------------------------------------------
+### Replace EVENT-UUID with your actual event ID.
+
+GET http://localhost:3000/api/v1/admin/events/a7dd7884-e579-4c04-b8da-fc27da2ec8f9/rounds
+
+
+### ---------------------------------------------------------
+### 2. CREATE ROUND 1
+### ---------------------------------------------------------
+
+POST http://localhost:3000/api/v1/admin/events/a7dd7884-e579-4c04-b8da-fc27da2ec8f9/rounds
+Content-Type: application/json
+
+{
+  "roundNumber": 1,
+  "name": "Preliminary Round",
+  "description": "First round of the event",
+  "maxPoints": 100
+}
+
+
+### ---------------------------------------------------------
+### 3. CREATE ROUND 2
+### ---------------------------------------------------------
+
+POST http://localhost:3000/api/v1/admin/events/c043224b-9153-4fa2-8ddd-5ca2ccde04dd/rounds
+Content-Type: application/json
+
+{
+  "roundNumber": 2,
+  "name": "Final Round",
+  "description": "Final round of the event",
+  "maxPoints": 200
+}
+
+
+### ---------------------------------------------------------
+### 4. GET ALL ROUNDS
+### ---------------------------------------------------------
+
+GET http://localhost:3000/api/v1/admin/events/c043224b-9153-4fa2-8ddd-5ca2ccde04dd/rounds
+
+
+### ---------------------------------------------------------
+### 5. UPDATE ROUND
+### ---------------------------------------------------------
+### Replace ROUND-UUID with the ID returned from CREATE.
+
+PATCH http://localhost:3000/api/v1/admin/rounds/949b129a-bfad-4663-a246-05e9faaf378e
+Content-Type: application/json
+
+{
+  "name": "Updated Preliminary Round",
+  "description": "Updated description",
+  "maxPoints": 150
+}
+
+
+### ---------------------------------------------------------
+### 6. GET ALL ROUNDS AFTER UPDATE
+### ---------------------------------------------------------
+
+GET http://localhost:3000/api/v1/admin/events/c043224b-9153-4fa2-8ddd-5ca2ccde04dd/rounds
+
+
+### ---------------------------------------------------------
+### 7. TEST DUPLICATE ROUND NUMBER
+### ---------------------------------------------------------
+### This should return 409 because round 1 already exists.
+
+POST http://localhost:3000/api/v1/admin/events/c043224b-9153-4fa2-8ddd-5ca2ccde04dd/rounds
+Content-Type: application/json
+
+{
+  "roundNumber": 1,
+  "name": "Duplicate Round",
+  "description": "This should fail",
+  "maxPoints": 50
+}
+
+
+### ---------------------------------------------------------
+### 8. DELETE ROUND
+### ---------------------------------------------------------
+### Replace ROUND-UUID with a round ID.
+
+DELETE http://localhost:3000/api/v1/admin/rounds/949b129a-bfad-4663-a246-05e9faaf378e
+
+
+### ---------------------------------------------------------
+### 9. VERIFY DELETE
+### ---------------------------------------------------------
+
+GET http://localhost:3000/api/v1/admin/events/c043224b-9153-4fa2-8ddd-5ca2ccde04dd/rounds
