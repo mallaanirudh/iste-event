@@ -41,10 +41,16 @@
 .strip {
   display: grid;
   gap: 20px;
-  /* Sits at the top of the floor now, so it needs room before the leaderboard. */
-  margin-bottom: clamp(28px, 5vh, 56px);
   padding-bottom: clamp(20px, 3vh, 28px);
   border-bottom: 2px solid rgb(255 255 255 / 0.12);
+}
+
+/* On wide screens the strip needs extra room before the leaderboard; below that the floor's own
+   gap is enough. */
+@media (min-width: 1024px) {
+  .strip {
+    margin-bottom: clamp(28px, 5vh, 56px);
+  }
 }
 
 @media (min-width: 900px) {
