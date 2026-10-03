@@ -29,7 +29,7 @@
 }
 
 @media (min-width: 768px) {
-  .headPre {
+  .boardHead.headPre {
     grid-template-columns: auto minmax(0, 1fr);
     align-items: end;
     column-gap: clamp(24px, 3vw, 48px);
