@@ -1,0 +1,215 @@
+/* The golden ticket: gold stub with punched notches, white form panel. */
+
+.ticket {
+  display: grid;
+  color: var(--cocoa);
+}
+
+.stub {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 92px;
+  padding: 14px 20px 18px;
+  overflow: hidden;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(135deg, #f3cd62, #e9b949 45%, #d9a53a);
+  color: var(--cocoa);
+  border-bottom: 3px dashed rgb(26 17 14 / 0.35);
+  -webkit-mask:
+    radial-gradient(circle at 0 100%, #0000 13px, #000 13.5px) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% 100%, #0000 13px, #000 13.5px) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle at 0 100%, #0000 13px, #000 13.5px) left / 51% 100% no-repeat,
+    radial-gradient(circle at 100% 100%, #0000 13px, #000 13.5px) right / 51% 100% no-repeat;
+}
+
+@media (min-width: 900px) {
+  .inlineTicket {
+    grid-template-columns: minmax(200px, 240px) 1fr;
+    align-items: stretch;
+  }
+
+  .inlineTicket .stub {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 26px 24px;
+    border-radius: 18px 0 0 18px;
+    border-bottom: 0;
+    border-right: 3px dashed rgb(26 17 14 / 0.35);
+    -webkit-mask:
+      radial-gradient(circle at 100% 0, #0000 14px, #000 14.5px) top / 100% 51% no-repeat,
+      radial-gradient(circle at 100% 100%, #0000 14px, #000 14.5px) bottom / 100% 51% no-repeat;
+    mask:
+      radial-gradient(circle at 100% 0, #0000 14px, #000 14.5px) top / 100% 51% no-repeat,
+      radial-gradient(circle at 100% 100%, #0000 14px, #000 14.5px) bottom / 100% 51% no-repeat;
+  }
+}
+
+.shine {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+}
+
+.stubText p {
+  margin: 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  line-height: 0.95;
+}
+
+.admit {
+  font-size: 17px;
+}
+
+.stubName {
+  margin-top: 6px !important;
+  font-size: clamp(24px, 6.6vw, 32px);
+  text-transform: uppercase;
+}
+
+.stubMeta {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px !important;
+  font-size: 17px;
+}
+
+@media (min-width: 900px) {
+  .inlineTicket .admit {
+    font-size: 20px;
+  }
+
+  .inlineTicket .stubName {
+    margin-top: 12px !important;
+    font-size: 40px;
+  }
+
+  .inlineTicket .stubMeta {
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 18px !important;
+    font-size: 24px;
+  }
+}
+
+.issuer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.crest {
+  display: block;
+  width: 46px;
+  height: auto;
+}
+
+@media (min-width: 900px) {
+  .inlineTicket .crest {
+    width: 64px;
+  }
+
+  .inlineTicket .issuer {
+    margin-top: auto;
+    padding-top: 24px;
+  }
+}
+
+.hole {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--plum);
+  box-shadow: inset 0 2px 3px rgb(0 0 0 / 0.35);
+}
+
+.closedStamp {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  margin: 0;
+  padding: 6px 12px;
+  border: 3px solid var(--hammer);
+  border-radius: 6px;
+  color: var(--hammer);
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  text-transform: uppercase;
+  transform: translateY(-50%) rotate(-8deg);
+  background: rgb(233 185 73 / 0.9);
+}
+
+.form {
+  position: relative;
+  min-width: 0;
+  padding: 20px 18px 22px;
+  border-radius: 0 0 18px 18px;
+  background: #ffffff;
+  color: var(--cocoa);
+}
+
+@media (min-width: 900px) {
+  .inlineTicket .form {
+    padding: 26px 32px 28px;
+    border-radius: 0 18px 18px 0;
+  }
+
+  .dialogTicket .form {
+    padding: 26px 32px 30px;
+  }
+}
+
+.form :focus-visible {
+  outline-color: var(--cocoa);
+}
+
+.window {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #5c4e47;
+}
+
+.windowClosed {
+  font-weight: 700;
+  color: var(--hammer);
+}
+
+.tally {
+  width: 100%;
+}
+
+.soon {
+  display: flex;
+  flex-direction: column;
+}
+
+/* A status sentence, not a display line: sentence case in the text face. */
+.soonTitle {
+  margin: 0;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.2;
+  font-weight: 650;
+  font-stretch: 88%;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.soonText {
+  margin: 10px 0 0;
+  max-width: 46ch;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #5c4e47;
+}

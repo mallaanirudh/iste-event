@@ -1,0 +1,71 @@
+### =========================================================
+### LOGIN
+### =========================================================
+
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+
+### =========================================================
+### UPDATE ROUND LEADERBOARD
+### =========================================================
+
+PUT http://localhost:3000/api/v1/admin/rounds/ROUND-UUID/leaderboard
+Content-Type: application/json
+
+{
+  "entries": [
+    {
+      "teamId": "TEAM-UUID-1",
+      "rank": 1,
+      "points": 100
+    },
+    {
+      "teamId": "TEAM-UUID-2",
+      "rank": 2,
+      "points": 80
+    }
+  ]
+}
+
+
+### =========================================================
+### GET ROUND LEADERBOARD
+### =========================================================
+
+GET http://localhost:3000/api/v1/rounds/ROUND-UUID/leaderboard
+
+
+### =========================================================
+### UPDATE OVERALL LEADERBOARD
+### =========================================================
+
+PUT http://localhost:3000/api/v1/admin/mega-events/MEGA-EVENT-UUID/leaderboard
+Content-Type: application/json
+
+{
+  "entries": [
+    {
+      "teamId": "TEAM-UUID-1",
+      "rank": 1,
+      "points": 250
+    },
+    {
+      "teamId": "TEAM-UUID-2",
+      "rank": 2,
+      "points": 210
+    }
+  ]
+}
+
+
+### =========================================================
+### GET EVENT OVERALL LEADERBOARD
+### =========================================================
+
+GET http://localhost:3000/api/v1/events/EVENT-UUID/leaderboard

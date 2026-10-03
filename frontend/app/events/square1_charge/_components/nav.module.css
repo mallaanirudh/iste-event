@@ -1,0 +1,259 @@
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 70;
+  height: var(--nav-h);
+  color: var(--fg);
+  background: color-mix(in oklab, var(--bg) 0%, transparent);
+  transition:
+    background-color 0.4s,
+    backdrop-filter 0.4s,
+    box-shadow 0.4s;
+}
+
+.scrolled {
+  background: color-mix(in oklab, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 -1px 0 color-mix(in oklab, var(--fg) 12%, transparent);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 100%;
+  width: 100%;
+  max-width: calc(1320px + 2 * var(--side));
+  margin-inline: auto;
+  padding-inline: var(--side);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 10px;
+}
+
+.plaque {
+  display: inline-flex;
+  padding: 6px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.logo {
+  display: block;
+  width: 44px;
+  height: auto;
+}
+
+.wordmark {
+  display: none;
+  font-size: 16px;
+  font-weight: 650;
+  font-stretch: 85%;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+
+@media (min-width: 600px) {
+  .wordmark {
+    display: inline;
+  }
+}
+
+.links {
+  display: none;
+  margin-left: auto;
+  gap: 4px;
+}
+
+@media (min-width: 1024px) {
+  .links {
+    display: flex;
+  }
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 550;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 2px;
+  background-position: 12px calc(100% - 10px);
+  background-repeat: no-repeat;
+  transition: background-size 0.3s var(--ease-out);
+}
+
+.link:hover {
+  background-size: calc(100% - 24px) 2px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+@media (min-width: 1024px) {
+  .actions {
+    margin-left: 8px;
+  }
+}
+
+/* The nav Register button shares the hero CTA's gold, and turns cocoa over the gold floor. */
+.nav .register {
+  --btn-bg: var(--nav-btn-bg, var(--filament));
+  --btn-fg: var(--nav-btn-fg, var(--cocoa));
+}
+
+.register .registerShort {
+  display: inline;
+}
+
+.register .registerLong {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  /* The nav Register button shares the hero CTA's gold, and turns cocoa over the gold floor. */
+.nav .register {
+  --btn-bg: var(--nav-btn-bg, var(--filament));
+  --btn-fg: var(--nav-btn-fg, var(--cocoa));
+}
+
+.register .registerShort {
+    display: none;
+  }
+
+  .register .registerLong {
+    display: inline;
+  }
+}
+
+.menuBtn {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 650;
+  box-shadow: inset 0 0 0 2px currentColor;
+  cursor: pointer;
+}
+
+@media (min-width: 1024px) {
+  .menuBtn {
+    display: none;
+  }
+}
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  padding: 88px var(--side) 32px;
+  background: var(--cocoa);
+  color: var(--bone);
+  clip-path: circle(150% at 100% 0);
+  overflow-y: auto;
+}
+
+.sheet :focus-visible {
+  outline-color: var(--bone);
+}
+
+.closeBtn {
+  position: absolute;
+  top: 14px;
+  right: var(--side);
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--bone);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 650;
+  box-shadow: inset 0 0 0 2px currentColor;
+  cursor: pointer;
+}
+
+.sheetLinks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}
+
+.sheetLink {
+  display: block;
+  padding: 6px 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: clamp(44px, 13vw, 72px);
+  line-height: 1;
+  text-decoration: none;
+  color: var(--bone);
+}
+
+.sheetLink:hover {
+  color: var(--filament);
+}
+
+/* Lock page scroll while the menu sheet is open: it only exists in the DOM while open. */
+:global(html):has(.sheet) {
+  overflow: hidden;
+}
+
+.sheetFoot {
+  margin: auto 0 0;
+  padding-top: 32px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--bone);
+}
+
+.sheetWhen {
+  margin: 0 0 8px;
+}
+
+.sheetContacts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheetContacts li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.sheetPhone {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-variant-numeric: tabular-nums;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
