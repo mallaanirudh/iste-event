@@ -1,26 +1,126 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-parchment: #FDF8EE;
+  --color-ink: #1D120C;
+  --color-plum: #4A1235;
+  --color-imperial: #2B0C3D;
+  --color-brass: #E5A93B;
+  --color-gold: #C68A27;
+  --color-background: var(--color-parchment);
+  --color-foreground: var(--color-ink);
+  --font-heading: var(--font-berkshire);
+  --font-ui: var(--font-cinzel);
+  --font-body: var(--font-outfit);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base resets ─────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto; /* GSAP controls scroll */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--color-parchment);
+  color: var(--color-ink);
+  font-family: var(--font-body), sans-serif;
+  overflow-x: hidden;
 }
+
+/* ── Victorian utility classes ───────────────────── */
+.victorian-border {
+  border: 3px solid var(--color-ink);
+}
+
+.victorian-shadow {
+  box-shadow: 6px 6px 0px var(--color-ink);
+}
+
+.victorian-shadow-sm {
+  box-shadow: 3px 3px 0px var(--color-ink);
+}
+
+.victorian-shadow-lg {
+  box-shadow: 8px 8px 0px var(--color-ink);
+}
+
+/* ── Rivet dots along borders ────────────────────── */
+.rivet-border {
+  background-image:
+    radial-gradient(circle, var(--color-brass) 4px, transparent 4px);
+  background-size: 28px 28px;
+}
+
+.rivet-border-top {
+  background-image:
+    radial-gradient(circle, var(--color-brass) 3px, transparent 3px);
+  background-size: 24px 8px;
+  background-repeat: repeat-x;
+  background-position: center top;
+  height: 8px;
+}
+
+.rivet-border-bottom {
+  background-image:
+    radial-gradient(circle, var(--color-brass) 3px, transparent 3px);
+  background-size: 24px 8px;
+  background-repeat: repeat-x;
+  background-position: center bottom;
+  height: 8px;
+}
+
+/* ── Golden shimmer keyframes ────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.golden-shimmer {
+  background: linear-gradient(
+    110deg,
+    var(--color-gold) 0%,
+    var(--color-brass) 25%,
+    #F5D77A 50%,
+    var(--color-brass) 75%,
+    var(--color-gold) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ── Gate styles ─────────────────────────────────── */
+.gate-bar {
+  width: 6px;
+  background: linear-gradient(180deg, #3a2a1e, #1D120C 30%, #2a1a0e 60%, #1D120C);
+  border-radius: 2px;
+  box-shadow: inset 1px 0 0 rgba(255,255,255,0.05), inset -1px 0 0 rgba(0,0,0,0.3);
+}
+
+.gate-surface {
+  background: linear-gradient(135deg, #2a1a0e 0%, #1D120C 40%, #15100a 100%);
+}
+
+/* ── Ornate corner flourish positioning ──────────── */
+.flourish-tl { position: absolute; top: 0; left: 0; }
+.flourish-tr { position: absolute; top: 0; right: 0; transform: scaleX(-1); }
+.flourish-bl { position: absolute; bottom: 0; left: 0; transform: scaleY(-1); }
+.flourish-br { position: absolute; bottom: 0; right: 0; transform: scale(-1, -1); }
