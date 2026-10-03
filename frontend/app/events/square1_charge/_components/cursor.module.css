@@ -1,0 +1,85 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  pointer-events: none;
+}
+
+.ring,
+.dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.halo,
+.disc {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg);
+}
+
+.halo {
+  left: -7px;
+  top: -7px;
+  width: 14px;
+  height: 14px;
+  transition: opacity 0.2s;
+}
+
+.disc {
+  left: -32px;
+  top: -32px;
+  width: 64px;
+  height: 64px;
+  background: color-mix(in oklab, var(--fg) 12%, transparent);
+  opacity: 0;
+  transform: scale(0.22);
+  transition:
+    opacity 0.25s,
+    transform 0.35s var(--ease-out);
+}
+
+.ring[data-on] .halo {
+  opacity: 0;
+}
+
+.ring[data-on] .disc {
+  opacity: 1;
+  transform: none;
+}
+
+.label {
+  position: absolute;
+  left: 50px;
+  top: -14px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 600;
+  font-stretch: 80%;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.2s,
+    transform 0.3s var(--ease-out);
+}
+
+.ring[data-on] .label {
+  opacity: 1;
+  transform: none;
+}
+
+.dot {
+  margin: -2px 0 0 -2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--fg);
+}

@@ -1,0 +1,148 @@
+/* Floor 3: the ground floor, in Wonka purple. Leaderboard, golden ticket, house rules. */
+
+.ground {
+  gap: clamp(28px, 5vh, 48px);
+}
+
+.ticketBlock {
+  display: grid;
+  gap: 18px;
+  scroll-margin-top: 88px;
+}
+
+@media (min-width: 1024px) {
+  .ticketBlock {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: clamp(40px, 5vw, 80px);
+    align-items: start;
+  }
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-weight: 400;
+  font-size: clamp(44px, 5.4vw, 84px);
+  line-height: 0.9;
+  text-transform: uppercase;
+  font-kerning: none;
+  color: var(--enig);
+}
+
+.lede {
+  margin: 10px 0 0;
+  font-size: 17px;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+/* ---------- rules and organisers ---------- */
+
+.strip {
+  display: grid;
+  gap: 20px;
+  padding-bottom: clamp(20px, 3vh, 28px);
+  border-bottom: 2px solid rgb(255 255 255 / 0.12);
+}
+
+/* On wide screens the strip needs extra room before the leaderboard; below that the floor's own
+   gap is enough. */
+@media (min-width: 1024px) {
+  .strip {
+    margin-bottom: clamp(28px, 5vh, 56px);
+  }
+}
+
+@media (min-width: 900px) {
+  .strip {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+.stripTitle {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  font-stretch: 88%;
+  color: var(--enig);
+}
+
+.ruleList {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 900px) {
+  .ruleList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+  }
+}
+
+.ruleList li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* A small gold block as the bullet. */
+.ruleList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 8px;
+  height: 8px;
+  background: var(--enig);
+  box-shadow: 2px 2px 0 rgb(0 0 0 / 0.35);
+}
+
+.contacts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.contacts li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.names {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.phone {
+  display: inline-flex;
+  align-items: center;
+  font-size: 17px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+/* Touch screens and phones: 44px tap targets; the row gap is traded for the target height. */
+@media (pointer: coarse), (max-width: 899px) {
+  .contacts {
+    gap: 0;
+  }
+
+  .phone {
+    min-height: 44px;
+  }
+}
