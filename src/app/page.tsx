@@ -1,27 +1,61 @@
+import type { Metadata } from "next";
+import GsapInitializer from "@/components/GsapInitializer";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import EventIntroSection from "@/components/EventIntroSection";
+import InventingRoomsSection from "@/components/InventingRoomsSection";
+import EnrollmentSection from "@/components/EnrollmentSection";
+import LeaderboardSection from "@/components/LeaderboardSection";
+import FactoryFooter from "@/components/FactoryFooter";
+
+export const metadata: Metadata = {
+  title: "Mega Event | Secure Your Golden Ticket",
+  description: "Enter the factory, explore the inventing rooms, and secure your golden ticket to the Mega Event.",
+};
 
 export default function Home() {
   return (
-    <main className="relative">
-      <Navbar />
-      <HeroSection />
-      <EventIntroSection />
+    <>
+      {/* Handles global GSAP plugin registration and smooth scrolling */}
+      <GsapInitializer />
 
-      {/* Placeholder section so there's content to scroll to */}
-      <section className="min-h-screen bg-[#FDF8EE] flex items-center justify-center relative">
-        <div className="text-center px-8">
-          <h2
-            className="font-[family-name:var(--font-berkshire)] text-4xl md:text-6xl text-[#4A1235] mb-6"
-          >
-            The Adventure Continues&hellip;
-          </h2>
-          <p className="font-[family-name:var(--font-outfit)] text-lg md:text-xl text-[#1D120C]/70 max-w-2xl mx-auto">
-            More wonders of the Grand Confectionery await below.
-          </p>
+      {/* 
+        Master Orchestrator Wrapper 
+        - overflow-x-hidden: Prevents 3D tilt and GSAP pipe animations from causing horizontal scroll bugs
+        - bg-[#FDF8EE]: Global parchment base color
+      */}
+      <main className="relative w-full overflow-x-hidden bg-[#FDF8EE]">
+        
+        {/* Z-Index Management: Navbar must sit above all gates and content */}
+        <div className="relative z-50">
+          <Navbar />
         </div>
-      </section>
-    </main>
+
+        {/* Section 1: Hero & Gates */}
+        <div id="hero">
+          <HeroSection />
+        </div>
+
+        {/* Section 2: 3D Ticket & Manifesto */}
+        <EventIntroSection />
+
+        {/* Section 3: The Pipe Network & Event Chambers */}
+        <div id="events">
+          <InventingRoomsSection />
+        </div>
+
+        {/* Section 4: The Enrollment Machine */}
+        <div id="register">
+          <EnrollmentSection />
+        </div>
+
+        {/* Section 5: The Candy-Meter Leaderboard & Factory Footer */}
+        <div id="leaderboard">
+          <LeaderboardSection />
+        </div>
+
+        <FactoryFooter />
+      </main>
+    </>
   );
 }

@@ -351,7 +351,7 @@ export default function HeroSection() {
       {/* ── BACKGROUND REVEAL CONTENT ───────────────── */}
       <div
         ref={contentRef}
-        className="absolute inset-0 flex flex-col items-center justify-center px-4"
+        className="absolute inset-0 flex flex-col items-center justify-center px-4 pt-24 sm:pt-32"
         style={{ background: "#FDF8EE" }}
       >
         {/* Corner flourishes */}
@@ -360,18 +360,18 @@ export default function HeroSection() {
         <GateFlourish className="flourish-bl" />
         <GateFlourish className="flourish-br" />
 
-        {/* Top decorative line */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 flex items-center gap-4">
-          <div className="w-16 md:w-32 h-[2px] bg-[#C68A27] opacity-40" />
-          <LargeGear size={40} className="opacity-30" />
-          <div className="w-16 md:w-32 h-[2px] bg-[#C68A27] opacity-40" />
-        </div>
-
         {/* Main content area with pipes */}
         <div className="flex items-center gap-4 md:gap-12">
           <FactoryPipe side="left" />
 
-          <div className="text-center max-w-3xl">
+          <div className="text-center max-w-3xl flex flex-col items-center">
+            {/* Top decorative line (Moved into flow) */}
+            <div className="flex items-center justify-center gap-4 mb-6 w-full">
+              <div className="w-16 md:w-32 h-[2px] bg-[#C68A27] opacity-40" />
+              <LargeGear size={40} className="opacity-30" />
+              <div className="w-16 md:w-32 h-[2px] bg-[#C68A27] opacity-40" />
+            </div>
+
             {/* Sub-heading */}
             <p
               className="font-[family-name:var(--font-cinzel)] text-xs md:text-sm tracking-[0.3em] uppercase mb-4"
@@ -419,16 +419,16 @@ export default function HeroSection() {
 
             {/* Golden Ticket CTA */}
             <GoldenTicket />
+
+            {/* Bottom decorative line (Moved into flow) */}
+            <div className="flex items-center justify-center gap-4 mt-12 w-full hidden sm:flex">
+              <div className="w-16 md:w-32 h-[2px] bg-[#C68A27] opacity-40" />
+              <LargeGear size={40} className="opacity-30" />
+              <div className="w-16 md:w-32 h-[2px] bg-[#C68A27] opacity-40" />
+            </div>
           </div>
 
           <FactoryPipe side="right" />
-        </div>
-
-        {/* Bottom decorative line */}
-        <div className="absolute bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-4">
-          <div className="w-16 md:w-32 h-[2px] bg-[#C68A27] opacity-40" />
-          <LargeGear size={40} className="opacity-30" />
-          <div className="w-16 md:w-32 h-[2px] bg-[#C68A27] opacity-40" />
         </div>
       </div>
 
