@@ -10,6 +10,9 @@ import { BeaconScene } from "./BeaconScene";
 import c from "../charge.module.css";
 import s from "./roof.module.css";
 
+/** When the beacon powers on by itself, in ms; must match the 2.5s delays in roof.module.css. */
+const POWER_ON_MS = 2500;
+
 /** Pixel stars, in the sky's 1440 x 900 viewBox. Every third one twinkles. */
 const STARS: [number, number, number][] = [
   [96, 132, 4], [212, 64, 6], [318, 188, 4], [430, 96, 4], [548, 40, 6], [604, 214, 4], [702, 120, 4],
@@ -31,8 +34,9 @@ export function Roof() {
 
   /*
    * The beacon starts dark (CSS, only when scripting is on and motion is allowed) and
-   * powers on 1 second after the page starts loading, or at the first input of any
-   * kind, whichever comes first. Without JS, or with reduced motion, it is simply lit.
+   * powers on 2.5 seconds after the page starts loading, or at the first swipe, scroll,
+   * tap or key press, whichever comes first. Without JS, or with reduced motion, it is
+   * simply lit.
    */
   useEffect(() => {
     const scene = figure.current;
@@ -42,6 +46,12 @@ export function Roof() {
     const light = () => {
       window.clearTimeout(timer);
       events.forEach((e) => window.removeEventListener(e, light, true));
+      // Input came before the CSS timer: jump each power-on animation to the start of its run,
+      // so the full sequence plays now (the beam keeps its small lag behind the core).
+      for (const a of scene.getAnimations({ subtree: true })) {
+        const delay = Number(a.effect?.getTiming().delay ?? 0);
+        if (delay >= POWER_ON_MS && Number(a.currentTime ?? 0) < POWER_ON_MS) a.currentTime = POWER_ON_MS;
+      }
       scene.setAttribute("data-lit", "");
     };
     if (prefersReducedMotion()) {
@@ -49,7 +59,7 @@ export function Roof() {
       return;
     }
     events.forEach((e) => window.addEventListener(e, light, { capture: true, passive: true }));
-    timer = window.setTimeout(light, Math.max(0, 1000 - performance.now()));
+    timer = window.setTimeout(light, Math.max(0, POWER_ON_MS - performance.now()));
     return () => {
       window.clearTimeout(timer);
       events.forEach((e) => window.removeEventListener(e, light, true));
