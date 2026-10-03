@@ -1,0 +1,577 @@
+/* Floor 2: the briefing room. A crafting table recipe for the night, and the evening in plain words beside it. */
+
+.grid {
+  display: grid;
+  gap: 26px;
+  justify-items: start;
+}
+
+/* Below 1024px the headline and the evening come first; the GUI follows as the "recipe". */
+@media (max-width: 1023px) {
+  .text {
+    order: -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: clamp(40px, 5vw, 88px);
+    align-items: center;
+  }
+}
+
+/*
+ * Desktop: the GUI and the headline share the top row and the evening runs underneath at
+ * full width (2 x 2 up to 1279px, one left-to-right row of four from 1280px).
+ */
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-areas:
+      "gui head"
+      "steps steps";
+    row-gap: clamp(16px, 2.4vh, 40px);
+  }
+
+  /* The extra row must not make short laptop screens (1280 x 720) scroll further. */
+  section.briefing {
+    padding-top: calc(var(--nav-h) + clamp(12px, 2vh, 48px));
+  }
+
+  .gui {
+    grid-area: gui;
+  }
+
+  .text {
+    display: contents;
+  }
+
+  /* The headline sits on the GUI's bottom edge, directly above the evening it introduces. */
+  .textHead {
+    grid-area: head;
+    align-self: end;
+    padding-bottom: 8px;
+  }
+
+  .text .steps {
+    grid-area: steps;
+    width: 100%;
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .text .steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---------- the crafting table GUI ---------- */
+
+.gui {
+  --slot: 46px;
+  --b: 2px;
+  --pad: 12px;
+  /* The game's window frame: black outline with notched corners, white and dark bevels. */
+  --notch: polygon(
+    3px 0,
+    calc(100% - 3px) 0,
+    calc(100% - 3px) 3px,
+    100% 3px,
+    100% calc(100% - 3px),
+    calc(100% - 3px) calc(100% - 3px),
+    calc(100% - 3px) 100%,
+    3px 100%,
+    3px calc(100% - 3px),
+    0 calc(100% - 3px),
+    0 3px,
+    3px 3px
+  );
+  position: relative;
+  isolation: isolate;
+  max-width: 100%;
+  padding: calc(var(--pad) + 3px) calc(var(--pad) + 5px) calc(var(--pad) + 7px);
+  color: #404040;
+}
+
+/* Frame and shadow live on pseudo-layers, so clipping the corners never clips a tooltip. */
+.gui::before,
+.gui::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: var(--notch);
+  pointer-events: none;
+}
+
+.gui::before {
+  z-index: -1;
+  border: 3px solid #000;
+  background: #c6c6c6;
+  box-shadow:
+    inset 3px 3px 0 #ffffff,
+    inset -3px -3px 0 #555555;
+}
+
+.gui::after {
+  z-index: -2;
+  translate: 8px 8px;
+  background: rgb(26 17 14 / 0.22);
+}
+
+@media (min-width: 1024px) {
+  .gui {
+    --slot: 58px;
+    --b: 3px;
+    --pad: 18px;
+  }
+}
+
+@media (min-width: 1280px) and (min-height: 820px) {
+  .gui {
+    --slot: 68px;
+  }
+}
+
+.guiLabel {
+  margin: 0 0 6px;
+  font-family: var(--font-pixel), monospace;
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: #404040;
+}
+
+@media (min-width: 1024px) {
+  .guiLabel {
+    font-size: 18px;
+  }
+}
+
+.craftRow {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--slot) * 0.3);
+  margin-bottom: calc(var(--slot) * 0.32);
+  padding-left: calc(var(--slot) * 0.2);
+}
+
+.craftGrid {
+  display: grid;
+  grid-template-columns: repeat(3, var(--slot));
+}
+
+/* ---------- slots ---------- */
+
+.slotWrap {
+  position: relative;
+  display: block;
+}
+
+.slot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--slot);
+  height: var(--slot);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: #8b8b8b;
+  box-shadow:
+    inset var(--b) var(--b) 0 #373737,
+    inset calc(-1 * var(--b)) calc(-1 * var(--b)) 0 #ffffff;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+span.slot {
+  cursor: default;
+}
+
+/* The game's hover highlight: a white wash over the slot. */
+.slot::after {
+  content: "";
+  position: absolute;
+  inset: var(--b);
+  background: rgb(255 255 255 / 0.4);
+  opacity: 0;
+  pointer-events: none;
+}
+
+button.slot:hover::after,
+button.slot:focus-visible::after {
+  opacity: 1;
+}
+
+.root button.slot:focus-visible,
+button.slot:focus-visible {
+  outline: 3px solid #1a110e;
+  outline-offset: 2px;
+  z-index: 2;
+}
+
+.result {
+  --slot-r: calc(var(--slot) * 1.42);
+  width: var(--slot-r);
+  height: var(--slot-r);
+}
+
+.item {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 74%;
+  height: 74%;
+}
+
+.itemArt {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(2px 2px 0 rgb(0 0 0 / 0.28));
+}
+
+/* Stack count, bottom right, white with the game's hard shadow. */
+.count {
+  position: absolute;
+  right: -10%;
+  bottom: -14%;
+  font-family: var(--font-pixel), monospace;
+  font-size: calc(var(--slot) * 0.32);
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 2px 2px 0 #3f3f3f;
+}
+
+/* ---------- arrow and result ---------- */
+
+.arrow {
+  position: relative;
+  display: block;
+  width: calc(var(--slot) * 0.9);
+  aspect-ratio: 16 / 11;
+  flex: none;
+}
+
+.arrowBase {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.arrowFill {
+  position: absolute;
+  inset: 0;
+}
+
+.sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sparkles i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fffbe0;
+  opacity: 0;
+  box-shadow: 0 0 6px 1px rgb(255 246 216 / 0.9);
+}
+
+.sparkles i:nth-child(1) {
+  left: -6px;
+  top: 10%;
+}
+
+.sparkles i:nth-child(2) {
+  right: -8px;
+  top: 22%;
+}
+
+.sparkles i:nth-child(3) {
+  left: 18%;
+  bottom: -8px;
+}
+
+.sparkles i:nth-child(4) {
+  right: 10%;
+  top: -8px;
+}
+
+/* ---------- inventory ---------- */
+
+.inventory {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .inventory {
+    grid-template-columns: repeat(6, calc(var(--slot) + 30px));
+    gap: 8px 4px;
+  }
+}
+
+.invCell {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+}
+
+/* Phones: date, time and venue are already in the hero hotbar. */
+@media (max-width: 639px) {
+  .invCellWide {
+    display: none;
+  }
+}
+
+.caption {
+  max-width: 100%;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 650;
+  font-stretch: 88%;
+  text-align: center;
+  color: #2b2b2b;
+}
+
+@media (min-width: 1024px) {
+  .caption {
+    font-size: 13px;
+  }
+}
+
+/* ---------- tooltip: the game's dark purple panel ---------- */
+
+.tooltip {
+  position: absolute;
+  left: calc(100% + 4px);
+  top: -14px;
+  z-index: 20;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  max-width: 250px;
+  padding: 6px 10px 7px;
+  border: 2px solid #100010;
+  background: rgb(16 0 16 / 0.97);
+  box-shadow: inset 0 0 0 2px #2d0a6b;
+  font-family: var(--font-pixel), monospace;
+  text-align: left;
+  pointer-events: none;
+}
+
+.tooltip[data-flip] {
+  left: auto;
+  right: calc(100% + 4px);
+}
+
+.tooltip[hidden] {
+  display: none;
+}
+
+.tipName {
+  font-size: 16px;
+  line-height: 1.2;
+  color: #ffffff;
+  text-shadow: 2px 2px 0 #3f3f3f;
+}
+
+.tipGold {
+  color: #ffaa00;
+  text-shadow: 2px 2px 0 #3f2a00;
+}
+
+.tipLine {
+  font-size: 14px;
+  line-height: 1.25;
+  color: #a8a8a8;
+  text-shadow: 2px 2px 0 #2a2a2a;
+}
+
+/* ---------- beside the grid: team size and the evening ---------- */
+
+.text {
+  min-width: 0;
+}
+
+.heads {
+  display: flex;
+  gap: 10px;
+}
+
+.head {
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(4px 4px 0 rgb(26 17 14 / 0.28));
+}
+
+@media (min-width: 1024px) {
+  .head {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+.title {
+  margin: 12px 0 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-weight: 400;
+  font-size: clamp(48px, 6vw, 96px);
+  line-height: 0.88;
+  text-transform: uppercase;
+  font-kerning: none;
+}
+
+.lede {
+  margin: 10px 0 0;
+  max-width: 40ch;
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.steps {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 28px;
+  }
+}
+
+.step {
+  padding-top: 10px;
+  border-top: 2px solid rgb(26 17 14 / 0.25);
+}
+
+.step p {
+  margin: 0;
+}
+
+.time {
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.stepTitle {
+  margin-top: 4px !important;
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 700;
+  font-stretch: 88%;
+}
+
+.detail {
+  margin-top: 3px !important;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 500;
+  max-width: 38ch;
+}
+
+@media (max-width: 639px) {
+  .detail {
+    font-size: 16px;
+  }
+}
+
+.meta {
+  margin-top: 4px !important;
+  font-size: 14px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #6b3300;
+}
+
+/* ---------- countdown (reused in the inventory caption) ---------- */
+
+.countRow,
+.countDone {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  margin: 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: 18px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #1a110e;
+}
+
+.countDone {
+  font-size: 14px;
+}
+
+.unit {
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.unit:last-of-type {
+  margin-right: 0;
+}
+
+.placeholder {
+  opacity: 0.35;
+}
+
+.reelGroup {
+  display: inline-flex;
+}
+
+.window {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+}
+
+.reel {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.reel > span {
+  display: block;
+  height: 1em;
+  width: 0.56em;
+  text-align: center;
+}
+
+@media (max-width: 1023px) {
+  .text {
+    max-width: 40rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tipName {
+    font-size: 18px;
+  }
+
+  .tipLine {
+    font-size: 16px;
+  }
+
+  .tooltip {
+    max-width: 300px;
+  }
+}

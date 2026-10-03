@@ -1,0 +1,47 @@
+/* The small "Live, updated" line next to the leaderboard title. */
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  flex: none;
+  background: #55ff55;
+  box-shadow: 0 0 8px 1px rgb(85 255 85 / 0.6);
+}
+
+/* A slow pulse ring, so it reads as live without moving the text. */
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 2px solid rgb(85 255 85 / 0.5);
+  opacity: 0;
+  animation: ping 2.4s ease-out infinite;
+}
+
+.busy {
+  background: #ffffff;
+}
+
+@keyframes ping {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot::after {
+    animation: none;
+  }
+}
