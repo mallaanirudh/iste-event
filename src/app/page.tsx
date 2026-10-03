@@ -37,7 +37,9 @@ export default function Home() {
         </div>
 
         {/* Section 2: 3D Ticket & Manifesto */}
-        <EventIntroSection />
+        <div id="ticket">
+          <EventIntroSection />
+        </div>
 
         {/* Section 3: The Pipe Network & Event Chambers */}
         <div id="events">

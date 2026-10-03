@@ -120,7 +120,7 @@ export default function FactoryFooter() {
               Dispatch
             </h4>
             <a
-              href="#enrollment"
+              href="#register"
               className="inline-block bg-[#E5A93B] text-[#1D120C] font-[family-name:var(--font-cinzel)] font-bold text-xs sm:text-sm px-5 py-2.5 mb-6 transition-transform hover:-translate-y-1 active:translate-y-1"
               style={{ boxShadow: "4px 4px 0px #C68A27" }}
             >

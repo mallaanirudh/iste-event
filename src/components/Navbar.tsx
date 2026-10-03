@@ -1,21 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
-  { label: "The Factory", href: "#factory" },
-  { label: "Exhibits", href: "#exhibits" },
-  { label: "Golden Tickets", href: "#tickets" },
-  { label: "The Chocolatier", href: "#about" },
+  { label: "The Factory", href: "#hero" },
+  { label: "Chambers", href: "#events" },
+  { label: "Secure Entry", href: "#register" },
+  { label: "Inventor Tally", href: "#leaderboard" },
 ];
 
 /* ── Decorative brass gear SVG ────────────────────── */
-function BrassGear({ className = "" }: { className?: string }) {
+function BrassGear({ className = "", size = 28 }: { className?: string; size?: number }) {
   return (
     <svg
       className={className}
-      width="28"
-      height="28"
+      width={size}
+      height={size}
       viewBox="0 0 28 28"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -23,48 +24,69 @@ function BrassGear({ className = "" }: { className?: string }) {
       <circle cx="14" cy="14" r="6" stroke="#C68A27" strokeWidth="2" fill="#E5A93B" />
       <circle cx="14" cy="14" r="3" fill="#C68A27" />
       {/* Gear teeth */}
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-        <rect
-          key={angle}
-          x="12.5"
-          y="1"
-          width="3"
-          height="5"
-          rx="1"
-          fill="#C68A27"
-          transform={`rotate(${angle} 14 14)`}
-        />
-      ))}
-    </svg>
-  );
-}
-
-/* ── Ornate filigree divider ──────────────────────── */
-function Filigree() {
-  return (
-    <svg
-      width="32"
-      height="16"
-      viewBox="0 0 32 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className="opacity-60"
-    >
       <path
-        d="M0 8 C4 2, 8 2, 10 8 C12 14, 16 14, 16 8 C16 2, 20 2, 22 8 C24 14, 28 14, 32 8"
-        stroke="#C68A27"
-        strokeWidth="1.5"
-        fill="none"
+        d="M14 2L15 4H13L14 2Z"
+        fill="#E5A93B"
+        transform="rotate(0 14 14)"
+      />
+      <path
+        d="M14 2L15 4H13L14 2Z"
+        fill="#E5A93B"
+        transform="rotate(45 14 14)"
+      />
+      <path
+        d="M14 2L15 4H13L14 2Z"
+        fill="#E5A93B"
+        transform="rotate(90 14 14)"
+      />
+      <path
+        d="M14 2L15 4H13L14 2Z"
+        fill="#E5A93B"
+        transform="rotate(135 14 14)"
+      />
+      <path
+        d="M14 2L15 4H13L14 2Z"
+        fill="#E5A93B"
+        transform="rotate(180 14 14)"
+      />
+      <path
+        d="M14 2L15 4H13L14 2Z"
+        fill="#E5A93B"
+        transform="rotate(225 14 14)"
+      />
+      <path
+        d="M14 2L15 4H13L14 2Z"
+        fill="#E5A93B"
+        transform="rotate(270 14 14)"
+      />
+      <path
+        d="M14 2L15 4H13L14 2Z"
+        fill="#E5A93B"
+        transform="rotate(315 14 14)"
       />
     </svg>
   );
 }
 
-/* ── Brass rivet row ──────────────────────────────── */
-function RivetRow() {
+/* ── Decorative Filigree SVG ──────────────────────── */
+function Filigree() {
   return (
-    <div className="absolute bottom-0 left-0 w-full h-[6px] flex items-center justify-between px-2 pointer-events-none">
-      {Array.from({ length: 40 }).map((_, i) => (
+    <div className="flex items-center justify-center gap-1">
+      <svg width="40" height="12" viewBox="0 0 40 12" fill="none">
+        <path
+          d="M0 6C10 6 15 1 20 1C25 1 30 6 40 6"
+          stroke="#C68A27"
+          strokeWidth="1.5"
+          fill="none"
+        />
+        <path
+          d="M0 6C10 6 15 11 20 11C25 11 30 6 40 6"
+          stroke="#C68A27"
+          strokeWidth="1.5"
+          fill="none"
+        />
+      </svg>
+      {[0, 1, 2].map((i) => (
         <div
           key={i}
           className="w-[5px] h-[5px] rounded-full"
@@ -78,8 +100,38 @@ function RivetRow() {
   );
 }
 
+/* ── Thematic Brass Pipe Mobile Icon ───────────────── */
+function BrassPipeMenuIcon({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="relative w-8 h-6 flex flex-col justify-between z-[60] focus:outline-none md:hidden">
+      <motion.div 
+        animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
+        className="w-full h-1.5 bg-gradient-to-b from-[#F5D77A] via-[#E5A93B] to-[#C68A27] border-[1px] border-[#1D120C] rounded-sm shadow-[1px_1px_0px_#1D120C]"
+      />
+      <motion.div 
+        animate={isOpen ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
+        className="w-full h-1.5 bg-gradient-to-b from-[#F5D77A] via-[#E5A93B] to-[#C68A27] border-[1px] border-[#1D120C] rounded-sm shadow-[1px_1px_0px_#1D120C]"
+      />
+      <motion.div 
+        animate={isOpen ? { rotate: -45, y: -10 } : { rotate: 0, y: 0 }}
+        className="w-full h-1.5 bg-gradient-to-b from-[#F5D77A] via-[#E5A93B] to-[#C68A27] border-[1px] border-[#1D120C] rounded-sm shadow-[1px_1px_0px_#1D120C]"
+      />
+    </button>
+  );
+}
+
 export default function Navbar() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isMobileMenuOpen]);
 
   return (
     <nav
@@ -97,13 +149,13 @@ export default function Navbar() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto flex items-center justify-between px-6 py-3">
+      <div className="relative max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3">
         {/* Logo / Brand */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 z-[60]">
           <BrassGear className="animate-[spin_8s_linear_infinite]" />
           <div>
             <h1
-              className="font-[family-name:var(--font-berkshire)] text-xl leading-tight"
+              className="font-[family-name:var(--font-berkshire)] text-lg sm:text-xl leading-tight"
               style={{
                 background: "linear-gradient(180deg, #F5D77A, #E5A93B 40%, #C68A27)",
                 WebkitBackgroundClip: "text",
@@ -113,7 +165,7 @@ export default function Navbar() {
               The Grand Confectionery
             </h1>
             <p
-              className="font-[family-name:var(--font-cinzel)] text-[9px] tracking-[0.3em] uppercase"
+              className="font-[family-name:var(--font-cinzel)] text-[8px] sm:text-[9px] tracking-[0.3em] uppercase"
               style={{ color: "#C68A27" }}
             >
               Est. 1897
@@ -121,13 +173,13 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Center filigree */}
-        <div className="hidden lg:flex items-center">
+        {/* Center filigree (Desktop) */}
+        <div className="hidden lg:flex items-center z-[60]">
           <Filigree />
         </div>
 
-        {/* Navigation Links */}
-        <div className="hidden md:flex items-center gap-1">
+        {/* Navigation Links (Desktop) */}
+        <div className="hidden md:flex items-center gap-1 z-[60]">
           {NAV_LINKS.map((link, idx) => (
             <a
               key={link.label}
@@ -135,72 +187,81 @@ export default function Navbar() {
               className="relative font-[family-name:var(--font-cinzel)] text-[11px] tracking-[0.15em] uppercase px-4 py-2 transition-all duration-150 select-none"
               style={{
                 color: hoveredIdx === idx ? "#F5D77A" : "#C68A27",
-                transform:
-                  hoveredIdx === idx ? "translateY(-2px)" : "translateY(0)",
-                textShadow:
-                  hoveredIdx === idx ? "0 0 8px rgba(229,169,59,0.4)" : "none",
+                transform: hoveredIdx === idx ? "translateY(-2px)" : "translateY(0)",
+                textShadow: hoveredIdx === idx ? "0 0 8px rgba(229,169,59,0.4)" : "none",
               }}
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
             >
-              {/* Hover backing plate */}
-              <span
-                className="absolute inset-0 rounded-sm transition-all duration-150"
+              {link.label}
+              
+              {/* Tooltip-style hover dots */}
+              <div
+                className="absolute left-1/2 -bottom-2 -translate-x-1/2 transition-opacity duration-150"
                 style={{
-                  background:
-                    hoveredIdx === idx
-                      ? "rgba(229,169,59,0.08)"
-                      : "transparent",
-                  border:
-                    hoveredIdx === idx
-                      ? "1px solid rgba(229,169,59,0.2)"
-                      : "1px solid transparent",
-                  boxShadow:
-                    hoveredIdx === idx
-                      ? "3px 3px 0px rgba(29,18,12,0.6)"
-                      : "0px 0px 0px transparent",
+                  opacity: hoveredIdx === idx ? 1 : 0,
                 }}
-              />
-              <span className="relative z-10">{link.label}</span>
+              >
+                <div className="w-1 h-1 rounded-full bg-[#F5D77A]" />
+              </div>
             </a>
           ))}
         </div>
 
-        {/* CTA Button */}
-        <a
-          href="#tickets"
-          className="hidden sm:block font-[family-name:var(--font-cinzel)] text-[10px] tracking-[0.15em] uppercase px-5 py-2 transition-all duration-150 cursor-pointer"
-          style={{
-            background: "linear-gradient(135deg, #E5A93B, #C68A27)",
-            color: "#1D120C",
-            border: "2px solid #1D120C",
-            boxShadow: "3px 3px 0px #1D120C",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = "translateY(-2px)";
-            e.currentTarget.style.boxShadow = "5px 5px 0px #1D120C";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = "translateY(0)";
-            e.currentTarget.style.boxShadow = "3px 3px 0px #1D120C";
-          }}
-        >
-          Get Your Ticket
-        </a>
+        {/* Mobile Hamburger Icon */}
+        <BrassPipeMenuIcon isOpen={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
       </div>
 
-      {/* Bottom rivet row */}
-      <div className="relative h-[6px]">
-        <RivetRow />
-      </div>
-
-      {/* Bottom brass strip */}
+      {/* Bottom decorative border */}
       <div
-        className="w-full h-[2px]"
+        className="absolute bottom-[-6px] left-0 w-full h-[2px] z-[60]"
         style={{
-          background: "linear-gradient(90deg, #8B6914, #E5A93B 30%, #F5D77A 50%, #E5A93B 70%, #8B6914)",
+          background: "linear-gradient(90deg, transparent, rgba(229,169,59,0.5), transparent)",
         }}
       />
+
+      {/* Heavy Iron Hatch Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ y: "-100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-100%" }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed inset-0 z-[55] flex flex-col items-center justify-center bg-[#1D120C] border-b-[8px] border-[#C68A27] md:hidden"
+            style={{
+              backgroundImage: `radial-gradient(circle at center, #2B1810 0%, #1D120C 100%)`,
+              boxShadow: "0 10px 40px rgba(29, 18, 12, 0.9)",
+            }}
+          >
+            {/* Iron Hatch Rivets */}
+            <div className="absolute top-24 left-6 w-5 h-5 rounded-full bg-[#E5A93B] border-[2px] border-[#1D120C] shadow-[2px_2px_0px_#8B6914]" />
+            <div className="absolute top-24 right-6 w-5 h-5 rounded-full bg-[#E5A93B] border-[2px] border-[#1D120C] shadow-[2px_2px_0px_#8B6914]" />
+            <div className="absolute bottom-12 left-6 w-5 h-5 rounded-full bg-[#E5A93B] border-[2px] border-[#1D120C] shadow-[2px_2px_0px_#8B6914]" />
+            <div className="absolute bottom-12 right-6 w-5 h-5 rounded-full bg-[#E5A93B] border-[2px] border-[#1D120C] shadow-[2px_2px_0px_#8B6914]" />
+
+            {/* Menu Links */}
+            <div className="flex flex-col items-center gap-12 mt-12 z-20">
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="font-[family-name:var(--font-cinzel)] text-3xl text-[#E5A93B] hover:text-[#F5D77A] tracking-[0.2em] uppercase transition-colors"
+                  style={{ textShadow: "3px 3px 0px rgba(0,0,0,0.5)" }}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+
+            {/* Faded Background Gear */}
+            <div className="absolute bottom-16 opacity-10 pointer-events-none z-10">
+              <BrassGear size={160} className="animate-[spin_12s_linear_infinite]" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

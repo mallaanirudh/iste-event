@@ -219,7 +219,7 @@ function GateEdgeOrnament({ side }: { side: "left" | "right" }) {
 function GoldenTicket() {
   return (
     <a
-      href="#tickets"
+      href="#ticket"
       className="group relative inline-block cursor-pointer float-animation"
     >
       {/* Ticket shape */}

@@ -312,7 +312,7 @@ function GoldenTicket3D() {
 
             {/* CTA Button */}
             <motion.a
-              href="#tickets"
+              href="#register"
               className="inline-block font-[family-name:var(--font-cinzel)] text-xs sm:text-sm tracking-[0.15em] uppercase px-8 sm:px-10 py-3 sm:py-4 cursor-pointer select-none"
               style={{
                 background: "#2B0C3D",

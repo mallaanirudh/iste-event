@@ -167,7 +167,7 @@ export default function LeaderboardSection() {
           <div className="bg-[#FDF8EE] border-[3px] border-[#C68A27] p-2 sm:p-4 h-full relative overflow-hidden mt-6 sm:mt-4">
             
             <div className="w-full overflow-x-auto pb-4 custom-scrollbar">
-              <div className="min-w-[600px] sm:min-w-[700px]">
+              <div className="min-w-[600px] sm:min-w-[700px] pr-2 pb-2 pt-1 pl-1">
                 {/* Table Header (Stamped Brass) */}
                 <div
                   className="flex items-center bg-[#E5A93B] border-[3px] border-[#1D120C] p-3 sm:p-4 mb-4"

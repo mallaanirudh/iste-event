@@ -215,8 +215,11 @@ export default function InventingRoomsSection() {
       const startX = valveRect.left - containerRect.left + valveRect.width / 2;
       const startY = valveRect.bottom - containerRect.top - 10; // slightly inside the valve
       
-      const mobileX = 40;
-      let currentX = isMobile ? startX : startX; // We will curve into mobileX
+      const centerX = containerRect.width / 2;
+      
+      // On mobile, force the pipe to simply drop straight down the middle.
+      const mobileX = startX;
+      let currentX = startX;
       let currentY = startY;
       
       let d = `M ${startX} ${startY} `;
@@ -233,14 +236,10 @@ export default function InventingRoomsSection() {
         const deltaY = cardY - currentY;
 
         if (isMobile) {
-          // Snake pattern for mobile
-          const cp1Y = currentY + deltaY * 0.5;
-          const cp2Y = currentY + deltaY * 0.5;
-          const bulgeX = (i === 0) ? startX : (mobileX + (i % 2 === 0 ? 50 : -10));
-          d += `C ${currentX} ${cp1Y}, ${bulgeX} ${cp2Y}, ${cardX} ${cardY} `;
+          // Simple straight vertical line for mobile
+          d += `L ${mobileX} ${cardY} `;
         } else {
           // Exaggerated U/S-curves for desktop
-          // Pushes the control points hard on the Y-axis to square off the pipes
           const cp1Y = currentY + deltaY * 0.85;
           const cp2Y = cardY - deltaY * 0.85;
           d += `C ${currentX} ${cp1Y}, ${cardX} ${cp2Y}, ${cardX} ${cardY} `;
@@ -256,8 +255,12 @@ export default function InventingRoomsSection() {
       const termY = terminusRect.top - containerRect.top + 30; // into the grate
       const finalDeltaY = termY - currentY;
 
-      // Exaggerated curve into the terminus
-      d += `C ${currentX} ${currentY + finalDeltaY * 0.8}, ${termX} ${termY - finalDeltaY * 0.8}, ${termX} ${termY} `;
+      if (isMobile) {
+        d += `L ${termX} ${termY} `;
+      } else {
+        // Exaggerated curve into the terminus on desktop
+        d += `C ${currentX} ${currentY + finalDeltaY * 0.8}, ${termX} ${termY - finalDeltaY * 0.8}, ${termX} ${termY} `;
+      }
 
       setPathD(d);
       setJunctions(newJunctions);
@@ -349,15 +352,15 @@ export default function InventingRoomsSection() {
       {/* Origin Valve */}
       <MainValve ref={valveRef} />
 
-      {/* Staggered Event Cards (Increased Gap) */}
+      {/* Staggered Event Cards */}
       <div className="container mx-auto px-4 max-w-6xl relative z-10 mt-8">
         <div className="flex flex-col gap-32 md:gap-48">
           {EVENTS.map((event, i) => (
             <div
               key={event.id}
-              className={`flex w-full ${
+              className={`flex w-full justify-center ${
                 i % 2 === 0 ? "md:justify-start" : "md:justify-end"
-              } justify-center pl-16 md:pl-0`}
+              }`}
             >
               <div
                 ref={(el) => {
