@@ -1,0 +1,1711 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISTE · Scotland Yard</title>
+<meta name="description" content="ISTE presents Scotland Yard: The Ultimate Mystery Challenge. Crack the case, solve the clues, track the suspects.">
+<script>document.documentElement.classList.add("js")</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #e8d5b0;
+    --parchment-2: #dcc497;
+    --parchment-3: #cdb07c;
+    --ink: #2b1d12;
+    --ink-soft: #4a3624;
+    --wood: #6b4423;
+    --wood-2: #8b5a2b;
+    --wood-3: #4a2e17;
+    --brass: #b5893a;
+    --brass-2: #d4a94f;
+    --brass-3: #f0d58a;
+    --fog: #8e9196;
+    --fog-2: #b8b8b2;
+    --fog-3: #d6d3c8;
+    --police: #1f3a68;
+    --police-2: #3c5f99;
+    --gold: #c9a227;
+    --rust: #b8472a;
+    --manila: #e6cf8f;
+    --room-pink: #e5b49b;
+    --room-cream: #efe0bf;
+    --room-sage: #bcc09f;
+    --room-fog: #cbc7ba;
+    --room-blue: #b9c4cf;
+    --room-ochre: #dcc08a;
+    --serif: "IM Fell English", Georgia, "Times New Roman", serif;
+    --serif-sc: "IM Fell English SC", Georgia, serif;
+    --display: "Abril Fatface", Georgia, serif;
+    --type: "Special Elite", "Courier New", monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.5;
+    background-color: var(--parchment);
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .33  0 0 0 0 .22  0 0 0 0 .1  0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+      radial-gradient(ellipse at 20% 10%, rgba(255,245,220,.55), transparent 55%),
+      radial-gradient(ellipse at 80% 70%, rgba(150,105,50,.18), transparent 60%),
+      radial-gradient(ellipse at center, transparent 55%, rgba(110,70,30,.35) 100%);
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  a { color: inherit; }
+  svg { display: block; }
+
+  /* ───────── Header ───────── */
+  header.masthead {
+    text-align: center;
+    padding: 48px 16px 8px;
+    position: relative;
+  }
+  .iste-row {
+    display: flex; align-items: center; justify-content: center; gap: 18px;
+  }
+  .flourish { width: min(180px, 22vw); height: 40px; color: var(--wood); }
+  .iste {
+    font-family: var(--serif-sc);
+    font-size: clamp(54px, 9vw, 96px);
+    letter-spacing: .18em;
+    line-height: 1;
+    margin: 0;
+    padding-left: .18em;
+    color: var(--ink);
+    text-shadow: 2px 2px 0 var(--brass-2);
+  }
+  .presents {
+    font-family: var(--serif); font-style: italic;
+    font-size: 20px; color: var(--ink-soft); margin: 6px 0 4px;
+  }
+  .title-row {
+    display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 32px);
+    flex-wrap: wrap;
+  }
+  h1.title {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(48px, 10.5vw, 132px);
+    line-height: .95;
+    color: var(--rust);
+    text-shadow: 3px 3px 0 var(--ink), 6px 6px 0 rgba(43,29,18,.18);
+    letter-spacing: .01em;
+  }
+  h1.title .ln { display: block; white-space: nowrap; }
+  h1.title .l { display: inline-block; }
+  h1.title .l:nth-child(odd)  { transform: rotate(-4deg) translateY(2px); }
+  h1.title .l:nth-child(even) { transform: rotate(3deg) translateY(-3px); }
+  h1.title .l:nth-child(3n)   { transform: rotate(-1deg) translateY(-6px); }
+  h1.title .mag {
+    display: inline-block; width: .78em; height: .78em; vertical-align: -.04em;
+    margin: 0 .02em; filter: drop-shadow(3px 3px 0 var(--ink));
+    animation: peer 6s ease-in-out infinite;
+    transform-origin: 40% 40%;
+  }
+  h1.title .yard { font-size: .82em; color: var(--police); }
+  @keyframes peer { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(10deg) translate(2px,-2px); } }
+
+  .badge { width: clamp(96px, 13vw, 140px); flex: none; animation: badgeSpin 40s linear infinite; }
+  .badge .still { animation: badgeSpin 40s linear infinite reverse; transform-origin: 70px 70px; transform-box: view-box; }
+  @keyframes badgeSpin { to { transform: rotate(360deg); } }
+
+  .subtitle {
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+    margin: 18px auto 0; max-width: 900px;
+    font-family: var(--serif-sc);
+    font-size: clamp(17px, 2.6vw, 28px);
+    letter-spacing: .14em;
+    color: var(--ink);
+  }
+  .subtitle .rule { flex: 1; height: 2px; background: linear-gradient(90deg, transparent, var(--wood) 30%, var(--wood) 70%, transparent); }
+  .compass { width: 38px; height: 38px; flex: none; animation: badgeSpin 18s linear infinite; }
+  .tagline { font-style: italic; color: var(--ink-soft); margin: 10px 0 0; font-size: 18px; }
+
+  /* ───────── Building ───────── */
+  .building {
+    position: relative;
+    max-width: 1160px;
+    margin: 18px auto 0;
+    padding: 0 64px;
+  }
+  .roof svg { width: 100%; height: auto; }
+  .frame {
+    position: relative;
+    background: var(--wood-3);
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0 0 0 4px var(--ink), 10px 12px 0 rgba(43,29,18,.18);
+  }
+  .floor {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 10px;
+  }
+  .beam {
+    height: 20px; margin: 10px -10px;
+    background:
+      radial-gradient(circle at 12px 10px, var(--brass-3) 0 2px, var(--brass) 2.5px 3.5px, transparent 4px) 0 0 / 48px 20px repeat-x,
+      repeating-linear-gradient(90deg, rgba(0,0,0,.08) 0 2px, transparent 2px 23px),
+      linear-gradient(180deg, var(--wood-2), var(--wood) 55%, var(--wood-3));
+    box-shadow: 0 2px 0 rgba(0,0,0,.35) inset, 0 -2px 0 rgba(255,220,170,.15) inset;
+  }
+  .room {
+    position: relative;
+    background: var(--bg, var(--room-cream));
+    border-radius: 2px;
+    overflow: hidden;
+    min-height: 220px;
+    box-shadow: inset 0 0 0 2px rgba(43,29,18,.25), inset 0 -40px 60px rgba(80,50,20,.10);
+  }
+  .room::after { /* paper grain on the walls */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .2  0 0 0 0 .1  0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: multiply;
+  }
+  .room > svg.scene { width: 100%; height: 100%; position: absolute; inset: 0; }
+  .room.has-text { display: grid; grid-template-columns: minmax(230px, .85fr) 1.4fr; align-items: end; }
+  .room.has-text > svg.scene { position: relative; height: auto; align-self: end; }
+  .room.has-text.flip { grid-template-columns: 1.4fr minmax(230px, .85fr); }
+  .room.has-text.flip .note { order: 2; }
+
+  .plaque {
+    position: absolute; top: 10px; left: 10px; z-index: 3;
+    font-family: var(--serif-sc); font-size: 13px; letter-spacing: .12em;
+    padding: 3px 12px 2px;
+    color: var(--ink);
+    background: linear-gradient(180deg, var(--brass-3), var(--brass-2) 45%, var(--brass));
+    border: 1px solid var(--wood-3);
+    border-radius: 2px;
+    box-shadow: 0 2px 0 rgba(0,0,0,.25);
+    text-shadow: 0 1px 0 rgba(255,240,200,.6);
+  }
+  .plaque::before, .plaque::after {
+    content: ""; position: absolute; top: 50%; width: 4px; height: 4px; margin-top: -2px;
+    border-radius: 50%; background: var(--wood-3);
+  }
+  .plaque::before { left: 4px; } .plaque::after { right: 4px; }
+
+  .note {
+    position: relative; z-index: 2;
+    margin: 46px 14px 16px;
+    padding: 18px 18px 16px;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 25px, rgba(31,58,104,.14) 25px 26px),
+      #f6ead0;
+    box-shadow: 2px 3px 0 rgba(43,29,18,.25);
+    transform: rotate(-1.2deg);
+  }
+  .room.flip .note { transform: rotate(1.1deg); }
+  .note::before { /* brass pin */
+    content: ""; position: absolute; top: -7px; left: 50%; width: 14px; height: 14px; margin-left: -7px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--brass-3), var(--brass) 55%, var(--wood-3));
+    box-shadow: 1px 2px 0 rgba(0,0,0,.3);
+  }
+  .note .step { font-family: var(--type); font-size: 12px; color: var(--rust); letter-spacing: .08em; }
+  .note h2 {
+    margin: 2px 0 6px;
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(24px, 2.6vw, 32px); line-height: 1.05;
+    color: var(--police);
+  }
+  .note p { margin: 0; font-size: 16px; line-height: 1.45; }
+
+  /* pipes running up the outside of the building */
+  .pipe {
+    position: absolute; top: 120px; bottom: 210px; width: 22px; z-index: 1;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 170px, rgba(0,0,0,.35) 170px 172px, var(--brass-2) 172px 184px, rgba(0,0,0,.35) 184px 186px),
+      linear-gradient(90deg, #6b4a1a, var(--brass) 30%, var(--brass-3) 48%, var(--brass) 70%, #5a3d14);
+    border-radius: 11px 11px 0 0;
+  }
+  .pipe.l { left: 16px; }
+  .pipe.r { right: 16px; width: 18px;
+    background:
+      repeating-linear-gradient(180deg, transparent 0 130px, rgba(0,0,0,.35) 130px 132px, #c8c6bf 132px 142px, rgba(0,0,0,.35) 142px 144px),
+      linear-gradient(90deg, #55585c, var(--fog) 30%, #e1dfd8 48%, var(--fog) 70%, #4a4c50);
+  }
+  .stub { position: absolute; height: 16px; width: 44px; z-index: 1;
+    background: linear-gradient(180deg, #6b4a1a, var(--brass) 30%, var(--brass-3) 48%, var(--brass) 70%, #5a3d14); }
+  .stub.l { left: 26px; } .stub.r { right: 26px;
+    background: linear-gradient(180deg, #55585c, var(--fog) 30%, #e1dfd8 48%, var(--fog) 70%, #4a4c50); }
+  .gauge { position: absolute; width: 38px; height: 38px; z-index: 2; }
+  .gauge.l { left: 8px; } .gauge.r { right: 6px; }
+  .gauge .needle { transform-origin: 19px 19px; animation: needle 3.2s ease-in-out infinite; }
+  @keyframes needle { 0%,100% { transform: rotate(-50deg); } 45% { transform: rotate(40deg); } 60% { transform: rotate(25deg); } }
+  .valve { position: absolute; width: 34px; height: 34px; z-index: 2; }
+  .valve.l { left: 10px; } .valve.r { right: 8px; }
+  .valve svg { animation: badgeSpin 9s linear infinite; }
+
+  /* ───────── Animations inside scenes ───────── */
+  .steam circle { animation: steam 4.5s ease-out infinite; transform-box: fill-box; transform-origin: center; opacity: 0; }
+  .steam circle:nth-child(2) { animation-delay: 1.5s; }
+  .steam circle:nth-child(3) { animation-delay: 3s; }
+  @keyframes steam { 0% { opacity: 0; transform: translateY(0) scale(.5); } 15% { opacity: .9; } 100% { opacity: 0; transform: translateY(-70px) scale(1.8); } }
+  .swing { animation: swing 3.6s ease-in-out infinite; transform-origin: 130px 0; transform-box: view-box; }
+  @keyframes swing { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+  .spin { animation: badgeSpin 60s linear infinite; transform-box: fill-box; transform-origin: center; }
+  .spin-fast { animation: badgeSpin 6s linear infinite; transform-box: fill-box; transform-origin: center; }
+  .sign { animation: flip 7s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes flip { 0%,40% { transform: scaleX(1); } 50% { transform: scaleX(.06); } 60%,100% { transform: scaleX(1); } }
+  .flicker { animation: flicker 2.4s steps(2) infinite; }
+  .flicker.b { animation-delay: .8s; } .flicker.c { animation-delay: 1.6s; }
+  @keyframes flicker { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+  .bubble { animation: bubble 2.8s ease-in infinite; transform-box: fill-box; }
+  .bubble.b { animation-delay: 1s; } .bubble.c { animation-delay: 1.9s; }
+  @keyframes bubble { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-26px); opacity: 0; } }
+  .capsule { animation: capsule 5s ease-in infinite; }
+  @keyframes capsule { 0% { transform: translateY(-40px); } 40%,100% { transform: translateY(46px); } }
+  .bob { animation: bob 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center bottom; }
+  @keyframes bob { 0%,100% { transform: translateY(0) rotate(-1.2deg); } 50% { transform: translateY(5px) rotate(1.2deg); } }
+  .waves { animation: waves 7s linear infinite; }
+  .waves.b { animation-duration: 11s; animation-direction: reverse; }
+  @keyframes waves { to { transform: translateX(-80px); } }
+  .beam-light { animation: sweep 6s ease-in-out infinite; transform-box: view-box; }
+  @keyframes sweep { 0%,100% { opacity: .55; } 50% { opacity: .2; } }
+  .pigeon { animation: hop 3s ease-in-out infinite; transform-box: fill-box; }
+  @keyframes hop { 0%,80%,100% { transform: translateY(0); } 88% { transform: translateY(-4px); } }
+
+  /* ───────── Hidden clues ───────── */
+  .clue {
+    position: absolute; z-index: 4;
+    width: 30px; height: 36px; padding: 3px;
+    border: 0; background: transparent; cursor: zoom-in;
+    color: var(--ink); opacity: .28;
+    transition: opacity .2s, transform .2s;
+  }
+  .clue svg { width: 100%; height: 100%; }
+  .clue:hover, .clue:focus-visible { opacity: .85; transform: scale(1.35) rotate(-8deg); outline: none; }
+  .clue:focus-visible { filter: drop-shadow(0 0 3px var(--gold)); }
+  .clue.found { opacity: 1; color: var(--rust); cursor: default; transform: scale(1.1); }
+  .clue.found::after {
+    content: "✓"; position: absolute; right: -6px; top: -6px; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--police); color: #fff; font: 11px/16px sans-serif; text-align: center;
+  }
+
+  .casebook {
+    position: fixed; right: 16px; bottom: 16px; z-index: 20;
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px 10px 12px;
+    background: #2f2216; color: var(--parchment);
+    border: 2px solid var(--brass);
+    border-radius: 4px;
+    font-family: var(--type); font-size: 13px;
+    box-shadow: 3px 4px 0 rgba(0,0,0,.3);
+    max-width: calc(100vw - 32px);
+  }
+  .casebook svg { width: 22px; height: 26px; color: var(--brass-2); flex: none; }
+  .casebook strong { color: var(--brass-3); font-weight: 400; }
+  .casebook a { color: var(--brass-3); }
+  .casebook .solved-msg { display: none; }
+  .casebook.solved .count-msg { display: none; }
+  .casebook.solved .solved-msg { display: inline; }
+  .toast {
+    position: fixed; left: 50%; bottom: 76px; z-index: 21;
+    transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+    background: #f6ead0; color: var(--ink);
+    font-family: var(--type); font-size: 14px;
+    padding: 10px 16px; border: 1px solid var(--wood);
+    box-shadow: 3px 4px 0 rgba(0,0,0,.25);
+    transition: opacity .25s, transform .25s;
+    max-width: calc(100vw - 32px); text-align: center;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ───────── Thames & CTAs ───────── */
+  .thames { margin-top: -4px; }
+  .thames svg { width: 100%; height: auto; }
+  .dock {
+    display: flex; justify-content: center; gap: clamp(20px, 6vw, 80px); flex-wrap: wrap;
+    padding: 4px 16px 0;
+    position: relative;
+  }
+  .rail {
+    position: absolute; left: 10%; right: 10%; top: 0; height: 8px; border-radius: 4px;
+    background: linear-gradient(180deg, var(--brass-3), var(--brass) 50%, var(--wood-3));
+  }
+  .tag-wrap {
+    position: relative; padding-top: 46px;
+    filter: drop-shadow(3px 5px 0 rgba(43,29,18,.3));
+    transform-origin: 50% 0;
+    transition: transform .3s;
+  }
+  .tag-wrap .string {
+    position: absolute; top: 4px; left: 50%; width: 2px; height: 56px; margin-left: -1px;
+    background: repeating-linear-gradient(180deg, #8a6a3e 0 3px, #5a4022 3px 5px);
+  }
+  .tag {
+    position: relative; display: block; text-decoration: none;
+    width: 270px; padding: 30px 22px 18px;
+    text-align: center;
+    background: var(--manila);
+    clip-path: polygon(22px 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%, 0 22px);
+    color: var(--ink);
+  }
+  .tag.blue { background: var(--police); color: #f3ead6; }
+  .tag::before { /* eyelet */
+    content: ""; position: absolute; top: 10px; left: 50%; width: 16px; height: 16px; margin-left: -8px;
+    border-radius: 50%; background: var(--parchment-2);
+    box-shadow: 0 0 0 3px var(--brass), inset 1px 1px 2px rgba(0,0,0,.4);
+  }
+  .tag .kicker { display: block; font-family: var(--type); font-size: 11px; letter-spacing: .14em; opacity: .8; }
+  .tag .cta { display: block; font-family: var(--display); font-size: 30px; line-height: 1.1; margin: 4px 0 6px; letter-spacing: .02em; }
+  .tag .lines { display: block; border-top: 1px dashed currentColor; opacity: .6; padding-top: 6px; font-family: var(--type); font-size: 11px; letter-spacing: .08em; }
+  .tag.blue .cta { color: var(--brass-3); }
+  .tag:focus-visible { outline: 3px solid var(--gold); outline-offset: -6px; }
+
+  /* ───────── Agenda / case file ───────── */
+  section.casefile {
+    max-width: 920px; margin: 80px auto 0; padding: 0 16px;
+    scroll-margin-top: 24px;
+  }
+  .folder { position: relative; padding-top: 34px; }
+  .folder .tab {
+    position: absolute; top: 0; left: 28px;
+    padding: 8px 22px 6px;
+    background: var(--manila);
+    border-radius: 8px 8px 0 0;
+    font-family: var(--type); font-size: 13px; letter-spacing: .1em;
+    box-shadow: inset 0 -3px 0 rgba(0,0,0,.05);
+  }
+  .folder .body {
+    position: relative;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.2), transparent 30%),
+      var(--manila);
+    border-radius: 0 6px 6px 6px;
+    padding: 34px clamp(18px, 4vw, 44px) 36px;
+    box-shadow: 6px 8px 0 rgba(43,29,18,.2);
+  }
+  .stamp {
+    position: absolute; top: 22px; right: 26px;
+    font-family: var(--display); font-size: 22px; letter-spacing: .1em;
+    color: var(--rust); border: 3px double var(--rust); padding: 2px 12px;
+    transform: rotate(8deg); opacity: .8;
+  }
+  .casefile h2 {
+    margin: 0; font-family: var(--display); font-weight: 400;
+    font-size: clamp(32px, 5vw, 48px); color: var(--police); line-height: 1.05;
+  }
+  .casefile .sub { font-style: italic; margin: 4px 0 22px; color: var(--ink-soft); }
+  .facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px;
+    margin-bottom: 28px;
+  }
+  .fact {
+    background: #f6ead0; padding: 10px 14px; border-left: 4px solid var(--police);
+    font-family: var(--type); font-size: 14px;
+  }
+  .fact b { display: block; font-family: var(--serif-sc); font-weight: 400; letter-spacing: .1em; font-size: 12px; color: var(--rust); }
+  ol.timeline { list-style: none; margin: 0; padding: 0; position: relative; }
+  ol.timeline::before { content: ""; position: absolute; left: 86px; top: 8px; bottom: 8px; border-left: 2px dashed var(--wood); }
+  ol.timeline li { display: grid; grid-template-columns: 74px 1fr; gap: 28px; padding: 10px 0; position: relative; }
+  ol.timeline li::before {
+    content: ""; position: absolute; left: 80px; top: 18px; width: 14px; height: 14px; border-radius: 50%;
+    background: var(--rust); box-shadow: 0 0 0 3px var(--manila);
+  }
+  .time { font-family: var(--type); font-size: 15px; text-align: right; padding-top: 2px; }
+  .what b { display: block; font-family: var(--serif-sc); font-weight: 400; font-size: 19px; letter-spacing: .05em; }
+  .what span { font-size: 15px; color: var(--ink-soft); }
+  .fine { font-family: var(--type); font-size: 12px; margin: 22px 0 0; opacity: .75; }
+
+  footer {
+    text-align: center; padding: 70px 16px 110px;
+    font-family: var(--serif-sc); letter-spacing: .12em; font-size: 14px; color: var(--ink-soft);
+  }
+  footer .fp-row { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; color: var(--wood); opacity: .6; }
+  footer .fp-row svg { width: 16px; height: 20px; }
+  footer .credit {
+    margin: 14px 0 0; font-family: var(--serif); font-style: italic;
+    font-size: 16px; letter-spacing: .02em; color: var(--ink-soft);
+  }
+  footer .credit span { font-family: var(--serif-sc); font-style: normal; letter-spacing: .08em; color: var(--rust); }
+
+  /* ───────── Motion layer ───────── */
+  /* red-string reading progress (CSS scroll-driven, no scroll listeners) */
+  .progress-string {
+    position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 30; pointer-events: none;
+    background: var(--rust); transform-origin: 0 50%; transform: scaleX(0);
+  }
+  @supports (animation-timeline: scroll()) {
+    .progress-string { animation: growX linear both; animation-timeline: scroll(root); }
+  }
+  @keyframes growX { to { transform: scaleX(1); } }
+
+  @keyframes drop { from { translate: 0 -.9em; opacity: 0; } 60% { opacity: 1; } to { translate: 0 0; opacity: 1; } }
+  @keyframes fadeUp { from { translate: 0 16px; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+  @keyframes inkIn { from { opacity: 0; filter: blur(8px); scale: 1.15; } to { opacity: 1; filter: blur(0); scale: 1; } }
+  @keyframes stampIn { from { scale: 2; opacity: 0; } to { scale: 1; opacity: 1; } }
+  @keyframes lightsOn { 0% { opacity: .8; } 12% { opacity: .15; } 20% { opacity: .7; } 32% { opacity: .05; } 42% { opacity: .5; } 60%, 100% { opacity: 0; } }
+  @keyframes tagSwing { 0% { rotate: 0deg; } 15% { rotate: -7deg; } 35% { rotate: 5deg; } 55% { rotate: -3deg; } 75% { rotate: 1.4deg; } 100% { rotate: 0deg; } }
+  @keyframes clueHit { from { scale: 1.9; } to { scale: 1; } }
+  @keyframes ring { from { opacity: .9; transform: scale(.4); } to { opacity: 0; transform: scale(2.2); } }
+  @keyframes bump { 40% { scale: 1.08; } }
+  @keyframes drift { from { transform: translateX(-70%); } to { transform: translateX(190%); } }
+  @keyframes letterIn { from { opacity: 0; translate: 0 -6px; } to { opacity: 1; translate: 0 0; } }
+  @keyframes sirenBlink { 0%, 49% { fill: #3c5f99; } 50%, 100% { fill: #9cc0ff; } }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* opening titles: ink settles, letters drop in, badge stamps down */
+    .iste { animation: inkIn 1s cubic-bezier(.16,1,.3,1) both; }
+    .presents { animation: fadeUp .6s .35s both; }
+    h1.title .l { animation: drop .75s cubic-bezier(.34,1.56,.64,1) both; animation-delay: calc(.45s + var(--i) * 60ms); }
+    h1.title .mag { animation: drop .75s cubic-bezier(.34,1.56,.64,1) both, peer 6s 1.6s ease-in-out infinite; animation-delay: calc(.45s + var(--i) * 60ms), 1.6s; }
+    .badge { animation: stampIn .55s 1.35s cubic-bezier(.34,1.56,.64,1) both, badgeSpin 40s 1.9s linear infinite; }
+    .subtitle { animation: fadeUp .7s 1.2s both; }
+    .tagline { animation: fadeUp .7s 1.4s both; }
+    .roof { animation: fadeUp .9s 1.5s cubic-bezier(.16,1,.3,1) both; }
+
+    /* each room is dark until it scrolls into view, then the lights flicker on */
+    html.js .room::before {
+      content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+      background: #1a120b; opacity: .8;
+    }
+    html.js .room.lit::before { animation: lightsOn 1s linear forwards; }
+    html.js .room .note { opacity: 0; translate: 0 22px; }
+    html.js .room.lit .note { opacity: 1; translate: 0 0; transition: opacity .6s .55s, translate .7s .55s cubic-bezier(.16,1,.3,1); }
+
+    /* agenda: thread draws down, entries follow, stamp thumps on */
+    html.js ol.timeline::before { transform: scaleY(0); transform-origin: top; transition: transform 1.4s cubic-bezier(.16,1,.3,1); }
+    html.js ol.timeline.in::before { transform: scaleY(1); }
+    html.js ol.timeline li { opacity: 0; translate: -14px 0; transition: opacity .5s, translate .6s cubic-bezier(.16,1,.3,1); transition-delay: calc(var(--i, 0) * 90ms + .15s); }
+    html.js ol.timeline.in li { opacity: 1; translate: 0 0; }
+    html.js .stamp { opacity: 0; scale: 2.2; }
+    html.js .folder.in .stamp { opacity: .8; scale: 1; transition: opacity .25s .35s, scale .45s .35s cubic-bezier(.34,1.56,.64,1); }
+    html.js .cipher .telegram, html.js .cipher .wheel-wrap { opacity: 0; translate: 0 26px; }
+    html.js .cipher.in .telegram, html.js .cipher.in .wheel-wrap { opacity: 1; translate: 0 0; transition: opacity .6s, translate .8s cubic-bezier(.16,1,.3,1); }
+    html.js .cipher.in .telegram { transition-delay: .15s; }
+
+    .tag-wrap:hover, .tag-wrap:focus-within { animation: tagSwing 1.4s ease-out; }
+    .clue.found { animation: clueHit .5s cubic-bezier(.34,1.56,.64,1); }
+    .clue.found::before { animation: ring .7s ease-out; }
+    .casebook.bump { animation: bump .45s cubic-bezier(.34,1.56,.64,1); }
+    .plain span { display: inline-block; animation: letterIn .25s both; }
+    .siren { animation: sirenBlink 1.1s steps(1) infinite; }
+  }
+  .tag:active { scale: .97; }
+  .clue::before {
+    content: ""; position: absolute; inset: -6px; border-radius: 50%; pointer-events: none;
+    border: 2px solid var(--rust); opacity: 0;
+  }
+
+  /* London fog drifting over the river */
+  .thames { position: relative; overflow: hidden; }
+  .fog { position: absolute; inset: 0; pointer-events: none; }
+  .fog span {
+    position: absolute; left: 0; width: 55%; height: 45%;
+    background: radial-gradient(closest-side, rgba(232,228,218,.6), transparent);
+    animation: drift 42s linear infinite;
+  }
+  .fog span:nth-child(1) { top: 8%; }
+  .fog span:nth-child(2) { top: 40%; animation-duration: 58s; animation-delay: -20s; }
+  .fog span:nth-child(3) { top: 62%; animation-duration: 36s; animation-delay: -30s; }
+
+  /* Torch mode: the page goes dark and the pointer becomes a torch beam */
+  .torch {
+    position: fixed; inset: 0; z-index: 15; pointer-events: none;
+    background: rgba(14,10,6,.92);
+    -webkit-mask-image: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 0 90px, #000 175px);
+    mask-image: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 0 90px, #000 175px);
+    opacity: 0; visibility: hidden; transition: opacity .45s, visibility .45s;
+  }
+  body.lights-out .torch { opacity: 1; visibility: visible; }
+  body.lights-out .clue { opacity: .8; color: var(--gold); }
+  body.lights-out .clue.found { color: var(--rust); }
+  .torch-btn {
+    position: fixed; left: 16px; bottom: 16px; z-index: 20;
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px; cursor: pointer;
+    background: #2f2216; color: var(--parchment);
+    border: 2px solid var(--brass); border-radius: 4px;
+    font-family: var(--type); font-size: 13px;
+    box-shadow: 3px 4px 0 rgba(0,0,0,.3);
+  }
+  .torch-btn .bulb { width: 12px; height: 12px; border-radius: 50%; background: var(--brass-3); box-shadow: 0 0 0 3px rgba(240,213,138,.25); }
+  .torch-btn[aria-pressed="true"] .bulb { background: #5a4a30; box-shadow: none; }
+  .torch-btn:active { translate: 0 1px; }
+  .torch-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  /* ───────── Scroll parallax ─────────
+     One custom property, --p (0 at top, 1 at bottom), drives every background layer.
+     It is animated by a CSS scroll timeline where supported; otherwise a small
+     script fallback writes it. Layers only ever change transform / opacity. */
+  @property --p { syntax: "<number>"; inherits: true; initial-value: 0; }
+  @keyframes pageProgress { from { --p: 0; } to { --p: 1; } }
+
+  .bg-scene {
+    position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;
+    contain: strict;
+  }
+  .bg-scene > * { will-change: transform; }
+  .bg-dusk {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 120%, rgba(201,162,39,.18), transparent 60%),
+      linear-gradient(180deg, rgba(31,58,104,.10), rgba(31,40,64,.30));
+    opacity: calc(var(--p) * 1.1);
+  }
+  .bg-moon {
+    position: absolute; right: 7%; top: 9vh; width: clamp(70px, 9vw, 120px);
+    opacity: calc(.25 + var(--p) * .55);
+    translate: 0 calc(var(--p) * 30vh);
+  }
+  .bg-clouds { position: absolute; inset: 0; }
+  .bg-clouds span {
+    position: absolute; width: 50vw; height: 16vh; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(246,234,208,.55), transparent);
+  }
+  .bg-clouds span:nth-child(1) { left: -10vw; top: 18vh; translate: calc(var(--p) * 60vw) calc(var(--p) * -10vh); }
+  .bg-clouds span:nth-child(2) { right: -15vw; top: 46vh; translate: calc(var(--p) * -50vw) calc(var(--p) * -20vh); }
+  .bg-sky { position: absolute; left: 0; bottom: 0; width: 100%; }
+  .bg-sky.far  { height: 42vh; fill: #8a6f4d; opacity: .2;  translate: 0 calc(var(--p) * 14vh); }
+  .bg-sky.near { height: 24vh; fill: #4a3624; opacity: .17; translate: 0 calc(var(--p) * 34vh); }
+  .bg-props { position: absolute; inset: 0; }
+  .prop {
+    position: absolute; left: var(--x); top: var(--y); width: var(--w); height: auto;
+    color: var(--wood); fill: currentColor; opacity: var(--o);
+    translate: 0 calc(var(--p) * -165vh * var(--s));
+    rotate: calc(var(--p) * var(--r));
+  }
+  .prop.steps { width: 30px; }
+
+  /* hero eases back as you leave it; floors settle in; the launch sails past */
+  @keyframes heroOut { to { translate: 0 18vh; opacity: .12; scale: .94; } }
+  @keyframes floorIn { from { translate: 0 46px; scale: .965; } to { translate: 0 0; scale: 1; } }
+  @keyframes sail { from { translate: -220px 0; } to { translate: 160px 0; } }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      .bg-scene { animation: pageProgress linear both; animation-timeline: scroll(root); }
+      header.masthead { animation: heroOut linear both; animation-timeline: scroll(root); animation-range: 0 75vh; }
+      .floor, .beam { animation: floorIn linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
+      .thames { view-timeline: --river block; }
+      .sail { animation: sail linear both; animation-timeline: --river; }
+    }
+    html.no-sdt header.masthead {
+      translate: 0 calc(var(--hp, 0) * 18vh);
+      opacity: calc(1 - var(--hp, 0) * .88);
+      scale: calc(1 - var(--hp, 0) * .06);
+    }
+  }
+  @media (max-width: 820px) {
+    .prop.wide, .bg-clouds { display: none; }
+    .prop { --w: 34px !important; }
+  }
+
+  /* tower clock: hands driven by the real time, bell swings on the minute */
+  .clock-hand { transform-box: view-box; transform-origin: 500px 75px; }
+  .clock.ready .clock-hand.second { transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
+  .bell { transform-box: view-box; transform-origin: 500px -20px; }
+  .bell.ring { animation: bellRing 1.8s ease-out; }
+  @keyframes bellRing { 0% { rotate: 0deg; } 12% { rotate: 18deg; } 30% { rotate: -14deg; } 50% { rotate: 9deg; } 70% { rotate: -5deg; } 85% { rotate: 2deg; } 100% { rotate: 0deg; } }
+
+  /* ───────── Cipher wheel ───────── */
+  section.cipher {
+    max-width: 1000px; margin: 90px auto 0; padding: 0 16px;
+    display: grid; grid-template-columns: minmax(260px, 380px) 1fr; gap: clamp(24px, 5vw, 60px); align-items: center;
+  }
+  .wheel { width: 100%; height: auto; touch-action: none; cursor: grab; filter: drop-shadow(5px 7px 0 rgba(43,29,18,.22)); }
+  .wheel.dragging { cursor: grabbing; }
+  .wheel:focus-visible { outline: 3px solid var(--gold); outline-offset: 6px; border-radius: 50%; }
+  .wheel .inner { transform-origin: 150px 150px; transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
+  .wheel.dragging .inner { transition: none; }
+  .telegram {
+    position: relative; padding: 26px clamp(18px, 3vw, 30px) 22px;
+    background: #f6ead0; box-shadow: 5px 7px 0 rgba(43,29,18,.2);
+  }
+  .telegram .hdr {
+    font-family: var(--type); font-size: 12px; letter-spacing: .14em; color: var(--rust);
+    border-bottom: 1px dashed var(--wood); padding-bottom: 8px; margin-bottom: 14px;
+  }
+  .telegram h2 { margin: 0 0 6px; font-family: var(--display); font-weight: 400; color: var(--police); font-size: clamp(30px, 4vw, 42px); line-height: 1.05; }
+  .telegram > p { margin: 0; max-width: 52ch; }
+  .telegram .lbl { display: block; margin-top: 16px; font-family: var(--serif-sc); font-size: 13px; letter-spacing: .1em; color: var(--ink-soft); }
+  .ciph, .plain { margin: 4px 0 0; font-family: var(--type); font-size: clamp(18px, 2.5vw, 26px); letter-spacing: .16em; line-height: 1.3; word-break: break-word; }
+  .plain { color: var(--police); min-height: 1.3em; }
+  .telegram.solved .plain { color: var(--rust); }
+  .wheel-ctrls { display: flex; align-items: center; gap: 12px; margin-top: 18px; font-family: var(--type); }
+  .wheel-ctrls button {
+    font: inherit; font-size: 15px; padding: 8px 14px; cursor: pointer;
+    color: #f3ead6; background: var(--police); border: 0; border-radius: 4px;
+    box-shadow: 2px 3px 0 rgba(43,29,18,.3);
+  }
+  .wheel-ctrls button:active { translate: 0 1px; box-shadow: 1px 2px 0 rgba(43,29,18,.3); }
+  .wheel-ctrls button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .hint { font-style: italic; font-size: 15px; color: var(--ink-soft); margin: 14px 0 0; }
+  .decoded-stamp {
+    position: absolute; right: 20px; top: 18px;
+    font-family: var(--display); font-size: 22px; letter-spacing: .1em;
+    color: var(--rust); border: 3px double var(--rust); padding: 2px 12px;
+    rotate: -8deg; opacity: 0; scale: 2; pointer-events: none;
+    transition: opacity .25s, scale .45s cubic-bezier(.34,1.56,.64,1);
+  }
+  .telegram.solved .decoded-stamp { opacity: .85; scale: 1; }
+
+  /* ───────── Responsive ───────── */
+  @media (max-width: 960px) {
+    .room.has-text, .room.has-text.flip { grid-template-columns: 1fr; }
+    .room.has-text.flip .note { order: 0; }
+    .note { margin: 46px 14px 0; }
+  }
+  @media (max-width: 820px) {
+    .building { padding: 0 16px; }
+    .pipe, .stub, .gauge, .valve { display: none; }
+    .floor { grid-template-columns: 1fr; }
+    .floor > .room { grid-column: auto !important; }
+    .room:not(.has-text) { min-height: 0; aspect-ratio: 9 / 5; }
+    .flourish { display: none; }
+    h1.title { text-shadow: 2px 2px 0 var(--ink); }
+  }
+  @media (max-width: 520px) {
+    .subtitle .rule { display: none; }
+    .compass { width: 26px; height: 26px; }
+    ol.timeline::before { left: 66px; }
+    ol.timeline li { grid-template-columns: 54px 1fr; }
+    ol.timeline li::before { left: 60px; }
+    .stamp { font-size: 15px; top: 14px; right: 14px; }
+    .casebook { font-size: 12px; left: 16px; right: 16px; justify-content: center; }
+    .torch-btn { bottom: 74px; }
+  }
+  @media (max-width: 760px) {
+    section.cipher { grid-template-columns: 1fr; }
+    .wheel-wrap { width: 100%; max-width: 320px; margin: 0 auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="progress-string" aria-hidden="true"></div>
+<div class="torch" id="torch" aria-hidden="true"></div>
+<div class="bg-scene" aria-hidden="true">
+  <div class="bg-dusk"></div>
+  <svg class="bg-moon" viewBox="0 0 120 120"><circle cx="60" cy="60" r="34" fill="#f6ead0"/><circle cx="74" cy="52" r="30" fill="#e8d5b0" opacity=".55"/><circle cx="60" cy="60" r="56" fill="none" stroke="#f6ead0" stroke-width="1" opacity=".5"/></svg>
+  <div class="bg-clouds"><span></span><span></span></div>
+  <svg class="bg-sky far" viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice"><path d="M0 300V213H55V300Z M25 213V196H32V213Z M35 213V200H41V213Z M54 300V250H132V300Z M95 250V237H102V250Z M105 250V241H111V250Z M129 300V220H214V300Z M160 220V200H167V220Z M170 220V204H176V220Z M212 300V210L239.0 180L266 210V300Z M260 300V250H347V300Z M314 250V231H321V250Z M324 250V235H330V250Z M347 300V201L376.5 179L406 201V300Z M541 300V192H631V300Z M672 300V244L703.5 215L735 244V300Z M732 300V207H788V300Z M747 207V191H754V207Z M757 207V195H763V207Z M780 300V226H873V300Z M838 226V207H845V226Z M848 226V211H854V226Z M972 300V212H1029V300Z M1005 212V197H1012V212Z M1015 212V201H1021V212Z M1021 300V214L1059.0 194L1097 214V300Z M1093 300V243L1122.0 214L1151 243V300Z M1150 300V199L1181.0 181L1212 199V300Z M1496 300V202L1535.5 178L1575 202V300Z M1567 300V218L1595.5 203L1624 218V300Z M380 300V210H480V300Z M398 300V180H462V300Z M398 180A32 46 0 0 1 462 180Z M424 300V120H436V300ZM430 108V96M425 101H435 M384 210V200L430 190L476 200V210Z M875 300V150H915V300Z M870 300V110H920V300Z M868 110H922L895 52Z M895 52V38 M1190 300V120H1226V300Z M1186 120L1208 82L1230 120Z M1330 300V120H1366V300Z M1326 120L1348 82L1370 120Z M1226 140H1330V150H1226Z M1170 236H1390V246H1170Z M1226 236Q1278 200 1330 236Z M592 300V190H616V300Z M590 190L604 70L618 190Z M1442 300V200H1466V300Z M1440 200L1454 92L1468 200Z"/></svg>
+  <svg class="bg-sky near" viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice"><path d="M0 300V235H68V300Z M61 300V233L97.0 203L133 233V300Z M126 300V231H206V300Z M151 231V219H158V231Z M161 231V223H167V231Z M205 300V226H279V300Z M236 226V209H243V226Z M246 226V213H252V226Z M277 300V270H356V300Z M285 270V257H292V270Z M295 270V261H301V270Z M353 300V269H431V300Z M396 269V256H403V269Z M406 269V260H412V269Z M423 300V230L450.0 216L477 230V300Z M476 300V229L510.5 213L545 229V300Z M541 300V256H601V300Z M553 256V240H560V256Z M563 256V244H569V256Z M600 300V252H694V300Z M694 300V257H747V300Z M712 257V241H719V257Z M722 257V245H728V257Z M741 300V234H785V300Z M781 300V265L811.5 251L842 265V300Z M836 300V263L880.0 246L924 263V300Z M924 300V241H967V300Z M936 241V224H943V241Z M946 241V228H952V241Z M959 300V262H1011V300Z M977 262V246H984V262Z M987 262V250H993V262Z M1143 300V269L1172.5 243L1202 269V300Z M1201 300V261L1222.0 239L1243 261V300Z M1243 300V231L1287.5 208L1332 231V300Z M1326 300V266L1348.0 245L1370 266V300Z M1370 300V247H1448V300Z M1413 247V230H1420V247Z M1423 247V234H1429V247Z M1446 300V246L1493.5 228L1541 246V300Z M1537 300V231L1564.0 211L1591 231V300Z M1589 300V230H1676V300Z M1619 230V213H1626V230Z M1629 230V217H1635V230Z M318 300V230M310 232H326V220H310Z M1018 300V226M1010 228H1026V216H1010Z"/></svg>
+  <div class="bg-props">
+        <svg class="prop " viewBox="0 0 40 40" style="--x:3%;--y:14vh;--s:0.9;--r:-25deg;--w:54px;--o:0.2"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="3"/><line x1="24" y1="24" x2="36" y2="36" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+    <svg class="prop " viewBox="0 0 20 24" style="--x:91%;--y:22vh;--s:1.2;--r:40deg;--w:40px;--o:0.22"><use href="#fp" width="20" height="24"/></svg>
+    <svg class="prop " viewBox="0 0 40 40" style="--x:7%;--y:58vh;--s:1.35;--r:120deg;--w:64px;--o:0.25"><use href="#compass" width="40" height="40"/></svg>
+    <svg class="prop " viewBox="0 0 46 20" style="--x:88%;--y:70vh;--s:0.8;--r:-30deg;--w:58px;--o:0.2"><circle cx="9" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 10H44M36 10V17M42 10V15" stroke="currentColor" stroke-width="3" fill="none"/></svg>
+    <svg class="prop steps" viewBox="0 0 28 400" style="--x:1.5%;--y:95vh;--s:0.6;--r:0deg;--w:32px;--o:0.14"><g transform="translate(0 0) rotate(8 6 12)"><ellipse cx="6" cy="9" rx="5" ry="8"/><ellipse cx="6" cy="22" rx="4" ry="4"/></g><g transform="translate(16 46) rotate(-8 6 12)"><ellipse cx="6" cy="9" rx="5" ry="8"/><ellipse cx="6" cy="22" rx="4" ry="4"/></g><g transform="translate(0 92) rotate(8 6 12)"><ellipse cx="6" cy="9" rx="5" ry="8"/><ellipse cx="6" cy="22" rx="4" ry="4"/></g><g transform="translate(16 138) rotate(-8 6 12)"><ellipse cx="6" cy="9" rx="5" ry="8"/><ellipse cx="6" cy="22" rx="4" ry="4"/></g><g transform="translate(0 184) rotate(8 6 12)"><ellipse cx="6" cy="9" rx="5" ry="8"/><ellipse cx="6" cy="22" rx="4" ry="4"/></g><g transform="translate(16 230) rotate(-8 6 12)"><ellipse cx="6" cy="9" rx="5" ry="8"/><ellipse cx="6" cy="22" rx="4" ry="4"/></g><g transform="translate(0 276) rotate(8 6 12)"><ellipse cx="6" cy="9" rx="5" ry="8"/><ellipse cx="6" cy="22" rx="4" ry="4"/></g><g transform="translate(16 322) rotate(-8 6 12)"><ellipse cx="6" cy="9" rx="5" ry="8"/><ellipse cx="6" cy="22" rx="4" ry="4"/></g><g transform="translate(0 368) rotate(8 6 12)"><ellipse cx="6" cy="9" rx="5" ry="8"/><ellipse cx="6" cy="22" rx="4" ry="4"/></g></svg>
+    <svg class="prop " viewBox="0 0 40 40" style="--x:93%;--y:110vh;--s:1.1;--r:15deg;--w:46px;--o:0.2"><text x="15" y="34" font-family="Abril Fatface, serif" font-size="40" fill="currentColor">?</text></svg>
+    <svg class="prop " viewBox="0 0 40 40" style="--x:5%;--y:140vh;--s:1.25;--r:-50deg;--w:50px;--o:0.22"><circle cx="20" cy="24" r="13" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M20 24V15M20 24L26 27M20 11V6M16 4H24" stroke="currentColor" stroke-width="2" fill="none"/><path d="M24 6Q34 0 38 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="2 2"/></svg>
+    <svg class="prop " viewBox="0 0 48 34" style="--x:86%;--y:150vh;--s:0.95;--r:25deg;--w:60px;--o:0.2"><path d="M8 26Q8 8 24 6Q40 8 40 26Z M0 28Q10 22 16 26H32Q38 22 48 28Q38 33 24 31Q10 33 0 28Z" fill="currentColor"/></svg>
+    <svg class="prop " viewBox="0 0 20 24" style="--x:10%;--y:185vh;--s:1.05;--r:35deg;--w:44px;--o:0.2"><use href="#fp" width="20" height="24"/></svg>
+    <svg class="prop " viewBox="0 0 40 40" style="--x:92%;--y:195vh;--s:1.3;--r:-90deg;--w:56px;--o:0.22"><use href="#compass" width="40" height="40"/></svg>
+    <svg class="prop " viewBox="0 0 40 36" style="--x:4%;--y:230vh;--s:0.85;--r:20deg;--w:58px;--o:0.2"><path d="M4 8Q14 10 24 18" stroke="currentColor" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M22 14H36V24Q36 32 29 32Q22 32 22 24Z" fill="currentColor"/></svg>
+    <svg class="prop " viewBox="0 0 40 40" style="--x:89%;--y:245vh;--s:1.15;--r:-35deg;--w:60px;--o:0.22"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="3"/><line x1="24" y1="24" x2="36" y2="36" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+    <svg class="prop wide" viewBox="0 0 40 40" style="--x:46%;--y:36vh;--s:0.7;--r:10deg;--w:44px;--o:0.1"><text x="15" y="34" font-family="Abril Fatface, serif" font-size="40" fill="currentColor">?</text></svg>
+    <svg class="prop wide" viewBox="0 0 20 24" style="--x:60%;--y:170vh;--s:0.75;--r:-20deg;--w:40px;--o:0.1"><use href="#fp" width="20" height="24"/></svg>
+  </div>
+</div>
+
+<!-- ═══════════ Shared illustration symbols ═══════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Detective: trench coat & deerstalker -->
+    <symbol id="p-det" viewBox="0 0 20 40">
+      <rect x="6" y="30" width="3" height="10" fill="#2b1d12"/><rect x="11" y="30" width="3" height="10" fill="#2b1d12"/>
+      <path d="M4 15 Q10 11.5 16 15 L17.5 33 L2.5 33Z" fill="#a8875a"/>
+      <path d="M10 13 L10 33" stroke="#7a5f3b" stroke-width="1"/>
+      <path d="M4 15 L2 27" stroke="#a8875a" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M16 15 L18 27" stroke="#a8875a" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M5.5 15 L8 19 L10 14 L12 19 L14.5 15" fill="none" stroke="#7a5f3b" stroke-width=".8"/>
+      <circle cx="10" cy="9" r="4.2" fill="#e3b98f"/>
+      <path d="M5.4 8.4 Q10 1.5 14.6 8.4Z" fill="#7d6a48"/>
+      <path d="M3.5 8.6 Q10 6.6 16.5 8.6 Q10 9.6 3.5 8.6Z" fill="#5e4f34"/>
+    </symbol>
+    <!-- Constable: blue tunic & custodian helmet -->
+    <symbol id="p-cop" viewBox="0 0 20 40">
+      <rect x="6" y="30" width="3" height="10" fill="#14233f"/><rect x="11" y="30" width="3" height="10" fill="#14233f"/>
+      <path d="M4.5 15 Q10 12 15.5 15 L16 32 L4 32Z" fill="#1f3a68"/>
+      <path d="M4.5 15 L3 27" stroke="#1f3a68" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M15.5 15 L17 27" stroke="#1f3a68" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="10" cy="18" r=".7" fill="#d6d3c8"/><circle cx="10" cy="22" r=".7" fill="#d6d3c8"/><circle cx="10" cy="26" r=".7" fill="#d6d3c8"/>
+      <rect x="4.2" y="28" width="11.6" height="1.4" fill="#0f1a30"/>
+      <circle cx="10" cy="10" r="4" fill="#e3b98f"/>
+      <path d="M6.2 9 Q6 0 10 0 Q14 0 13.8 9Z" fill="#14233f"/>
+      <rect x="5.4" y="8.4" width="9.2" height="1.4" rx=".6" fill="#0f1a30"/>
+      <circle cx="10" cy="5" r="1.2" fill="#c9a227"/>
+    </symbol>
+    <!-- Scientist: lab coat & goggles -->
+    <symbol id="p-sci" viewBox="0 0 20 40">
+      <rect x="6" y="30" width="3" height="10" fill="#4a4c50"/><rect x="11" y="30" width="3" height="10" fill="#4a4c50"/>
+      <path d="M4 15 Q10 12 16 15 L17 34 L3 34Z" fill="#f4efe2" stroke="#8e9196" stroke-width=".6"/>
+      <path d="M4 15 L2.5 26" stroke="#f4efe2" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M16 15 L17.5 26" stroke="#f4efe2" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M10 14 L10 34" stroke="#8e9196" stroke-width=".6"/>
+      <circle cx="10" cy="9" r="4.2" fill="#c99872"/>
+      <path d="M5.8 8 Q6 3.6 10 3.8 Q14 3.6 14.2 8 Q12 5.8 10 6 Q8 5.8 5.8 8Z" fill="#3a2a1e"/>
+      <rect x="6" y="8" width="8" height="2" rx="1" fill="#3c5f99" opacity=".85"/>
+    </symbol>
+    <!-- Tweed gentleman & bowler -->
+    <symbol id="p-tweed" viewBox="0 0 20 40">
+      <rect x="6" y="30" width="3" height="10" fill="#3a2a1e"/><rect x="11" y="30" width="3" height="10" fill="#3a2a1e"/>
+      <path d="M4.5 15 Q10 12 15.5 15 L16 31 L4 31Z" fill="#7a5a3a"/>
+      <path d="M4.5 15 L3 27" stroke="#7a5a3a" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M15.5 15 L17 27" stroke="#7a5a3a" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M4.5 19 H15.6 M4.3 23 H15.8 M4.2 27 H15.9 M7.5 13.5 V31 M12.5 13.5 V31" stroke="#5e4329" stroke-width=".5"/>
+      <path d="M8.5 14 L10 18 L11.5 14Z" fill="#b8472a"/>
+      <circle cx="10" cy="9" r="4.2" fill="#e3b98f"/>
+      <path d="M6.4 7.5 Q6.4 2.2 10 2.2 Q13.6 2.2 13.6 7.5Z" fill="#2b1d12"/>
+      <rect x="4.8" y="7" width="10.4" height="1.4" rx=".7" fill="#2b1d12"/>
+      <path d="M8 11.6 Q10 12.6 12 11.6" stroke="#6b4423" stroke-width=".9" fill="none"/>
+    </symbol>
+    <!-- Suspect: flat cap & striped jersey -->
+    <symbol id="p-sus" viewBox="0 0 20 40">
+      <rect x="6" y="30" width="3" height="10" fill="#4a4c50"/><rect x="11" y="30" width="3" height="10" fill="#4a4c50"/>
+      <path d="M4.5 15 Q10 12 15.5 15 L15.5 31 L4.5 31Z" fill="#d6d3c8"/>
+      <path d="M4.5 18 H15.5 M4.5 21.5 H15.5 M4.5 25 H15.5 M4.5 28.5 H15.5" stroke="#2b1d12" stroke-width="1.3"/>
+      <path d="M4.5 15 L3 27" stroke="#4a4c50" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M15.5 15 L17 27" stroke="#4a4c50" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="10" cy="9" r="4.2" fill="#d9a87e"/>
+      <path d="M5.6 8 Q6 4 10.5 4.2 Q14 4.4 14.2 7.4 L16.5 8.4 Z" fill="#5a5d52"/>
+      <path d="M7 11.8 H13" stroke="#6b4423" stroke-width=".6"/>
+    </symbol>
+    <!-- Microscope -->
+    <symbol id="scope" viewBox="0 0 24 34">
+      <rect x="2" y="30" width="20" height="4" rx="1" fill="#2b1d12"/>
+      <rect x="5" y="20" width="13" height="2" fill="#4a3624"/>
+      <path d="M18 30 Q23 18 15 7" stroke="#b5893a" stroke-width="3" fill="none"/>
+      <rect x="9" y="1" width="5" height="17" rx="1" fill="#d4a94f" transform="rotate(-18 11 10)"/>
+      <rect x="6.5" y="-1" width="6" height="3" rx="1" fill="#2b1d12" transform="rotate(-18 11 10)"/>
+    </symbol>
+    <!-- Candlestick telephone -->
+    <symbol id="phone" viewBox="0 0 16 30">
+      <ellipse cx="8" cy="28" rx="6" ry="2" fill="#2b1d12"/>
+      <rect x="6.8" y="8" width="2.4" height="20" fill="#2b1d12"/>
+      <path d="M4 5 L12 5 L10.5 9 L5.5 9Z" fill="#2b1d12"/>
+      <rect x="11" y="10" width="3" height="9" rx="1.4" fill="#b5893a"/>
+      <path d="M12.5 10 L12.5 7 L9 7" stroke="#2b1d12" stroke-width="1" fill="none"/>
+    </symbol>
+    <!-- Fingerprint -->
+    <symbol id="fp" viewBox="0 0 20 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round">
+        <path d="M10 2.5c-4.2 0-7.2 3.2-7.2 8v4.5"/><path d="M10 2.5c4.2 0 7.2 3.2 7.2 8v6"/>
+        <path d="M10 5.6c-2.6 0-4.6 2.1-4.6 5.2v6.6"/><path d="M10 5.6c2.6 0 4.6 2.1 4.6 5.2v8"/>
+        <path d="M10 8.8c-1.3 0-2.1 1-2.1 2.6v8.4"/><path d="M10 8.8c1.3 0 2.1 1 2.1 2.6v9.4"/>
+        <path d="M10 12v10"/>
+      </g>
+    </symbol>
+    <!-- Compass rose -->
+    <symbol id="compass" viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="17" fill="none" stroke="#6b4423" stroke-width="1.4"/>
+      <circle cx="20" cy="20" r="13" fill="none" stroke="#6b4423" stroke-width=".7" stroke-dasharray="1.5 2"/>
+      <path d="M20 1 L23 17 L39 20 L23 23 L20 39 L17 23 L1 20 L17 17Z" fill="#b5893a" stroke="#4a2e17" stroke-width=".8"/>
+      <path d="M20 1 L23 17 L20 20Z M39 20 L23 23 L20 20Z M20 39 L17 23 L20 20Z M1 20 L17 17 L20 20Z" fill="#4a2e17"/>
+      <circle cx="20" cy="20" r="2" fill="#b8472a"/>
+    </symbol>
+    <pattern id="cork" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#b88552"/><circle cx="2" cy="3" r=".9" fill="#9c6c3e"/><circle cx="6" cy="6" r=".7" fill="#d0a06c"/>
+    </pattern>
+    <pattern id="tiles" width="20" height="20" patternUnits="userSpaceOnUse">
+      <rect width="20" height="20" fill="#e9dfc8"/><rect width="10" height="10" fill="#c9bfa6"/><rect x="10" y="10" width="10" height="10" fill="#c9bfa6"/>
+    </pattern>
+    <pattern id="boards" width="40" height="10" patternUnits="userSpaceOnUse">
+      <rect width="40" height="10" fill="#8b5a2b"/><path d="M0 9.5 H40 M20 0 V9.5" stroke="#6b4423" stroke-width="1"/>
+    </pattern>
+    <pattern id="mesh" width="8" height="8" patternUnits="userSpaceOnUse">
+      <path d="M0 0 L8 8 M8 0 L0 8" stroke="#4a4c50" stroke-width=".9"/>
+    </pattern>
+    <pattern id="jacks" width="14" height="14" patternUnits="userSpaceOnUse">
+      <rect width="14" height="14" fill="#4a2e17"/><circle cx="7" cy="7" r="2.6" fill="#1a1109" stroke="#b5893a" stroke-width="1"/>
+    </pattern>
+    <pattern id="corrugated" width="12" height="10" patternUnits="userSpaceOnUse">
+      <rect width="12" height="10" fill="#9a9ca0"/><rect width="5" height="10" fill="#aeb0b2"/><rect x="5" width="1" height="10" fill="#7e8084"/>
+    </pattern>
+    <pattern id="drawers" width="40" height="22" patternUnits="userSpaceOnUse">
+      <rect width="40" height="22" fill="#6e7a62"/><rect x="2" y="2" width="36" height="18" fill="#7f8b72" stroke="#4e5944" stroke-width="1"/>
+      <rect x="14" y="9" width="12" height="3" rx="1" fill="#d4a94f"/><rect x="16" y="4" width="8" height="3" fill="#efe0bf"/>
+    </pattern>
+  </defs>
+</svg>
+
+<!-- ═══════════ Masthead ═══════════ -->
+<header class="masthead">
+  <div class="iste-row">
+    <svg class="flourish" viewBox="0 0 180 40" aria-hidden="true"><path d="M178 20 H70 C55 20 50 6 38 8 C26 10 28 26 40 26 C50 26 50 14 42 14 M70 20 C60 20 55 34 40 34 C18 34 6 22 2 20" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="178" cy="20" r="3" fill="currentColor"/></svg>
+    <p class="iste">ISTE</p>
+    <svg class="flourish" viewBox="0 0 180 40" aria-hidden="true" style="transform:scaleX(-1)"><path d="M178 20 H70 C55 20 50 6 38 8 C26 10 28 26 40 26 C50 26 50 14 42 14 M70 20 C60 20 55 34 40 34 C18 34 6 22 2 20" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="178" cy="20" r="3" fill="currentColor"/></svg>
+  </div>
+  <p class="presents">presents</p>
+
+  <div class="title-row">
+    <h1 class="title">
+      <span class="sr-only">Scotland Yard</span>
+      <span aria-hidden="true">
+        <span class="ln"><span class="l" style="--i:0">S</span><span class="l" style="--i:1">C</span><svg class="mag" style="--i:2" viewBox="0 0 40 40"><circle cx="16" cy="16" r="11.5" fill="rgba(240,213,138,.35)" stroke="currentColor" stroke-width="5.5"/><path d="M10 12 Q12 9 15 8.5" stroke="#fff6dc" stroke-width="2" fill="none" stroke-linecap="round"/><line x1="24.5" y1="24.5" x2="36" y2="36" stroke="#4a2e17" stroke-width="7" stroke-linecap="round"/></svg><span class="l" style="--i:3">T</span><span class="l" style="--i:4">L</span><span class="l" style="--i:5">A</span><span class="l" style="--i:6">N</span><span class="l" style="--i:7">D</span></span>
+        <span class="ln yard"><span class="l" style="--i:8">Y</span><span class="l" style="--i:9">A</span><span class="l" style="--i:10">R</span><span class="l" style="--i:11">D</span></span>
+      </span>
+    </h1>
+    <!-- Logo badge: deerstalker + magnifying glass -->
+    <svg class="badge" viewBox="0 0 140 140" role="img" aria-label="Event badge: a deerstalker hat and magnifying glass">
+      <defs><path id="ring" d="M70 70 m-52 0 a52 52 0 1 1 104 0 a52 52 0 1 1 -104 0"/></defs>
+      <circle cx="70" cy="70" r="68" fill="#1f3a68" stroke="#2b1d12" stroke-width="3"/>
+      <circle cx="70" cy="70" r="62" fill="none" stroke="#d4a94f" stroke-width="1.5"/>
+      <text font-family="IM Fell English SC, serif" font-size="13" letter-spacing="2.6" fill="#f0d58a"><textPath href="#ring">ISTE ✦ SCOTLAND YARD ✦ EST. MMXXVI ✦</textPath></text>
+      <g class="still">
+        <circle cx="70" cy="70" r="40" fill="#e8d5b0" stroke="#d4a94f" stroke-width="2"/>
+        <path d="M46 70 Q46 48 70 45 Q94 48 94 70Z" fill="#2b1d12"/>
+        <path d="M34 73 Q46 64 56 70 L84 70 Q94 64 106 73 Q94 79 70 76 Q46 79 34 73Z" fill="#2b1d12"/>
+        <path d="M64 46 Q70 38 76 46" stroke="#2b1d12" stroke-width="3" fill="none"/>
+        <path d="M50 62 Q70 56 90 62" stroke="#e8d5b0" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+        <circle cx="78" cy="88" r="10" fill="rgba(240,213,138,.5)" stroke="#b5893a" stroke-width="3.5"/>
+        <line x1="85" y1="95" x2="96" y2="106" stroke="#4a2e17" stroke-width="4.5" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="subtitle">
+    <span class="rule"></span>
+    <svg class="compass" aria-hidden="true"><use href="#compass"/></svg>
+    <span>The Ultimate Mystery Challenge</span>
+    <svg class="compass" aria-hidden="true" style="animation-direction:reverse"><use href="#compass"/></svg>
+    <span class="rule"></span>
+  </div>
+  <p class="tagline">Six departments. One case. Every clue matters, even the ones hidden on this page.</p>
+</header>
+
+<!-- ═══════════ The Yard: cross-section ═══════════ -->
+<main class="building" aria-label="The Yard, floor by floor">
+  <!-- outside plumbing -->
+  <div class="pipe l" aria-hidden="true"></div>
+  <div class="pipe r" aria-hidden="true"></div>
+  <div class="stub l" style="top:330px" aria-hidden="true"></div>
+  <div class="stub l" style="top:640px" aria-hidden="true"></div>
+  <div class="stub r" style="top:470px" aria-hidden="true"></div>
+  <div class="stub r" style="top:880px" aria-hidden="true"></div>
+  <div class="gauge l" style="top:410px" aria-hidden="true"><svg viewBox="0 0 38 38"><circle cx="19" cy="19" r="17" fill="#f6ead0" stroke="#b5893a" stroke-width="3"/><path d="M8 24 A12 12 0 1 1 30 24" fill="none" stroke="#2b1d12" stroke-width="1" stroke-dasharray="1 2.4"/><path d="M27 21 A9 9 0 0 0 28 16" stroke="#b8472a" stroke-width="2" fill="none"/><line class="needle" x1="19" y1="19" x2="19" y2="7" stroke="#2b1d12" stroke-width="1.6" stroke-linecap="round"/><circle cx="19" cy="19" r="2" fill="#2b1d12"/></svg></div>
+  <div class="gauge r" style="top:700px" aria-hidden="true"><svg viewBox="0 0 38 38"><circle cx="19" cy="19" r="17" fill="#f6ead0" stroke="#8e9196" stroke-width="3"/><path d="M8 24 A12 12 0 1 1 30 24" fill="none" stroke="#2b1d12" stroke-width="1" stroke-dasharray="1 2.4"/><line class="needle" x1="19" y1="19" x2="19" y2="7" stroke="#b8472a" stroke-width="1.6" stroke-linecap="round" style="animation-delay:-1.3s"/><circle cx="19" cy="19" r="2" fill="#2b1d12"/></svg></div>
+  <div class="valve l" style="top:960px" aria-hidden="true"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="#b8472a" stroke-width="4"/><path d="M17 3 V31 M3 17 H31" stroke="#b8472a" stroke-width="3"/><circle cx="17" cy="17" r="4" fill="#4a2e17"/></svg></div>
+  <div class="valve r" style="top:260px" aria-hidden="true"><svg viewBox="0 0 34 34"><circle cx="17" cy="17" r="14" fill="none" stroke="#1f3a68" stroke-width="4"/><path d="M17 3 V31 M3 17 H31" stroke="#1f3a68" stroke-width="3"/><circle cx="17" cy="17" r="4" fill="#4a2e17"/></svg></div>
+
+  <!-- Roof & clock tower -->
+  <div class="roof" aria-hidden="true">
+    <svg viewBox="0 -145 1000 395" preserveAspectRatio="xMidYMax meet">
+      <!-- steam -->
+      <g class="steam" fill="#d6d3c8"><circle cx="220" cy="90" r="12"/><circle cx="214" cy="90" r="10"/><circle cx="226" cy="90" r="14"/></g>
+      <g class="steam" fill="#d6d3c8"><circle cx="780" cy="110" r="12"/><circle cx="786" cy="110" r="10"/><circle cx="774" cy="110" r="14"/></g>
+      <!-- chimneys -->
+      <rect x="200" y="100" width="40" height="80" fill="#b8472a" stroke="#2b1d12" stroke-width="3"/><rect x="194" y="94" width="52" height="10" fill="#4a2e17"/>
+      <path d="M200 120 H240 M200 140 H240 M200 160 H240 M220 100 V120 M210 120 V140 M230 140 V160" stroke="#8a3520" stroke-width="2"/>
+      <rect x="760" y="120" width="40" height="60" fill="#b8472a" stroke="#2b1d12" stroke-width="3"/><rect x="754" y="114" width="52" height="10" fill="#4a2e17"/>
+      <!-- roof -->
+      <path d="M40 250 L130 150 H870 L960 250Z" fill="url(#corrugated)" stroke="#2b1d12" stroke-width="4"/>
+      <path d="M130 150 H870" stroke="#4a4c50" stroke-width="6"/>
+      <!-- skylights -->
+      <g fill="#cfe3e0" stroke="#2b1d12" stroke-width="2.5"><path d="M180 230 L205 180 H265 L250 230Z"/><path d="M735 230 L750 180 H810 L835 230Z"/></g>
+      <path d="M228 180 L215 230 M780 180 L792 230" stroke="#2b1d12" stroke-width="2"/>
+      <!-- clock tower (Gothic, after the Elizabeth Tower) -->
+      <defs>
+        <linearGradient id="stoneG" x1="0" x2="1"><stop offset="0" stop-color="#ead5a6"/><stop offset=".55" stop-color="#d9bd85"/><stop offset="1" stop-color="#b3935b"/></linearGradient>
+        <linearGradient id="goldG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8e3a3"/><stop offset=".5" stop-color="#d4a94f"/><stop offset="1" stop-color="#8f6a26"/></linearGradient>
+        <radialGradient id="dialG" cx="45%" cy="40%" r="60%"><stop offset="0" stop-color="#fffaea"/><stop offset=".7" stop-color="#f3e6c4"/><stop offset="1" stop-color="#d6c294"/></radialGradient>
+        <linearGradient id="slateG" x1="0" x2="1"><stop offset="0" stop-color="#4a5a70"/><stop offset=".5" stop-color="#2f3b4d"/><stop offset="1" stop-color="#1c2532"/></linearGradient>
+        <pattern id="ashlar" width="26" height="14" patternUnits="userSpaceOnUse"><path d="M0 7 H26 M0 14 H26 M6 0 V7 M19 7 V14" stroke="#9c7f4c" stroke-width=".8" opacity=".55" fill="none"/></pattern>
+        <pattern id="shingle" width="8" height="6" patternUnits="userSpaceOnUse"><path d="M0 6 Q2 2 4 6 Q6 2 8 6" fill="none" stroke="#5d6e86" stroke-width=".7"/></pattern>
+      </defs>
+      <g id="clock" class="clock">
+        <!-- plinth & door with the blue lamp -->
+        <rect x="420" y="226" width="160" height="24" fill="#b3935b" stroke="#2b1d12" stroke-width="3"/>
+        <rect x="420" y="226" width="160" height="24" fill="url(#ashlar)"/>
+        <path d="M482 250 V234 Q500 214 518 234 V250Z" fill="#1f3a68" stroke="#2b1d12" stroke-width="2.5"/>
+        <path d="M500 222 V250" stroke="#14233f" stroke-width="1.5"/>
+        <rect x="494" y="204" width="12" height="11" fill="#3c5f99" stroke="#2b1d12" stroke-width="1.5" class="siren"/>
+        <path d="M492 204 H508 L505 200 H495Z" fill="#2b1d12"/>
+        <!-- shaft -->
+        <rect x="436" y="132" width="128" height="94" fill="url(#stoneG)" stroke="#2b1d12" stroke-width="3"/>
+        <rect x="436" y="132" width="128" height="94" fill="url(#ashlar)"/>
+        <path d="M436 152 H564 M436 196 H564" stroke="#9c7f4c" stroke-width="2"/>
+        <g fill="#1c2532" stroke="#2b1d12" stroke-width="1.5">
+          <path d="M458 192 V166 Q468 148 478 166 V192Z"/><path d="M522 192 V166 Q532 148 542 166 V192Z"/>
+          <path d="M492 192 V172 Q500 160 508 172 V192Z"/>
+        </g>
+        <path d="M468 158 V192 M532 158 V192 M500 166 V192 M458 176 H478 M522 176 H542" stroke="#d4a94f" stroke-width="1"/>
+        <!-- buttresses with pinnacles -->
+        <path d="M428 226 V134 H442 V226Z" fill="#ead5a6" stroke="#2b1d12" stroke-width="2.5"/>
+        <path d="M558 226 V134 H572 V226Z" fill="#b3935b" stroke="#2b1d12" stroke-width="2.5"/>
+        <path d="M428 180 L442 174 M558 174 L572 180" stroke="#2b1d12" stroke-width="2"/>
+        <!-- clock stage with corbel table -->
+        <rect x="422" y="20" width="156" height="110" fill="url(#stoneG)" stroke="#2b1d12" stroke-width="3"/>
+        <rect x="422" y="20" width="156" height="110" fill="url(#ashlar)"/>
+        <rect x="418" y="124" width="164" height="10" fill="#c9a776" stroke="#2b1d12" stroke-width="2.5"/>
+        <path d="M426 128 q4 6 8 0 M434 128 q4 6 8 0 M442 128 q4 6 8 0 M450 128 q4 6 8 0 M458 128 q4 6 8 0 M466 128 q4 6 8 0 M474 128 q4 6 8 0 M482 128 q4 6 8 0 M490 128 q4 6 8 0 M498 128 q4 6 8 0 M506 128 q4 6 8 0 M514 128 q4 6 8 0 M522 128 q4 6 8 0 M530 128 q4 6 8 0 M538 128 q4 6 8 0 M546 128 q4 6 8 0 M554 128 q4 6 8 0 M562 128 q4 6 8 0 M570 128 q4 6 8 0 " fill="none" stroke="#2b1d12" stroke-width="1.2"/>
+        <!-- gilded surround -->
+        <rect x="446" y="21" width="108" height="108" fill="url(#goldG)" stroke="#2b1d12" stroke-width="2.5"/>
+        <rect x="450" y="25" width="100" height="100" fill="none" stroke="#8f6a26" stroke-width="1"/>
+        <g fill="none" stroke="#2b1d12" stroke-width=".9"><circle cx="455" cy="33" r="3"/><circle cx="461" cy="33" r="3"/><circle cx="458" cy="30" r="3"/><circle cx="458" cy="36" r="3"/></g><circle cx="458" cy="33" r="1.4" fill="#2b1d12"/><g fill="none" stroke="#2b1d12" stroke-width=".9"><circle cx="539" cy="33" r="3"/><circle cx="545" cy="33" r="3"/><circle cx="542" cy="30" r="3"/><circle cx="542" cy="36" r="3"/></g><circle cx="542" cy="33" r="1.4" fill="#2b1d12"/><g fill="none" stroke="#2b1d12" stroke-width=".9"><circle cx="455" cy="117" r="3"/><circle cx="461" cy="117" r="3"/><circle cx="458" cy="114" r="3"/><circle cx="458" cy="120" r="3"/></g><circle cx="458" cy="117" r="1.4" fill="#2b1d12"/><g fill="none" stroke="#2b1d12" stroke-width=".9"><circle cx="539" cy="117" r="3"/><circle cx="545" cy="117" r="3"/><circle cx="542" cy="114" r="3"/><circle cx="542" cy="120" r="3"/></g><circle cx="542" cy="117" r="1.4" fill="#2b1d12"/>
+        <!-- dial -->
+        <circle cx="500" cy="75" r="47" fill="#2b1d12"/>
+        <circle cx="500" cy="75" r="45" fill="url(#goldG)"/>
+        <circle cx="500" cy="75" r="41.5" fill="url(#dialG)" stroke="#2b1d12" stroke-width="1.2"/>
+        <g fill="none" stroke="#c4b083" stroke-width=".7"><circle cx="500" cy="75" r="8"/><circle cx="500" cy="75" r="18"/><path d="M502.07 67.27 L506.86 49.40 M505.66 69.34 L518.74 56.26 M507.73 72.93 L525.60 68.14 M507.73 77.07 L525.60 81.86 M505.66 80.66 L518.74 93.74 M502.07 82.73 L506.86 100.60 M497.93 82.73 L493.14 100.60 M494.34 80.66 L481.26 93.74 M492.27 77.07 L474.40 81.86 M492.27 72.93 L474.40 68.14 M494.34 69.34 L481.26 56.26 M497.93 67.27 L493.14 49.40"/></g>
+        <circle cx="500" cy="75" r="39" fill="none" stroke="#2b1d12" stroke-width=".9"/>
+        <circle cx="500" cy="75" r="28" fill="none" stroke="#2b1d12" stroke-width=".9"/>
+        <g stroke="#2b1d12"><line x1="500.00" y1="40.00" x2="500.00" y2="36.00" stroke-width="1.4"/><line x1="503.85" y1="38.40" x2="504.08" y2="36.21" stroke-width="0.6"/><line x1="507.65" y1="39.00" x2="508.11" y2="36.85" stroke-width="0.6"/><line x1="511.37" y1="40.00" x2="512.05" y2="37.91" stroke-width="0.6"/><line x1="514.97" y1="41.38" x2="515.86" y2="39.37" stroke-width="0.6"/><line x1="517.50" y1="44.69" x2="519.50" y2="41.23" stroke-width="1.4"/><line x1="521.63" y1="45.23" x2="522.92" y2="43.45" stroke-width="0.6"/><line x1="524.62" y1="47.65" x2="526.10" y2="46.02" stroke-width="0.6"/><line x1="527.35" y1="50.38" x2="528.98" y2="48.90" stroke-width="0.6"/><line x1="529.77" y1="53.37" x2="531.55" y2="52.08" stroke-width="0.6"/><line x1="530.31" y1="57.50" x2="533.77" y2="55.50" stroke-width="1.4"/><line x1="533.62" y1="60.03" x2="535.63" y2="59.14" stroke-width="0.6"/><line x1="535.00" y1="63.63" x2="537.09" y2="62.95" stroke-width="0.6"/><line x1="536.00" y1="67.35" x2="538.15" y2="66.89" stroke-width="0.6"/><line x1="536.60" y1="71.15" x2="538.79" y2="70.92" stroke-width="0.6"/><line x1="535.00" y1="75.00" x2="539.00" y2="75.00" stroke-width="1.4"/><line x1="536.60" y1="78.85" x2="538.79" y2="79.08" stroke-width="0.6"/><line x1="536.00" y1="82.65" x2="538.15" y2="83.11" stroke-width="0.6"/><line x1="535.00" y1="86.37" x2="537.09" y2="87.05" stroke-width="0.6"/><line x1="533.62" y1="89.97" x2="535.63" y2="90.86" stroke-width="0.6"/><line x1="530.31" y1="92.50" x2="533.77" y2="94.50" stroke-width="1.4"/><line x1="529.77" y1="96.63" x2="531.55" y2="97.92" stroke-width="0.6"/><line x1="527.35" y1="99.62" x2="528.98" y2="101.10" stroke-width="0.6"/><line x1="524.62" y1="102.35" x2="526.10" y2="103.98" stroke-width="0.6"/><line x1="521.63" y1="104.77" x2="522.92" y2="106.55" stroke-width="0.6"/><line x1="517.50" y1="105.31" x2="519.50" y2="108.77" stroke-width="1.4"/><line x1="514.97" y1="108.62" x2="515.86" y2="110.63" stroke-width="0.6"/><line x1="511.37" y1="110.00" x2="512.05" y2="112.09" stroke-width="0.6"/><line x1="507.65" y1="111.00" x2="508.11" y2="113.15" stroke-width="0.6"/><line x1="503.85" y1="111.60" x2="504.08" y2="113.79" stroke-width="0.6"/><line x1="500.00" y1="110.00" x2="500.00" y2="114.00" stroke-width="1.4"/><line x1="496.15" y1="111.60" x2="495.92" y2="113.79" stroke-width="0.6"/><line x1="492.35" y1="111.00" x2="491.89" y2="113.15" stroke-width="0.6"/><line x1="488.63" y1="110.00" x2="487.95" y2="112.09" stroke-width="0.6"/><line x1="485.03" y1="108.62" x2="484.14" y2="110.63" stroke-width="0.6"/><line x1="482.50" y1="105.31" x2="480.50" y2="108.77" stroke-width="1.4"/><line x1="478.37" y1="104.77" x2="477.08" y2="106.55" stroke-width="0.6"/><line x1="475.38" y1="102.35" x2="473.90" y2="103.98" stroke-width="0.6"/><line x1="472.65" y1="99.62" x2="471.02" y2="101.10" stroke-width="0.6"/><line x1="470.23" y1="96.63" x2="468.45" y2="97.92" stroke-width="0.6"/><line x1="469.69" y1="92.50" x2="466.23" y2="94.50" stroke-width="1.4"/><line x1="466.38" y1="89.97" x2="464.37" y2="90.86" stroke-width="0.6"/><line x1="465.00" y1="86.37" x2="462.91" y2="87.05" stroke-width="0.6"/><line x1="464.00" y1="82.65" x2="461.85" y2="83.11" stroke-width="0.6"/><line x1="463.40" y1="78.85" x2="461.21" y2="79.08" stroke-width="0.6"/><line x1="465.00" y1="75.00" x2="461.00" y2="75.00" stroke-width="1.4"/><line x1="463.40" y1="71.15" x2="461.21" y2="70.92" stroke-width="0.6"/><line x1="464.00" y1="67.35" x2="461.85" y2="66.89" stroke-width="0.6"/><line x1="465.00" y1="63.63" x2="462.91" y2="62.95" stroke-width="0.6"/><line x1="466.38" y1="60.03" x2="464.37" y2="59.14" stroke-width="0.6"/><line x1="469.69" y1="57.50" x2="466.23" y2="55.50" stroke-width="1.4"/><line x1="470.23" y1="53.37" x2="468.45" y2="52.08" stroke-width="0.6"/><line x1="472.65" y1="50.38" x2="471.02" y2="48.90" stroke-width="0.6"/><line x1="475.38" y1="47.65" x2="473.90" y2="46.02" stroke-width="0.6"/><line x1="478.37" y1="45.23" x2="477.08" y2="43.45" stroke-width="0.6"/><line x1="482.50" y1="44.69" x2="480.50" y2="41.23" stroke-width="1.4"/><line x1="485.03" y1="41.38" x2="484.14" y2="39.37" stroke-width="0.6"/><line x1="488.63" y1="40.00" x2="487.95" y2="37.91" stroke-width="0.6"/><line x1="492.35" y1="39.00" x2="491.89" y2="36.85" stroke-width="0.6"/><line x1="496.15" y1="38.40" x2="495.92" y2="36.21" stroke-width="0.6"/></g>
+        <g font-family="IM Fell English SC, Georgia, serif" font-size="7" fill="#2b1d12" text-anchor="middle" dominant-baseline="central"><text x="500.00" y="43.40" transform="rotate(0 500.00 43.40)">XII</text><text x="515.80" y="47.63" transform="rotate(30 515.80 47.63)">I</text><text x="527.37" y="59.20" transform="rotate(60 527.37 59.20)">II</text><text x="531.60" y="75.00" transform="rotate(90 531.60 75.00)">III</text><text x="527.37" y="90.80" transform="rotate(120 527.37 90.80)">IIII</text><text x="515.80" y="102.37" transform="rotate(150 515.80 102.37)">V</text><text x="500.00" y="106.60" transform="rotate(180 500.00 106.60)">VI</text><text x="484.20" y="102.37" transform="rotate(210 484.20 102.37)">VII</text><text x="472.63" y="90.80" transform="rotate(240 472.63 90.80)">VIII</text><text x="468.40" y="75.00" transform="rotate(270 468.40 75.00)">IX</text><text x="472.63" y="59.20" transform="rotate(300 472.63 59.20)">X</text><text x="484.20" y="47.63" transform="rotate(330 484.20 47.63)">XI</text></g>
+        <!-- hands (rotated to real time by script; default 10:10) -->
+        <g id="clk-h" class="clock-hand" style="transform:rotate(305deg)"><path d="M498.5 81 V63 L495.6 59.5 L500 50 L504.4 59.5 L501.5 63 V81Z" fill="#2b1d12"/><circle cx="500" cy="59.5" r="1.6" fill="#d4a94f"/></g>
+        <g id="clk-m" class="clock-hand" style="transform:rotate(60deg)"><path d="M499.1 82 V49 L497.6 46 L500 36 L502.4 46 L500.9 49 V82Z" fill="#2b1d12"/></g>
+        <g id="clk-s" class="clock-hand second"><path d="M500 85 V38" stroke="#b8472a" stroke-width="1"/><circle cx="500" cy="82" r="2" fill="#b8472a"/></g>
+        <circle cx="500" cy="75" r="3.2" fill="url(#goldG)" stroke="#2b1d12" stroke-width="1"/>
+        <!-- parapet & corner pinnacles -->
+        <rect x="416" y="12" width="168" height="10" fill="#c9a776" stroke="#2b1d12" stroke-width="2.5"/>
+        <path d="M420 12 l3.5 -6 l3.5 6 M427 12 l3.5 -6 l3.5 6 M434 12 l3.5 -6 l3.5 6 M441 12 l3.5 -6 l3.5 6 M448 12 l3.5 -6 l3.5 6 M455 12 l3.5 -6 l3.5 6 M462 12 l3.5 -6 l3.5 6 M469 12 l3.5 -6 l3.5 6 M476 12 l3.5 -6 l3.5 6 M483 12 l3.5 -6 l3.5 6 M490 12 l3.5 -6 l3.5 6 M497 12 l3.5 -6 l3.5 6 M504 12 l3.5 -6 l3.5 6 M511 12 l3.5 -6 l3.5 6 M518 12 l3.5 -6 l3.5 6 M525 12 l3.5 -6 l3.5 6 M532 12 l3.5 -6 l3.5 6 M539 12 l3.5 -6 l3.5 6 M546 12 l3.5 -6 l3.5 6 M553 12 l3.5 -6 l3.5 6 M560 12 l3.5 -6 l3.5 6 M567 12 l3.5 -6 l3.5 6 M574 12 l3.5 -6 l3.5 6 " fill="#c9a776" stroke="#2b1d12" stroke-width="1.2"/>
+        <path d="M418 12 V-14 H428 V12Z M572 12 V-14 H582 V12Z" fill="#c9a776" stroke="#2b1d12" stroke-width="2"/>
+        <path d="M416 -14 L423 -40 L430 -14Z M570 -14 L577 -40 L584 -14Z" fill="url(#goldG)" stroke="#2b1d12" stroke-width="1.5"/>
+        <!-- belfry -->
+        <rect x="442" y="-40" width="116" height="52" fill="url(#stoneG)" stroke="#2b1d12" stroke-width="3"/>
+        <g fill="#141b26" stroke="#2b1d12" stroke-width="1.5">
+          <path d="M453 8 V-14 Q464 -34 475 -14 V8Z"/><path d="M489 8 V-14 Q500 -34 511 -14 V8Z"/><path d="M525 8 V-14 Q536 -34 547 -14 V8Z"/>
+        </g>
+        <g id="bell" class="bell"><path d="M500 -22 V-17" stroke="#8f6a26" stroke-width="1.5"/><path d="M492 2 Q493 -6 494 -10 Q496 -17 500 -17 Q504 -17 506 -10 Q507 -6 508 2Z" fill="url(#goldG)" stroke="#2b1d12" stroke-width="1"/><circle cx="500" cy="3" r="1.6" fill="#2b1d12"/></g>
+        <path d="M442 8 H558" stroke="#9c7f4c" stroke-width="3"/>
+        <!-- spire -->
+        <path d="M436 -40 Q474 -58 500 -116 Q526 -58 564 -40Z" fill="url(#slateG)" stroke="#2b1d12" stroke-width="3"/>
+        <path d="M436 -40 Q474 -58 500 -116 Q526 -58 564 -40Z" fill="url(#shingle)"/>
+        <path d="M500 -116 V-40 M468 -46 Q486 -66 500 -116 M532 -46 Q514 -66 500 -116" stroke="#d4a94f" stroke-width="1.2" fill="none"/>
+        <path d="M489 -42 V-58 L500 -70 L511 -58 V-42Z" fill="#d9bd85" stroke="#2b1d12" stroke-width="1.5"/>
+        <path d="M495 -44 V-55 Q500 -62 505 -55 V-44Z" fill="#141b26"/>
+        <path d="M438 -40 L444 -62 L450 -40Z M550 -40 L556 -62 L562 -40Z" fill="url(#goldG)" stroke="#2b1d12" stroke-width="1.2"/>
+        <!-- finial & pennant -->
+        <path d="M500 -116 V-138" stroke="#b5893a" stroke-width="2.5"/>
+        <circle cx="500" cy="-122" r="3.4" fill="url(#goldG)" stroke="#2b1d12" stroke-width="1"/>
+        <path d="M500 -138 L524 -132 L500 -126Z" fill="#1f3a68" stroke="#2b1d12" stroke-width="1"/>
+      </g>
+      <!-- revolving sign -->
+      <path d="M310 250 V120" stroke="#4a4c50" stroke-width="6"/>
+      <g class="sign">
+        <path d="M250 70 L370 70 L360 118 L260 118Z" fill="#d6d3c8" stroke="#2b1d12" stroke-width="3"/>
+        <text x="310" y="91" text-anchor="middle" font-family="IM Fell English SC, serif" font-size="15" fill="#1f3a68" letter-spacing="1">SCOTLAND</text>
+        <text x="310" y="110" text-anchor="middle" font-family="IM Fell English SC, serif" font-size="15" fill="#1f3a68" letter-spacing="3">YARD</text>
+      </g>
+      <!-- detective with telescope -->
+      <use href="#p-det" x="640" y="94" width="28" height="56"/>
+      <path d="M660 112 L700 96" stroke="#b5893a" stroke-width="5" stroke-linecap="round"/><path d="M690 100 L704 94" stroke="#2b1d12" stroke-width="7" stroke-linecap="round"/>
+      <!-- pigeons -->
+      <g class="pigeon"><ellipse cx="380" cy="146" rx="9" ry="5" fill="#8e9196"/><circle cx="388" cy="141" r="3.4" fill="#8e9196"/><path d="M391 141 l3 1 -3 1z" fill="#c9a227"/></g>
+      <g class="pigeon" style="animation-delay:1.2s"><ellipse cx="860" cy="146" rx="8" ry="4.5" fill="#6e7176"/><circle cx="852" cy="141" r="3" fill="#6e7176"/></g>
+    </svg>
+  </div>
+
+  <div class="frame">
+    <!-- ─── Floor 1 ─── -->
+    <div class="floor">
+      <section class="room has-text" style="grid-column: span 8; --bg: var(--room-pink)" aria-labelledby="h-case">
+        <span class="plaque">Briefing Room · Fl. 5</span>
+        <div class="note">
+          <span class="step">FILE 01</span>
+          <h2 id="h-case">The Case Begins</h2>
+          <p>Your team is handed a sealed dossier. A crime has rattled London and the Yard needs fresh minds. Break the seal, read the statements, and take your first step into the fog.</p>
+        </div>
+        <svg class="scene" viewBox="0 0 400 220" aria-hidden="true">
+          <rect y="168" width="400" height="52" fill="url(#boards)"/>
+          <rect y="128" width="400" height="40" fill="#c98f74" opacity=".55"/>
+          <!-- window with fog -->
+          <rect x="18" y="26" width="70" height="86" fill="#c9c6bb" stroke="#4a2e17" stroke-width="5"/>
+          <path d="M53 26 V112 M18 69 H88" stroke="#4a2e17" stroke-width="3"/>
+          <path d="M22 50 Q40 44 58 52 T86 48" stroke="#f6ead0" stroke-width="5" fill="none" opacity=".7"/>
+          <path d="M22 90 Q46 82 66 92 T86 88" stroke="#f6ead0" stroke-width="4" fill="none" opacity=".6"/>
+          <!-- pinboard -->
+          <rect x="118" y="18" width="150" height="92" fill="url(#cork)" stroke="#4a2e17" stroke-width="5"/>
+          <rect x="130" y="28" width="30" height="36" fill="#f6ead0" transform="rotate(-5 145 46)"/>
+          <rect x="176" y="34" width="26" height="22" fill="#efe0bf"/><circle cx="189" cy="44" r="6" fill="#4a3624"/>
+          <rect x="216" y="26" width="38" height="28" fill="#f6ead0" transform="rotate(4 235 40)"/>
+          <rect x="146" y="70" width="34" height="30" fill="#e6cf8f"/><rect x="200" y="68" width="44" height="32" fill="#f6ead0" transform="rotate(-3 222 84)"/>
+          <path d="M145 32 L189 38 L235 30 M189 38 L163 74 L222 72" stroke="#b8472a" stroke-width="1.6" fill="none"/>
+          <g fill="#b8472a"><circle cx="145" cy="32" r="3"/><circle cx="189" cy="38" r="3"/><circle cx="235" cy="30" r="3"/><circle cx="163" cy="74" r="3"/><circle cx="222" cy="72" r="3"/></g>
+          <!-- desk -->
+          <rect x="190" y="132" width="180" height="10" fill="#6b4423"/>
+          <rect x="198" y="142" width="8" height="28" fill="#4a2e17"/><rect x="352" y="142" width="8" height="28" fill="#4a2e17"/>
+          <rect x="300" y="142" width="54" height="24" fill="#8b5a2b"/><rect x="318" y="150" width="18" height="3" fill="#d4a94f"/>
+          <!-- dossier -->
+          <g transform="rotate(-6 260 126)"><rect x="232" y="118" width="58" height="14" fill="#e6cf8f" stroke="#6b4423"/><rect x="250" y="120" width="22" height="7" fill="#b8472a"/></g>
+          <!-- lamp -->
+          <path d="M346 132 V112 L336 102" stroke="#2b1d12" stroke-width="2.5" fill="none"/><path d="M324 96 L346 96 L342 106 L328 106Z" fill="#3f6b4a" transform="rotate(-20 336 101)"/>
+          <use href="#phone" x="208" y="104" width="16" height="30"/>
+          <!-- detectives -->
+          <use href="#p-tweed" x="292" y="108" width="30" height="62"/>
+          <use href="#p-det" x="118" y="110" width="30" height="60"/>
+          <use href="#p-det" x="150" y="114" width="27" height="56"/>
+          <use href="#p-cop" x="364" y="108" width="30" height="62"/>
+        </svg>
+        <button class="clue" style="left:14%; bottom:8%" data-note="A smudged print on the dossier's wax seal. Someone opened it before you." aria-label="Examine a faint fingerprint"><svg><use href="#fp"/></svg></button>
+      </section>
+
+      <section class="room" style="grid-column: span 4; --bg: var(--room-fog)" aria-label="The Wire Room">
+        <span class="plaque">The Wire Room</span>
+        <svg class="scene" viewBox="0 0 300 220" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+          <rect y="176" width="300" height="44" fill="url(#tiles)"/>
+          <!-- switchboard -->
+          <rect x="24" y="44" width="160" height="112" fill="#6b4423" stroke="#2b1d12" stroke-width="3"/>
+          <rect x="34" y="54" width="140" height="70" fill="url(#jacks)"/>
+          <rect x="24" y="148" width="160" height="10" fill="#4a2e17"/>
+          <rect x="30" y="156" width="8" height="22" fill="#4a2e17"/><rect x="170" y="156" width="8" height="22" fill="#4a2e17"/>
+          <g fill="none" stroke-width="2"><path d="M48 68 Q60 150 90 146" stroke="#b8472a"/><path d="M104 82 Q100 140 120 148" stroke="#2b1d12"/><path d="M146 96 Q150 140 70 146" stroke="#1f3a68"/><path d="M160 68 Q170 130 150 146" stroke="#b8472a"/></g>
+          <!-- operator -->
+          <use href="#p-cop" x="86" y="122" width="28" height="56"/>
+          <!-- wall phones & side table -->
+          <rect x="206" y="138" width="78" height="8" fill="#6b4423"/><rect x="212" y="146" width="6" height="32" fill="#4a2e17"/><rect x="272" y="146" width="6" height="32" fill="#4a2e17"/>
+          <use href="#phone" x="216" y="110" width="16" height="30"/>
+          <use href="#phone" x="246" y="110" width="16" height="30"/>
+          <!-- ticker tape -->
+          <rect x="222" y="40" width="48" height="40" rx="4" fill="#d4a94f" stroke="#2b1d12" stroke-width="2"/>
+          <path d="M246 80 Q244 100 258 108 Q270 116 262 132" stroke="#f6ead0" stroke-width="7" fill="none"/>
+          <path d="M243 88 h4 M250 100 h4 M258 112 h3" stroke="#2b1d12" stroke-width="1.4"/>
+          <use href="#p-tweed" x="268" y="122" width="26" height="56"/>
+        </svg>
+        <button class="clue" style="right:6%; top:18%" data-note="Ticker tape, half-burnt: '…MEET AT THE EMBANKMENT. MIDNIGHT…'" aria-label="Examine a faint fingerprint"><svg><use href="#fp"/></svg></button>
+      </section>
+    </div>
+
+    <div class="beam" aria-hidden="true"></div>
+
+    <!-- ─── Floor 2 ─── -->
+    <div class="floor">
+      <section class="room" style="grid-column: span 5; --bg: var(--room-cream)" aria-label="Forensics Lab">
+        <span class="plaque">Forensics Lab</span>
+        <svg class="scene" viewBox="0 0 360 220" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+          <rect y="176" width="360" height="44" fill="url(#tiles)"/>
+          <!-- shelf of bottles -->
+          <rect x="20" y="56" width="140" height="6" fill="#6b4423"/>
+          <g stroke="#2b1d12" stroke-width="1.4">
+            <rect x="28" y="34" width="12" height="22" fill="#3f6b4a"/><rect x="46" y="40" width="10" height="16" fill="#b8472a"/>
+            <path d="M66 56 L72 38 H80 L86 56Z" fill="#cfe3e0"/><rect x="94" y="30" width="14" height="26" fill="#b5893a"/>
+            <circle cx="124" cy="48" r="8" fill="#3c5f99"/><rect x="138" y="40" width="10" height="16" fill="#f6ead0"/>
+          </g>
+          <!-- chalkboard -->
+          <rect x="176" y="30" width="78" height="56" fill="#2f3a32" stroke="#6b4423" stroke-width="4"/>
+          <text x="184" y="52" font-family="Special Elite, monospace" font-size="10" fill="#efe0bf">Pb + ? = !</text>
+          <text x="184" y="70" font-family="Special Elite, monospace" font-size="10" fill="#efe0bf">pH 3.2 ✓</text>
+          <!-- fume hood -->
+          <rect x="268" y="34" width="80" height="142" fill="#8e9196" stroke="#2b1d12" stroke-width="3"/>
+          <rect x="276" y="64" width="64" height="58" fill="#cfe3e0" opacity=".75"/>
+          <path d="M296 122 L304 100 H312 L320 122Z" fill="#b8d48a" stroke="#2b1d12" stroke-width="1.4"/>
+          <circle class="bubble" cx="306" cy="104" r="3" fill="#b8d48a"/><circle class="bubble b" cx="311" cy="104" r="2" fill="#b8d48a"/>
+          <rect x="268" y="122" width="80" height="10" fill="#4a4c50"/>
+          <!-- bench -->
+          <rect x="16" y="134" width="236" height="9" fill="#6b4423"/>
+          <rect x="24" y="143" width="8" height="35" fill="#4a2e17"/><rect x="236" y="143" width="8" height="35" fill="#4a2e17"/>
+          <use href="#scope" x="40" y="100" width="24" height="34"/>
+          <use href="#scope" x="148" y="100" width="24" height="34"/>
+          <path d="M100 134 L106 116 V108 H114 V116 L120 134Z" fill="#e9b9a0" stroke="#2b1d12" stroke-width="1.4"/>
+          <circle class="bubble c" cx="110" cy="112" r="2.4" fill="#e9b9a0"/>
+          <rect x="200" y="120" width="5" height="14" fill="#cfe3e0" stroke="#2b1d12"/><rect x="208" y="118" width="5" height="16" fill="#3c5f99" stroke="#2b1d12"/><rect x="216" y="122" width="5" height="12" fill="#b8472a" stroke="#2b1d12"/>
+          <!-- scientists -->
+          <use href="#p-sci" x="62" y="120" width="28" height="58"/>
+          <use href="#p-sci" x="168" y="122" width="27" height="56"/>
+          <use href="#p-det" x="220" y="122" width="27" height="56"/>
+        </svg>
+        <button class="clue" style="left:44%; top:52%" data-note="Under the microscope: fibres of Harris tweed and a trace of river silt." aria-label="Examine a faint fingerprint"><svg><use href="#fp"/></svg></button>
+      </section>
+
+      <section class="room has-text flip" style="grid-column: span 7; --bg: var(--room-blue)" aria-labelledby="h-clues">
+        <span class="plaque">Cipher &amp; Data Bureau</span>
+        <div class="note">
+          <span class="step">FILE 02</span>
+          <h2 id="h-clues">Solve the Clues</h2>
+          <p>Ciphers, forensic reports and data dumps arrive by pneumatic tube. Decode, cross-reference and deduce. Every answer unlocks the next room of the Yard.</p>
+        </div>
+        <svg class="scene" viewBox="0 0 400 220" aria-hidden="true">
+          <rect y="176" width="400" height="44" fill="url(#boards)"/>
+          <!-- pneumatic tube -->
+          <rect x="356" y="0" width="22" height="96" fill="#cfe3e0" opacity=".7" stroke="#b5893a" stroke-width="3"/>
+          <g class="capsule"><rect x="360" y="20" width="14" height="24" rx="6" fill="#b5893a" stroke="#2b1d12" stroke-width="1.4"/></g>
+          <path d="M350 96 H384 L378 108 H356Z" fill="#b5893a" stroke="#2b1d12" stroke-width="2"/>
+          <!-- console & screens -->
+          <rect x="30" y="128" width="320" height="48" fill="#6e7176" stroke="#2b1d12" stroke-width="3"/>
+          <g fill="#b8472a"><circle cx="60" cy="146" r="4"/><circle cx="160" cy="146" r="4"/><circle cx="260" cy="146" r="4"/></g>
+          <g fill="#d4a94f"><rect x="76" y="142" width="40" height="6" rx="3"/><rect x="176" y="142" width="40" height="6" rx="3"/><rect x="276" y="142" width="40" height="6" rx="3"/></g>
+          <g stroke="#2b1d12" stroke-width="3">
+            <rect x="42" y="42" width="94" height="80" rx="10" fill="#4a4a44"/>
+            <rect x="146" y="30" width="94" height="92" rx="10" fill="#4a4a44"/>
+            <rect x="250" y="42" width="94" height="80" rx="10" fill="#4a4a44"/>
+          </g>
+          <rect class="flicker" x="52" y="52" width="74" height="60" rx="6" fill="#1f3a2a"/>
+          <rect class="flicker b" x="156" y="40" width="74" height="72" rx="6" fill="#1f3a2a"/>
+          <rect class="flicker c" x="260" y="52" width="74" height="60" rx="6" fill="#1f3a2a"/>
+          <polyline points="56,84 66,84 70,66 76,100 82,74 88,90 96,80 104,84 122,84" fill="none" stroke="#9fe39a" stroke-width="2"/>
+          <g font-family="Special Elite, monospace" font-size="10" fill="#9fe39a">
+            <text x="162" y="58">QX7 ?? LR</text><text x="162" y="74">B4K ER S7</text><text x="162" y="90">221 · B ·</text><text x="162" y="106">&gt; DECODE_</text>
+          </g>
+          <g transform="translate(284 60) scale(1.5)" color="#9fe39a"><use href="#fp" width="20" height="24"/></g>
+          <!-- detectives -->
+          <use href="#p-det" x="16" y="118" width="29" height="58"/>
+          <circle cx="54" cy="128" r="7" fill="rgba(240,213,138,.4)" stroke="#b5893a" stroke-width="2.5"/><line x1="49" y1="133" x2="42" y2="140" stroke="#4a2e17" stroke-width="3"/>
+          <use href="#p-tweed" x="180" y="120" width="28" height="56"/>
+          <use href="#p-sci" x="296" y="120" width="28" height="56"/>
+        </svg>
+        <button class="clue" style="right:46%; top:18%" data-note="Decoded fragment: the meeting point is beneath a bridge with two towers." aria-label="Examine a faint fingerprint"><svg><use href="#fp"/></svg></button>
+      </section>
+    </div>
+
+    <div class="beam" aria-hidden="true"></div>
+
+    <!-- ─── Floor 3 ─── -->
+    <div class="floor">
+      <section class="room" style="grid-column: span 4; --bg: #b7a98c" aria-label="Interview Room">
+        <span class="plaque">Interview Room</span>
+        <svg class="scene" viewBox="0 0 260 220" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+          <rect y="176" width="260" height="44" fill="#6e6250"/>
+          <!-- one-way mirror -->
+          <rect x="176" y="44" width="72" height="70" fill="#3a4350" stroke="#2b1d12" stroke-width="4"/>
+          <path d="M186 60 L204 52 M188 84 L230 62 M200 104 L240 82" stroke="#8e9196" stroke-width="2"/>
+          <!-- clock -->
+          <circle cx="40" cy="58" r="16" fill="#f6ead0" stroke="#2b1d12" stroke-width="3"/><path d="M40 58 V47 M40 58 L48 62" stroke="#2b1d12" stroke-width="2"/>
+          <!-- swinging lamp + light -->
+          <g class="swing">
+            <path d="M60 172 L200 172 L152 88 L108 88Z" fill="#f0d58a" opacity=".32"/>
+            <line x1="130" y1="0" x2="130" y2="72" stroke="#2b1d12" stroke-width="2"/>
+            <path d="M114 72 H146 L156 90 H104Z" fill="#3f6b4a" stroke="#2b1d12" stroke-width="2"/>
+            <circle cx="130" cy="92" r="5" fill="#fff6dc"/>
+          </g>
+          <!-- table & chairs -->
+          <path d="M40 176 V128 M40 150 H64 V176" stroke="#4a2e17" stroke-width="4" fill="none"/>
+          <path d="M220 176 V128 M220 150 H196 V176" stroke="#4a2e17" stroke-width="4" fill="none"/>
+          <use href="#p-det" x="54" y="118" width="29" height="58"/>
+          <use href="#p-sus" x="176" y="118" width="29" height="58"/>
+          <rect x="78" y="140" width="104" height="8" fill="#6b4423"/>
+          <rect x="86" y="148" width="6" height="28" fill="#4a2e17"/><rect x="168" y="148" width="6" height="28" fill="#4a2e17"/>
+          <rect x="100" y="132" width="10" height="8" fill="#f6ead0" stroke="#2b1d12"/><rect x="134" y="134" width="26" height="6" fill="#e6cf8f" stroke="#6b4423"/>
+        </svg>
+        <button class="clue" style="left:46%; bottom:10%" data-note="The suspect's alibi clock reads 11:40, but the river tide tables disagree." aria-label="Examine a faint fingerprint"><svg><use href="#fp"/></svg></button>
+      </section>
+
+      <section class="room" style="grid-column: span 4; --bg: var(--room-ochre)" aria-label="Evidence Locker">
+        <span class="plaque">Evidence Locker</span>
+        <svg class="scene" viewBox="0 0 260 220" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+          <rect y="176" width="260" height="44" fill="url(#tiles)"/>
+          <!-- shelves -->
+          <g fill="#6b4423"><rect x="14" y="74" width="170" height="6"/><rect x="14" y="122" width="170" height="6"/><rect x="14" y="170" width="170" height="6"/></g>
+          <rect x="12" y="36" width="5" height="140" fill="#4a2e17"/><rect x="181" y="36" width="5" height="140" fill="#4a2e17"/>
+          <!-- top shelf: pocket watch, top hat, envelope -->
+          <circle cx="36" cy="64" r="9" fill="#d4a94f" stroke="#2b1d12" stroke-width="2"/><path d="M36 64 V58 M36 64 L40 66" stroke="#2b1d12" stroke-width="1.4"/><path d="M36 55 V51" stroke="#d4a94f" stroke-width="2"/>
+          <path d="M66 74 H96 M70 74 V48 H92 V74" fill="#2b1d12" stroke="#2b1d12" stroke-width="3"/><rect x="70" y="64" width="22" height="4" fill="#b8472a"/>
+          <rect x="112" y="54" width="34" height="20" fill="#f6ead0" stroke="#6b4423"/><path d="M112 54 L129 66 L146 54" fill="none" stroke="#6b4423"/><circle cx="129" cy="66" r="4" fill="#b8472a"/>
+          <rect x="156" y="58" width="20" height="16" fill="#8b5a2b" stroke="#2b1d12"/>
+          <!-- middle shelf: pipe, key, bottle, boot cast -->
+          <path d="M24 112 Q30 120 44 116 L56 108" stroke="#4a2e17" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M20 104 h8 v10 h-8z" fill="#4a2e17"/>
+          <circle cx="76" cy="108" r="5" fill="none" stroke="#b5893a" stroke-width="3"/><path d="M81 108 H100 M94 108 V114 M99 108 V113" stroke="#b5893a" stroke-width="3"/>
+          <path d="M116 122 V100 H120 V92 H126 V100 H130 V122Z" fill="#3f6b4a" stroke="#2b1d12" stroke-width="1.4"/><rect x="117" y="106" width="12" height="7" fill="#f6ead0"/>
+          <path d="M144 120 Q140 100 152 98 Q162 98 160 108 L172 112 Q176 120 168 120Z" fill="#d6d3c8" stroke="#6e7176" stroke-width="1.4"/>
+          <!-- bottom shelf: umbrella, boxes w/ tags -->
+          <path d="M24 168 L56 136" stroke="#2b1d12" stroke-width="3"/><path d="M50 128 Q66 132 62 148 L42 140Z" fill="#2b1d12"/>
+          <rect x="74" y="142" width="40" height="28" fill="#c9a776" stroke="#6b4423" stroke-width="2"/><rect x="120" y="148" width="54" height="22" fill="#b89462" stroke="#6b4423" stroke-width="2"/>
+          <g fill="#f6ead0" stroke="#6b4423"><rect x="96" y="152" width="14" height="9"/><rect x="152" y="156" width="16" height="9"/></g>
+          <!-- cage door, swung open -->
+          <path d="M196 30 L250 40 V178 L196 176Z" fill="url(#mesh)" stroke="#4a4c50" stroke-width="4"/>
+          <circle cx="204" cy="104" r="4" fill="#b5893a"/>
+          <use href="#p-cop" x="210" y="120" width="28" height="56"/>
+          <rect x="230" y="138" width="12" height="16" fill="#f6ead0" stroke="#4a2e17"/>
+        </svg>
+        <button class="clue" style="left:52%; top:42%" data-note="Item 14: a brass key stamped 'T.B. 2'. It doesn't fit any lock in the Yard." aria-label="Examine a faint fingerprint"><svg><use href="#fp"/></svg></button>
+      </section>
+
+      <section class="room" style="grid-column: span 4; --bg: var(--room-sage)" aria-label="Records and Archive">
+        <span class="plaque">Records &amp; Archive</span>
+        <svg class="scene" viewBox="0 0 260 220" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+          <rect y="176" width="260" height="44" fill="url(#boards)"/>
+          <rect x="16" y="30" width="80" height="146" fill="url(#drawers)" stroke="#2b1d12" stroke-width="3"/>
+          <rect x="164" y="52" width="80" height="124" fill="url(#drawers)" stroke="#2b1d12" stroke-width="3"/>
+          <!-- open drawer with papers -->
+          <rect x="96" y="96" width="30" height="18" fill="#7f8b72" stroke="#2b1d12" stroke-width="2"/>
+          <rect x="100" y="88" width="20" height="10" fill="#f6ead0"/>
+          <!-- ladder -->
+          <path d="M120 176 L146 40 M144 176 L170 40" stroke="#6b4423" stroke-width="4"/>
+          <path d="M124 158 H148 M128 136 H152 M132 114 H156 M136 92 H160 M140 70 H164" stroke="#6b4423" stroke-width="3"/>
+          <use href="#p-tweed" x="138" y="54" width="26" height="54"/>
+          <!-- drifting papers -->
+          <g fill="#f6ead0" stroke="#8b5a2b" stroke-width=".8"><rect x="100" y="40" width="14" height="18" transform="rotate(-18 107 49)"/><rect x="70" y="10" width="12" height="15" transform="rotate(22 76 17)"/></g>
+          <use href="#p-sci" x="60" y="120" width="27" height="56"/>
+        </svg>
+        <button class="clue" style="left:16%; bottom:18%" data-note="Archive card 1888-B is missing. The borrower signed only with a deerstalker doodle." aria-label="Examine a faint fingerprint"><svg><use href="#fp"/></svg></button>
+      </section>
+    </div>
+
+    <div class="beam" aria-hidden="true"></div>
+
+    <!-- ─── Floor 4 ─── -->
+    <div class="floor">
+      <section class="room has-text" style="grid-column: span 12; --bg: var(--room-pink)" aria-labelledby="h-track">
+        <span class="plaque">Operations Room · Ground Fl.</span>
+        <div class="note">
+          <span class="step">FILE 03</span>
+          <h2 id="h-track">Track the Suspects</h2>
+          <p>Plot movements across the city map, intercept tips over the wire, and race rival squads to make the arrest before the trail goes cold.</p>
+        </div>
+        <svg class="scene" viewBox="0 0 640 230" aria-hidden="true">
+          <rect y="186" width="640" height="44" fill="url(#tiles)"/>
+          <!-- big map -->
+          <rect x="160" y="16" width="320" height="150" fill="#efe0bf" stroke="#4a2e17" stroke-width="7"/>
+          <g stroke="#c9bfa6" stroke-width="1.4"><path d="M170 50 H470 M170 90 H470 M170 130 H470 M220 22 V160 M290 22 V160 M360 22 V160 M420 22 V160"/></g>
+          <path d="M164 118 C210 100 236 140 280 124 S350 76 390 98 S450 130 476 112" stroke="#7b9fc6" stroke-width="12" fill="none"/>
+          <g font-family="IM Fell English SC, serif" font-size="9" fill="#4a3624"><text x="178" y="42">MARYLEBONE</text><text x="300" y="44">SOHO</text><text x="396" y="70">WHITECHAPEL</text><text x="236" y="152">LAMBETH</text><text x="372" y="150">BERMONDSEY</text></g>
+          <polyline points="196,64 316,58 410,84 386,140 262,140" fill="none" stroke="#b8472a" stroke-width="2"/>
+          <g fill="#b8472a" stroke="#2b1d12" stroke-width="1"><circle cx="196" cy="64" r="5"/><circle cx="316" cy="58" r="5"/><circle cx="410" cy="84" r="5"/><circle cx="386" cy="140" r="5"/><circle cx="262" cy="140" r="5"/></g>
+          <circle cx="440" cy="110" r="10" fill="none" stroke="#1f3a68" stroke-width="3" stroke-dasharray="4 3" class="spin"/>
+          <text x="432" y="114" font-family="Special Elite, monospace" font-size="10" fill="#1f3a68">?</text>
+          <!-- constable with pointer -->
+          <use href="#p-cop" x="474" y="126" width="30" height="60"/>
+          <path d="M478 146 L446 116" stroke="#4a2e17" stroke-width="2.4"/>
+          <!-- team A -->
+          <use href="#p-det" x="24" y="128" width="27" height="56"/>
+          <use href="#p-tweed" x="56" y="130" width="26" height="54"/>
+          <use href="#p-sci" x="88" y="128" width="27" height="56"/>
+          <rect x="16" y="160" width="124" height="8" fill="#6b4423"/><rect x="22" y="168" width="6" height="18" fill="#4a2e17"/><rect x="128" y="168" width="6" height="18" fill="#4a2e17"/>
+          <rect x="44" y="152" width="30" height="8" fill="#e6cf8f"/><use href="#phone" x="104" y="134" width="13" height="26"/>
+          <!-- team B -->
+          <use href="#p-tweed" x="524" y="130" width="26" height="54"/>
+          <use href="#p-det" x="556" y="128" width="27" height="56"/>
+          <use href="#p-cop" x="590" y="128" width="27" height="56"/>
+          <rect x="514" y="160" width="118" height="8" fill="#6b4423"/><rect x="520" y="168" width="6" height="18" fill="#4a2e17"/><rect x="620" y="168" width="6" height="18" fill="#4a2e17"/>
+          <rect x="560" y="150" width="34" height="10" fill="#f6ead0" stroke="#6b4423"/>
+        </svg>
+      </section>
+    </div>
+  </div>
+
+  <!-- River Thames & patrol launch -->
+  <div class="thames" aria-hidden="true">
+    <div class="fog"><span></span><span></span><span></span></div>
+    <svg viewBox="0 0 1000 270" preserveAspectRatio="xMidYMin meet">
+      <!-- embankment -->
+      <rect x="0" y="0" width="1000" height="34" fill="#cbc7ba" stroke="#2b1d12" stroke-width="3"/>
+      <path d="M0 34 H1000" stroke="#6e7176" stroke-width="6"/>
+      <g stroke="#2b1d12" stroke-width="3"><path d="M150 34 V0 M430 34 V0 M610 34 V0 M880 34 V0"/></g>
+      <g fill="#c9a227" stroke="#2b1d12" stroke-width="2"><circle cx="150" cy="-2" r="5"/><circle cx="430" cy="-2" r="5"/><circle cx="610" cy="-2" r="5"/><circle cx="880" cy="-2" r="5"/></g>
+      <!-- water -->
+      <rect x="0" y="38" width="1000" height="232" fill="#7d8a93"/>
+      <rect x="0" y="150" width="1000" height="120" fill="#6a7781"/>
+      <g class="waves" stroke="#b9c4cf" stroke-width="3" fill="none" opacity=".75">
+        <path d="M0 70 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"/>
+        <path d="M0 196 q20 -10 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"/>
+      </g>
+      <g class="waves b" stroke="#a9b6c1" stroke-width="2.5" fill="none" opacity=".6">
+        <path d="M0 120 q20 -8 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"/>
+        <path d="M0 240 q20 -8 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0"/>
+      </g>
+      <!-- bridge (left) -->
+      <path d="M0 40 H140 V60 Q110 64 100 110 H86 Q78 70 40 64 Q14 70 8 110 H0Z" fill="#9a8a70" stroke="#2b1d12" stroke-width="3"/>
+      <!-- searchlight beam -->
+      <path class="beam-light" d="M640 104 L1000 50 L1000 160Z" fill="#f0d58a"/>
+      <g class="sail">
+      <!-- patrol launch -->
+      <g class="bob">
+        <path d="M300 170 L700 170 L670 214 L340 214Z" fill="#1f3a68" stroke="#2b1d12" stroke-width="4"/>
+        <path d="M306 180 H694" stroke="#f6ead0" stroke-width="7"/>
+        <path d="M330 206 H680" stroke="#b8472a" stroke-width="5"/>
+        <text x="500" y="203" text-anchor="middle" font-family="IM Fell English SC, serif" font-size="16" letter-spacing="6" fill="#f6ead0">POLICE · THAMES DIVISION</text>
+        <!-- cabin -->
+        <rect x="420" y="112" width="150" height="58" fill="#efe0bf" stroke="#2b1d12" stroke-width="3.5"/>
+        <rect x="410" y="104" width="170" height="10" fill="#4a2e17"/>
+        <g fill="#cfe3e0" stroke="#2b1d12" stroke-width="2"><rect x="434" y="124" width="26" height="22"/><rect x="470" y="124" width="26" height="22"/><rect x="506" y="124" width="26" height="22"/><rect x="542" y="124" width="18" height="22"/></g>
+        <!-- blue lamp & funnel -->
+        <rect class="siren" x="490" y="84" width="16" height="20" fill="#3c5f99" stroke="#2b1d12" stroke-width="2"/><rect x="486" y="80" width="24" height="5" fill="#2b1d12"/>
+        <rect x="440" y="78" width="20" height="26" fill="#b8472a" stroke="#2b1d12" stroke-width="2"/><rect x="438" y="74" width="24" height="6" fill="#2b1d12"/>
+        <g class="steam" fill="#d6d3c8"><circle cx="450" cy="68" r="8"/><circle cx="446" cy="68" r="6"/><circle cx="454" cy="68" r="9"/></g>
+        <!-- searchlight -->
+        <circle cx="630" cy="108" r="12" fill="#d4a94f" stroke="#2b1d12" stroke-width="3"/><path d="M630 120 V170" stroke="#2b1d12" stroke-width="3"/>
+        <!-- flag -->
+        <path d="M330 170 V100" stroke="#2b1d12" stroke-width="3"/><path d="M330 102 L364 110 L330 118Z" fill="#c9a227" stroke="#2b1d12" stroke-width="1.5"/>
+        <!-- crew -->
+        <use href="#p-cop" x="352" y="120" width="26" height="52"/>
+        <use href="#p-cop" x="384" y="120" width="26" height="52"/>
+        <use href="#p-det" x="590" y="118" width="26" height="54"/>
+        <path d="M612 130 L628 124" stroke="#2b1d12" stroke-width="4" stroke-linecap="round"/>
+        <!-- life ring -->
+        <circle cx="400" cy="190" r="0" fill="none"/>
+        <circle cx="660" cy="190" r="9" fill="none" stroke="#b8472a" stroke-width="5" stroke-dasharray="7 7"/>
+      </g>
+      <!-- bow wake -->
+      <path d="M700 188 q20 6 46 2 M700 200 q26 10 60 6" stroke="#f6ead0" stroke-width="3" fill="none" opacity=".8"/>
+      </g>
+      <!-- gulls -->
+      <path d="M200 70 q8 -8 16 0 q8 -8 16 0 M820 90 q6 -6 12 0 q6 -6 12 0" stroke="#2b1d12" stroke-width="2" fill="none"/>
+      <!-- bottle in the river -->
+      <g class="bob" style="animation-delay:-2s"><path d="M240 232 L262 226 L264 234 L242 240Z" fill="#3f6b4a" stroke="#2b1d12" stroke-width="1.5"/><rect x="262" y="227" width="6" height="5" fill="#b89462"/></g>
+    </svg>
+  </div>
+
+  <!-- Calls to action -->
+  <div class="dock">
+    <span class="rail" aria-hidden="true"></span>
+    <div class="tag-wrap">
+      <span class="string" aria-hidden="true"></span>
+      <!-- Replace href with your registration form link -->
+      <a class="tag blue" href="#details">
+        <span class="kicker">EVIDENCE · ITEM 001</span>
+        <span class="cta">Register Now</span>
+        <span class="lines">ENLIST YOUR SQUAD →</span>
+      </a>
+    </div>
+    <div class="tag-wrap">
+      <span class="string" aria-hidden="true"></span>
+      <a class="tag" href="#agenda">
+        <span class="kicker">EVIDENCE · ITEM 002</span>
+        <span class="cta">View Agenda</span>
+        <span class="lines">OPEN THE CASE FILE ↓</span>
+      </a>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════════ Cipher wheel puzzle ═══════════ -->
+<section class="cipher" id="cipher" aria-labelledby="h-cipher">
+  <div class="wheel-wrap">
+    <svg id="wheel" class="wheel" viewBox="0 0 300 300" role="slider" tabindex="0"
+         aria-label="Cipher wheel. Use the arrow keys to turn it." aria-valuemin="0" aria-valuemax="25" aria-valuenow="0">
+      <defs>
+        <radialGradient id="brassRing" cx="50%" cy="40%" r="60%">
+          <stop offset="0" stop-color="#f0d58a"/><stop offset=".6" stop-color="#d4a94f"/><stop offset="1" stop-color="#9c7430"/>
+        </radialGradient>
+      </defs>
+      <circle cx="150" cy="150" r="149" fill="#4a2e17"/>
+      <circle cx="150" cy="150" r="144" fill="url(#brassRing)"/>
+      <circle cx="150" cy="150" r="114" fill="none" stroke="#4a2e17" stroke-width="2"/>
+      <g id="wheel-outer" font-family="Special Elite, monospace" font-size="16" fill="#2b1d12" text-anchor="middle" dominant-baseline="central"></g>
+      <g id="wheel-inner" class="inner" font-family="Special Elite, monospace" font-size="15" fill="#f0d58a" text-anchor="middle" dominant-baseline="central">
+        <circle cx="150" cy="150" r="112" fill="#1f3a68" stroke="#2b1d12" stroke-width="3"/>
+        <circle cx="150" cy="150" r="76" fill="none" stroke="#3c5f99" stroke-width="1.2" stroke-dasharray="2 5"/>
+      </g>
+      <circle cx="150" cy="150" r="42" fill="#e8d5b0" stroke="#b5893a" stroke-width="4"/>
+      <text x="150" y="137" text-anchor="middle" font-family="IM Fell English SC, serif" font-size="12" fill="#4a3624" letter-spacing="2">KEY</text>
+      <text id="key-hub" x="150" y="163" text-anchor="middle" font-family="Abril Fatface, serif" font-size="30" fill="#b8472a">0</text>
+      <rect x="135" y="3" width="30" height="80" rx="5" fill="rgba(240,213,138,.18)" stroke="#b8472a" stroke-width="3"/>
+    </svg>
+  </div>
+  <div class="telegram" id="telegram">
+    <span class="decoded-stamp" aria-hidden="true">DECODED</span>
+    <div class="hdr">INTERCEPTED TELEGRAM</div>
+    <h2 id="h-cipher">Crack the Cipher</h2>
+    <p>Turn the wheel until the message reads clearly. Drag it, tap the arrows, or focus it and use your arrow keys.</p>
+    <span class="lbl">Intercepted</span>
+    <p class="ciph" id="ciph"></p>
+    <span class="lbl">Your reading</span>
+    <p class="plain" id="plain"></p>
+    <div class="wheel-ctrls">
+      <button type="button" id="w-prev" aria-label="Turn the wheel back one letter">&#9664;</button>
+      <span>Key <strong id="key-val">0</strong></span>
+      <button type="button" id="w-next" aria-label="Turn the wheel forward one letter">&#9654;</button>
+    </div>
+    <p class="hint">Hint: count the letters in YARD, then add three.</p>
+  </div>
+</section>
+
+<!-- ═══════════ Agenda case file ═══════════ -->
+<section class="casefile" id="agenda" aria-labelledby="h-agenda">
+  <div class="folder">
+    <span class="tab">CASE FILE № 221-B</span>
+    <div class="body">
+      <span class="stamp" aria-hidden="true">CONFIDENTIAL</span>
+      <h2 id="h-agenda">The Agenda</h2>
+      <p class="sub">Order of proceedings for the day of the investigation.</p>
+
+      <div class="facts" id="details">
+        <div class="fact"><b>Date</b>To be announced</div>
+        <div class="fact"><b>Venue</b>To be announced</div>
+        <div class="fact"><b>Squad size</b>To be announced</div>
+        <div class="fact"><b>Registration</b>Link coming soon</div>
+      </div>
+
+      <ol class="timeline">
+        <li><span class="time">09:00</span><span class="what"><b>Reporting for Duty</b><span>Check-in, squad formation and badges at the front desk.</span></span></li>
+        <li><span class="time">09:30</span><span class="what"><b>The Case Begins</b><span>Sealed dossiers handed out in the Briefing Room. The clock starts.</span></span></li>
+        <li><span class="time">10:00</span><span class="what"><b>Round I · Solve the Clues</b><span>Ciphers, puzzles and data trails in the Cipher &amp; Data Bureau.</span></span></li>
+        <li><span class="time">12:00</span><span class="what"><b>Tea at the Yard</b><span>A break to compare notes. Keep your theories to yourselves.</span></span></li>
+        <li><span class="time">13:00</span><span class="what"><b>Round II · Forensics &amp; Interrogation</b><span>Examine the evidence locker and question the witnesses.</span></span></li>
+        <li><span class="time">15:00</span><span class="what"><b>Round III · Track the Suspects</b><span>A live chase across the map. First squad to make the arrest wins.</span></span></li>
+        <li><span class="time">16:30</span><span class="what"><b>The Reveal</b><span>The culprit is unmasked, then prizes and commendations.</span></span></li>
+      </ol>
+      <p class="fine">* Timings are provisional and subject to change by order of the Commissioner.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fp-row" aria-hidden="true"><svg><use href="#fp"/></svg><svg><use href="#fp"/></svg><svg><use href="#fp"/></svg></div>
+  ISTE · Scotland Yard: The Ultimate Mystery Challenge
+  <p class="credit">Website designed and made by <span>Ishaan Roy</span></p>
+</footer>
+
+<!-- Clue tracker -->
+<div class="casebook" id="casebook" role="status" aria-live="polite">
+  <svg aria-hidden="true"><use href="#fp"/></svg>
+  <span class="count-msg">Hidden clues found: <strong><span id="clue-count">0</span> / <span id="clue-total">0</span></strong></span>
+  <span class="solved-msg">Case cracked, detective! <a href="#details">Make it official →</a></span>
+</div>
+<div class="toast" id="toast" aria-hidden="true"></div>
+<button type="button" class="torch-btn" id="torch-btn" aria-pressed="false"><span class="bulb" aria-hidden="true"></span><span class="torch-label">Lights out</span></button>
+
+<script>
+  (function () {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+    const hasIO = 'IntersectionObserver' in window;
+
+    /* ── Parallax fallback: browsers without CSS scroll timelines get --p from a rAF poll ── */
+    if (!reduce && !(window.CSS && CSS.supports('animation-timeline: scroll()'))) {
+      document.documentElement.classList.add('no-sdt');
+      const scene = $('.bg-scene'), root = document.documentElement;
+      let lastY = -1;
+      (function poll() {
+        const y = scrollY;
+        if (y !== lastY) {
+          lastY = y;
+          const max = Math.max(1, root.scrollHeight - innerHeight);
+          scene.style.setProperty('--p', Math.min(1, y / max).toFixed(4));
+          root.style.setProperty('--hp', Math.min(1, y / (innerHeight * 0.75)).toFixed(4));
+        }
+        requestAnimationFrame(poll);
+      })();
+    }
+
+    /* ── Toast ── */
+    const toast = $('#toast');
+    let toastTimer;
+    function show(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 4200);
+    }
+
+    /* ── Casebook: fingerprints + the cipher all count as clues ── */
+    const clues = $$('.clue');
+    const book = $('#casebook');
+    const count = $('#clue-count');
+    const TOTAL = clues.length + 1;
+    $('#clue-total').textContent = TOTAL;
+    let found = 0;
+    function logClue(msg) {
+      found++;
+      count.textContent = found;
+      show(msg);
+      book.classList.remove('bump'); void book.offsetWidth; book.classList.add('bump');
+      if (found === TOTAL) book.classList.add('solved');
+    }
+    clues.forEach((btn) => {
+      btn.setAttribute('aria-pressed', 'false');
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('found')) { show(btn.dataset.note); return; }
+        btn.classList.add('found');
+        btn.setAttribute('aria-pressed', 'true');
+        btn.setAttribute('aria-label', 'Clue found: ' + btn.dataset.note);
+        logClue(btn.dataset.note);
+      });
+    });
+
+    /* ── Heading decode effect, played once when a room's lights come on ── */
+    const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#?';
+    function scramble(el) {
+      if (reduce || el.dataset.done) return;
+      el.dataset.done = '1';
+      const final = el.textContent;
+      el.setAttribute('aria-label', final);
+      const frames = 34;
+      let f = 0;
+      (function tick() {
+        f++;
+        const reveal = (f / frames) * final.length;
+        el.textContent = final.split('').map((c, i) =>
+          c === ' ' || i < reveal ? c : GLYPHS[(Math.random() * GLYPHS.length) | 0]).join('');
+        if (f < frames) requestAnimationFrame(tick);
+        else { el.textContent = final; el.removeAttribute('aria-label'); }
+      })();
+    }
+
+    /* ── Rooms light up floor by floor as they enter view ── */
+    const rooms = $$('.room');
+    if (hasIO && !reduce) {
+      const roomIO = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          roomIO.unobserve(e.target);
+          setTimeout(() => {
+            e.target.classList.add('lit');
+            const h = e.target.querySelector('.note h2');
+            if (h) setTimeout(() => scramble(h), 500);
+          }, Math.random() * 260);
+        });
+      }, { threshold: 0.3 });
+      rooms.forEach((r) => roomIO.observe(r));
+    } else {
+      rooms.forEach((r) => r.classList.add('lit'));
+    }
+
+    /* ── Reveal agenda + cipher on entry ── */
+    $$('ol.timeline li').forEach((li, i) => li.style.setProperty('--i', i));
+    const revealEls = $$('.folder, ol.timeline, .cipher');
+    if (hasIO) {
+      const revealIO = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add('in'); revealIO.unobserve(e.target); }
+        });
+      }, { threshold: 0.2 });
+      revealEls.forEach((el) => revealIO.observe(el));
+    } else {
+      revealEls.forEach((el) => el.classList.add('in'));
+    }
+
+    /* ── Torch mode ── */
+    const torch = $('#torch');
+    const torchBtn = $('#torch-btn');
+    let tx = innerWidth / 2, ty = innerHeight / 2, torchRaf = 0;
+    function setTorch(on) {
+      document.body.classList.toggle('lights-out', on);
+      torchBtn.setAttribute('aria-pressed', String(on));
+      torchBtn.querySelector('.torch-label').textContent = on ? 'Lights on' : 'Lights out';
+      if (on) show('Lights out. Sweep your torch over the rooms to spot fingerprints.');
+    }
+    torchBtn.addEventListener('click', () => setTorch(!document.body.classList.contains('lights-out')));
+    addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('lights-out')) setTorch(false);
+    });
+    addEventListener('pointermove', (e) => {
+      tx = e.clientX; ty = e.clientY;
+      if (torchRaf) return;
+      torchRaf = requestAnimationFrame(() => {
+        torchRaf = 0;
+        torch.style.setProperty('--x', tx + 'px');
+        torch.style.setProperty('--y', ty + 'px');
+      });
+    }, { passive: true });
+
+    /* ── Tower clock ── */
+    const clockEl = $('#clock'), bell = $('#bell');
+    const hH = $('#clk-h'), hM = $('#clk-m'), hS = $('#clk-s');
+    let lastMin = null;
+    function tickClock() {
+      const d = new Date();
+      const t = d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds();
+      hS.style.transform = `rotate(${t * 6}deg)`;
+      hM.style.transform = `rotate(${t * 0.1}deg)`;
+      hH.style.transform = `rotate(${t / 120}deg)`;
+      const m = d.getMinutes();
+      if (lastMin !== null && m !== lastMin && !reduce) {
+        bell.classList.remove('ring'); bell.getBoundingClientRect(); bell.classList.add('ring');
+      }
+      lastMin = m;
+    }
+    tickClock();
+    requestAnimationFrame(() => requestAnimationFrame(() => clockEl.classList.add('ready')));
+    setInterval(tickClock, 1000);
+
+    /* ── Cipher wheel ── */
+    const A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const N = 26, STEP = 360 / N, KEY = 7;
+    const PLAIN = 'ENLIST AT THE YARD';
+    const mod = (n) => ((n % N) + N) % N;
+    const shiftCh = (c, k) => (A.includes(c) ? A[mod(A.indexOf(c) + k)] : c);
+    const CIPHER = PLAIN.split('').map((c) => shiftCh(c, KEY)).join('');
+
+    const wheel = $('#wheel');
+    const inner = $('#wheel-inner');
+    const SVGNS = 'http://www.w3.org/2000/svg';
+    function ringLetters(group, r) {
+      for (let i = 0; i < N; i++) {
+        const a = (i * STEP - 90) * Math.PI / 180;
+        const x = (150 + r * Math.cos(a)).toFixed(1);
+        const y = (150 + r * Math.sin(a)).toFixed(1);
+        const t = document.createElementNS(SVGNS, 'text');
+        t.setAttribute('x', x);
+        t.setAttribute('y', y);
+        t.setAttribute('transform', `rotate(${i * STEP} ${x} ${y})`);
+        t.textContent = A[i];
+        group.appendChild(t);
+      }
+    }
+    ringLetters($('#wheel-outer'), 129);
+    ringLetters(inner, 95);
+
+    const ciphEl = $('#ciph'), plainEl = $('#plain'), telegram = $('#telegram');
+    const keyVal = $('#key-val'), keyHub = $('#key-hub');
+    ciphEl.textContent = CIPHER;
+    let pos = 0, solved = false, lastShown = null;
+
+    function renderText() {
+      const k = mod(pos);
+      if (k === lastShown) return;
+      lastShown = k;
+      const reading = CIPHER.split('').map((c) => shiftCh(c, -k)).join('');
+      plainEl.textContent = '';
+      reading.split('').forEach((c, i) => {
+        const span = document.createElement('span');
+        span.textContent = c === ' ' ? ' ' : c;
+        span.style.animationDelay = (i * 18) + 'ms';
+        plainEl.appendChild(span);
+      });
+      keyVal.textContent = k;
+      keyHub.textContent = k;
+      wheel.setAttribute('aria-valuenow', k);
+      wheel.setAttribute('aria-valuetext', `Key ${k}. Reading: ${reading}`);
+      if (k === KEY && !solved) {
+        solved = true;
+        telegram.classList.add('solved');
+        logClue('Telegram decoded: ENLIST AT THE YARD. Registration is your next move.');
+      }
+    }
+    function setPos(p) {
+      pos = p;
+      inner.style.transform = `rotate(${-pos * STEP}deg)`;
+      renderText();
+    }
+    $('#w-prev').addEventListener('click', () => setPos(pos - 1));
+    $('#w-next').addEventListener('click', () => setPos(pos + 1));
+    wheel.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { setPos(pos + 1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { setPos(pos - 1); e.preventDefault(); }
+    });
+
+    // Drag to turn: accumulate angle deltas so the wheel can spin past a full turn
+    let drag = null;
+    const angleOf = (e) => {
+      const r = wheel.getBoundingClientRect();
+      return Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2)) * 180 / Math.PI;
+    };
+    wheel.addEventListener('pointerdown', (e) => {
+      wheel.setPointerCapture(e.pointerId);
+      drag = { last: angleOf(e), rot: -pos * STEP };
+      wheel.classList.add('dragging');
+    });
+    wheel.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const a = angleOf(e);
+      let d = a - drag.last;
+      if (d > 180) d -= 360;
+      if (d < -180) d += 360;
+      drag.last = a;
+      drag.rot += d;
+      inner.style.transform = `rotate(${drag.rot}deg)`;
+      pos = Math.round(-drag.rot / STEP);
+      renderText();
+    });
+    const endDrag = () => {
+      if (!drag) return;
+      drag = null;
+      wheel.classList.remove('dragging');
+      setPos(pos); // snap to the nearest letter
+    };
+    wheel.addEventListener('pointerup', endDrag);
+    wheel.addEventListener('pointercancel', endDrag);
+
+    setPos(0);
+  })();
+</script>
+</body>
+</html>
