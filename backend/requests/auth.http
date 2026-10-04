@@ -1,0 +1,34 @@
+### Health
+GET http://localhost:3000/health
+
+
+### Register
+POST http://localhost:3000/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "username": "anirudh",
+  "password": "password123"
+}
+
+
+### Login
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "anirudh",
+  "password": "password123"
+}
+
+
+### Me
+GET http://localhost:3000/api/v1/auth/me
+
+
+### Logout
+POST http://localhost:3000/api/v1/auth/logout
+
+
+### Me after logout
+GET http://localhost:3000/api/v1/auth/me

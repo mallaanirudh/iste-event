@@ -1,0 +1,339 @@
+/* Power the Beacon: shared route styles. Everything is scoped under .root. */
+
+.root {
+  --cocoa: #1a110e;
+  --bone: #f3eadb;
+  --filament: #ffb21e;
+  --board: #0d4a33;
+  --silk: #f2efe6;
+  --enig: #e9b949;
+  --copper: #c9773a;
+  --tan: #e0c69c;
+  --tin: #d6dad3;
+  --hammer: #b3241a;
+  --cream: #fff3e6;
+  --plum: #3b1340;
+  --sky: #7ba9ff;
+  --night: #1f1338;
+  --ink-soft: #5c4e47;
+  --redstone: #e0281f;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --side: clamp(22px, 5vw, 88px);
+  --pillar: 8px;
+  --slab: 28px;
+  --nav-h: 64px;
+  --hair: color-mix(in oklab, var(--fg) 22%, transparent);
+
+  --bg: #1a110e;
+  --fg: #f3eadb;
+
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 100svh;
+  overflow-x: clip;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 768px) {
+  .root {
+    --pillar: 24px;
+    --slab: 36px;
+    --nav-h: 72px;
+    /* Content always starts clear of the copper pipe and its glow (pipe ends at pillar + 24px). */
+    --side: max(clamp(22px, 5vw, 88px), calc(var(--pillar) + 48px));
+  }
+}
+
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+.root ::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.root :focus-visible {
+  outline: 3px solid var(--fg);
+  outline-offset: 3px;
+}
+
+.root a {
+  color: inherit;
+}
+
+.root img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Static film grain: one fixed layer, never animated. Desktop mouse only: a full-screen
+   blend layer is a compositing cost on phones and tablets. */
+.root::after {
+  display: none;
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (min-width: 900px) and (pointer: fine) {
+  .root::after {
+    display: block;
+  }
+}
+
+@media print {
+  .root::after {
+    display: none;
+  }
+}
+
+/* ---------- layout ---------- */
+
+.wrap {
+  width: 100%;
+  max-width: calc(1320px + 2 * var(--side));
+  margin-inline: auto;
+  padding-inline: var(--side);
+}
+
+/* One floor of the tower: about one viewport, content clear of the fixed nav. */
+.floor {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;
+  padding-top: calc(var(--nav-h) + clamp(20px, 4vh, 48px));
+  padding-bottom: clamp(28px, 5vh, 56px);
+}
+
+/*
+ * Phones and small tablets: floors are not viewport-snapped, so the floors below the roof
+ * only need a short lead-in after their slab. Anchor jumps stop below the fixed nav instead.
+ */
+@media (max-width: 899px) {
+  .floor:not(#top) {
+    padding-top: 40px;
+    scroll-margin-top: var(--nav-h);
+  }
+}
+
+.measure {
+  max-width: 62ch;
+}
+
+/* ---------- type ---------- */
+
+.displayXl,
+.displayL,
+.displayHero {
+  font-family: var(--font-tanker), "Big Shoulders Display", Impact, sans-serif;
+  font-weight: 400;
+  margin: 0;
+  font-kerning: none;
+}
+
+.displayHero {
+  font-size: clamp(84px, min(16.5vw, 22svh), 300px);
+  line-height: 0.84;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+.displayXl {
+  font-size: clamp(60px, 9.5vw, 172px);
+  line-height: 0.9;
+  text-transform: uppercase;
+  text-wrap: pretty;
+}
+
+.displayL {
+  font-size: clamp(44px, 6vw, 104px);
+  line-height: 0.92;
+}
+
+.h3 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 650;
+  font-stretch: 85%;
+}
+
+@media (min-width: 768px) {
+  .h3 {
+    font-size: 28px;
+  }
+}
+
+.bodyL {
+  font-size: 19px;
+  line-height: 1.45;
+  font-weight: 450;
+}
+
+@media (min-width: 768px) {
+  .bodyL {
+    font-size: 22px;
+  }
+}
+
+.small {
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.micro {
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  font-stretch: 80%;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.vh {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- tact-switch buttons ---------- */
+
+.btn {
+  --btn-bg: var(--fg);
+  --btn-fg: var(--bg);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 54px;
+  padding: 0 26px 3px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font: inherit;
+  font-size: 17px;
+  font-weight: 650;
+  font-stretch: 88%;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: inset 0 -4px 0 rgb(0 0 0 / 0.28);
+  transition:
+    translate 0.12s var(--ease-out),
+    box-shadow 0.12s var(--ease-out),
+    background-color 0.3s,
+    color 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.root .btn {
+  color: var(--btn-fg);
+}
+
+.btn:hover {
+  box-shadow: inset 0 -5px 0 rgb(0 0 0 / 0.32);
+}
+
+.btn:active {
+  translate: 0 3px;
+  box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.28);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.55;
+  translate: none;
+}
+
+.btnGhost {
+  --btn-bg: transparent;
+  --btn-fg: var(--fg);
+  box-shadow:
+    inset 0 0 0 2px currentColor,
+    inset 0 -4px 0 color-mix(in oklab, currentColor 35%, transparent);
+}
+
+.btnGhost:hover {
+  box-shadow:
+    inset 0 0 0 2px currentColor,
+    inset 0 -5px 0 color-mix(in oklab, currentColor 45%, transparent);
+}
+
+.btnGhost:active {
+  box-shadow:
+    inset 0 0 0 2px currentColor,
+    inset 0 -1px 0 color-mix(in oklab, currentColor 35%, transparent);
+}
+
+.btnSmall {
+  min-height: 44px;
+  padding: 0 18px 3px;
+  font-size: 15px;
+}
+
+.textLink {
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+.textLink:hover {
+  text-decoration-thickness: 3px;
+}
+
+/* ---------- skip link ---------- */
+
+.skip {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  z-index: 200;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: var(--bone);
+  color: var(--cocoa) !important;
+  font-weight: 650;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.skip:focus-visible {
+  transform: none;
+  outline-color: var(--cocoa);
+}

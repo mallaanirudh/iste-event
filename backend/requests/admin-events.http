@@ -1,0 +1,82 @@
+### =========================================================
+### ADMIN EVENTS API TESTS
+### =========================================================
+
+
+### ---------------------------------------------------------
+### 0. LOGIN AS ADMIN
+### ---------------------------------------------------------
+
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+
+### ---------------------------------------------------------
+### 1. GET ALL ADMIN EVENTS
+### ---------------------------------------------------------
+
+GET http://localhost:3000/api/v1/admin/events
+
+
+### ---------------------------------------------------------
+### 2. CREATE EVENT
+### ---------------------------------------------------------
+### Replace these with real UUIDs.
+
+POST http://localhost:3000/api/v1/admin/events
+Content-Type: application/json
+
+{
+  "megaEventId": "a8a67c0a-b1d7-48b0-8a5d-d511897b714e",
+  "sigId": "cdc36297-8640-47d7-9a2b-b99c0ec5848d",
+  "name": "Scotland Yard",
+  "description": "Scotland Yard event"
+}
+
+
+### ---------------------------------------------------------
+### 3. GET ALL EVENTS
+### ---------------------------------------------------------
+
+GET http://localhost:3000/api/v1/admin/events
+
+
+### ---------------------------------------------------------
+### 4. UPDATE EVENT
+### ---------------------------------------------------------
+### Replace EVENT-UUID with the ID returned from CREATE.
+
+PATCH http://localhost:3000/api/v1/admin/events/59b710f1-fe94-43a0-94ca-bba04ee13fb2
+Content-Type: application/json
+
+{
+  "name": "Scotland Yard 2026",
+  "description": "Updated Scotland Yard event"
+}
+
+
+### ---------------------------------------------------------
+### 5. GET ALL EVENTS AFTER UPDATE
+### ---------------------------------------------------------
+
+GET http://localhost:3000/api/v1/admin/events
+
+
+### ---------------------------------------------------------
+### 6. DELETE EVENT
+### ---------------------------------------------------------
+### Replace EVENT-UUID with the ID returned from CREATE.
+
+DELETE http://localhost:3000/api/v1/admin/events/59b710f1-fe94-43a0-94ca-bba04ee13fb2
+
+
+### ---------------------------------------------------------
+### 7. VERIFY DELETE
+### ---------------------------------------------------------
+
+GET http://localhost:3000/api/v1/admin/events

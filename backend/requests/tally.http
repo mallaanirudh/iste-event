@@ -1,0 +1,23 @@
+### Login
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+###
+
+### Get Tally registrations
+GET http://localhost:3000/api/v1/admin/tally/registrations
+
+###
+
+### Get first 10 registrations
+GET http://localhost:3000/api/v1/admin/tally/registrations?page=1&limit=10
+
+###
+
+### Get next 10
+GET http://localhost:3000/api/v1/admin/tally/registrations?page=2&limit=10
