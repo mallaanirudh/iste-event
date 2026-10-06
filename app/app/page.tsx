@@ -7,15 +7,13 @@ import { Rounds } from '@/components/rounds'
 import { SectionHeading } from '@/components/section-heading'
 import { SiteNav } from '@/components/site-nav'
 import { SpeedCanvas } from '@/components/speed-canvas'
-import { TrackBackground } from '@/components/track-background'
 
 export default function Page() {
   return (
     <>
-      <TrackBackground />
       <SpeedCanvas />
       <SiteNav />
-      <main className="relative z-10">
+      <main>
         <Hero />
         <Briefing />
         <Rounds />
