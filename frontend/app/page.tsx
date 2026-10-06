@@ -1,5 +1,5 @@
 // The home page is the Scotland Yard event landing page (also served at /scotland-yard).
-export { metadata } from "./scotland-yard/page";
+export { metadata } from "./events/scotland-yard/page";
 import type { Metadata } from "next";
 import GsapInitializer from "@/HomePageComponents/GsapInitializer";
 import Navbar from "@/HomePageComponents/Navbar";
