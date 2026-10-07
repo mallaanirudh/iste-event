@@ -3,11 +3,19 @@
 import { useState } from "react";
 import { board, clues, ticketTypes, type Ticket } from "../content";
 import Floor from "./Floor";
+import { landmarks, MapGround } from "./MapArt";
 import { Clue } from "./Casebook";
 
 const pos = new Map(board.stations.map((s) => [s.id, s]));
-const WIDTH: Record<Ticket, number> = { taxi: 5, bus: 8, tube: 12, black: 5 };
 const ORDER: Ticket[] = ["tube", "bus", "taxi"];
+
+/** A gently curved path between two stations; neighbouring links bow opposite ways. */
+function curve(p: { x: number; y: number }, q: { x: number; y: number }, bow: number, i: number) {
+  const mx = (p.x + q.x) / 2, my = (p.y + q.y) / 2;
+  const dx = q.x - p.x, dy = q.y - p.y, len = Math.hypot(dx, dy) || 1;
+  const k = (i % 2 ? -1 : 1) * bow;
+  return `M${p.x} ${p.y} Q${(mx - (dy / len) * k).toFixed(1)} ${(my + (dx / len) * k).toFixed(1)} ${q.x} ${q.y}`;
+}
 
 /** Floor 3: watch Mr. X move across a small board, surfacing only on reveal turns. */
 export default function ChaseBoard() {
@@ -26,7 +34,7 @@ export default function ChaseBoard() {
       : `Move ${step}: he used a ${ticketTypes[move.ticket].label.toLowerCase()}. ${known ? `Last seen at station ${known}.` : "Nobody has seen him yet."}`;
 
   return (
-    <Floor id="chase" label="3" name="Chocolate River" wall="#c8ecd9" labelledBy="h-chase">
+    <Floor id="chase" label="3" name="Factory Map" wall="#c8ecd9" labelledBy="h-chase">
       <div style={{ paddingTop: 44 }}>
         <p className="kicker" data-pop>The main event</p>
         <h2 id="h-chase" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>Chase <em>Mr. X</em></h2>
@@ -36,27 +44,48 @@ export default function ChaseBoard() {
 
         <div className="chase" data-pop style={{ "--d": 3 } as React.CSSProperties}>
           <div className="board">
-            <svg viewBox="0 0 840 470" role="img" aria-label={`Factory board. ${status}`}>
-              <path d="M0 300 C160 270 220 330 360 300 S560 240 640 300 S780 330 840 290" fill="none" stroke="#5a2a1b" strokeWidth="44" />
-              <path d="M0 300 C160 270 220 330 360 300 S560 240 640 300 S780 330 840 290" fill="none" stroke="#7a3b26" strokeWidth="14" strokeDasharray="30 40" className="river-flow" />
-              <ellipse cx="200" cy="140" rx="70" ry="34" fill="#9be0b8" /><ellipse cx="690" cy="190" rx="60" ry="28" fill="#9be0b8" />
-              <g color="#e2457a"><use href="#sy-gum" x="180" y="128" width="14" height="12" /><use href="#sy-gum" x="210" y="140" width="12" height="10" /></g>
-              <use href="#sy-shroom" x="676" y="170" width="30" height="26" />
+            <svg viewBox="0 0 840 470" role="img" aria-label={`Factory map. ${status}`}>
+              <MapGround />
+              {/* pipes under the paths, then chocolate streams, then the white sweet-cart road */}
               {ORDER.map((type) =>
-                board.links.filter(([, , t]) => t === type).map(([a, b]) => {
-                  const p = pos.get(a)!, q = pos.get(b)!;
-                  return (
-                    <line key={`${a}-${b}-${type}`} className="link" x1={p.x} y1={p.y} x2={q.x} y2={q.y}
-                      stroke={ticketTypes[type].color} strokeWidth={WIDTH[type]} strokeDasharray={type === "tube" ? "2 14" : undefined} />
+                board.links.filter(([, , t]) => t === type).map(([a, b], i) => {
+                  const d = curve(pos.get(a)!, pos.get(b)!, type === "bus" ? 26 : type === "taxi" ? 14 : 0, i);
+                  const key = `${a}-${b}-${type}`;
+                  if (type === "tube") return (
+                    <g key={key}>
+                      <path d={d} className="link" stroke="#2b1236" strokeWidth="15" />
+                      <path d={d} className="link" stroke={ticketTypes.tube.color} strokeWidth="9" />
+                      <path d={d} className="link" stroke="#c9b2e8" strokeWidth="9" strokeDasharray="3 26" />
+                    </g>
                   );
+                  if (type === "bus") return (
+                    <g key={key}>
+                      <path d={d} className="link" stroke={ticketTypes.bus.color} strokeWidth="11" />
+                      <path d={d} className="link river-flow" stroke="#9a5a3c" strokeWidth="3" strokeDasharray="10 14" />
+                    </g>
+                  );
+                  return <path key={key} d={d} className="link" stroke="#ffffff" strokeWidth="9" />;
                 }),
               )}
+              {board.stations.map((s) => {
+                const l = landmarks[s.id];
+                return <g key={`art-${s.id}`} transform={`translate(${s.x} ${s.y})`}>{l?.art}</g>;
+              })}
               {board.stations.map((s) => (
                 <g key={s.id} className="stn">
-                  <circle cx={s.x} cy={s.y} r="19" fill={known === s.id ? "#f5c834" : "#fdf8ee"} />
+                  <circle cx={s.x} cy={s.y} r="14" fill={known === s.id ? "#f5c834" : "#fdf8ee"} />
                   <text x={s.x} y={s.y}>{s.id}</text>
                 </g>
               ))}
+              {board.stations.map((s) => {
+                const l = landmarks[s.id];
+                if (!l) return null;
+                return (
+                  <text key={`lbl-${s.id}`} className="map-label" x={s.x + l.lx} y={s.y + l.ly} textAnchor={l.anchor ?? "middle"}>
+                    {s.name}
+                  </text>
+                );
+              })}
               {board.detectives.map((d, i) => {
                 const p = pos.get(d)!;
                 return <use key={d} href={i === 1 ? "#sy-helper" : "#sy-kid"} x={p.x + 8} y={p.y - 52} width="26" height="46" />;

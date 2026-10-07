@@ -9,7 +9,7 @@ export const floors = [
   { id: "roof", label: "R", name: "The Roof" },
   { id: "briefing", label: "5", name: "Inventing Room" },
   { id: "cipher", label: "4", name: "Wrapping Room" },
-  { id: "chase", label: "3", name: "Chocolate River" },
+  { id: "chase", label: "3", name: "Factory Map" },
   { id: "rounds", label: "2", name: "Tasting Hall" },
   { id: "scores", label: "1", name: "Scoreboard" },
   { id: "gate", label: "G", name: "Factory Gates" },
@@ -48,8 +48,8 @@ export const agenda = [
 ];
 
 export const ticketTypes = {
-  taxi: { label: "Sweet cart", color: "#f5c834" },
-  bus: { label: "River boat", color: "#e2457a" },
+  taxi: { label: "Sweet cart", color: "#ffffff" },
+  bus: { label: "River boat", color: "#6b3423" },
   tube: { label: "Pipe", color: "#7b3fb8" },
   black: { label: "Glass elevator", color: "#2b1236" },
 } as const;
@@ -58,10 +58,13 @@ export type Ticket = keyof typeof ticketTypes;
 /** A small board for the chase demo: stations, links and Mr. X's hidden route. */
 export const board = {
   stations: [
-    { id: 1, x: 80, y: 80 }, { id: 2, x: 230, y: 60 }, { id: 3, x: 390, y: 95 }, { id: 4, x: 560, y: 70 },
-    { id: 5, x: 720, y: 110 }, { id: 6, x: 130, y: 230 }, { id: 7, x: 300, y: 210 }, { id: 8, x: 470, y: 230 },
-    { id: 9, x: 640, y: 250 }, { id: 10, x: 90, y: 380 }, { id: 11, x: 260, y: 370 }, { id: 12, x: 430, y: 390 },
-    { id: 13, x: 610, y: 400 }, { id: 14, x: 760, y: 360 },
+    { id: 1, x: 80, y: 92, name: "Ticket Gates" }, { id: 2, x: 230, y: 70, name: "Candy Floss Clouds" },
+    { id: 3, x: 390, y: 118, name: "Chocolate Room" }, { id: 4, x: 565, y: 82, name: "Inventing Room" },
+    { id: 5, x: 730, y: 118, name: "Bubble Room" }, { id: 6, x: 120, y: 236, name: "Nut Room" },
+    { id: 7, x: 300, y: 222, name: "Lemonade Pool" }, { id: 8, x: 470, y: 240, name: "Gobstopper Works" },
+    { id: 9, x: 645, y: 252, name: "Wrapping Room" }, { id: 10, x: 92, y: 392, name: "Incinerator" },
+    { id: 11, x: 262, y: 382, name: "Fudge Mountain" }, { id: 12, x: 432, y: 400, name: "Taffy Room" },
+    { id: 13, x: 610, y: 408, name: "TV Room" }, { id: 14, x: 762, y: 372, name: "Elevator Dock" },
   ],
   links: [
     [1, 2, "taxi"], [2, 3, "taxi"], [3, 4, "bus"], [4, 5, "taxi"], [1, 6, "bus"], [2, 7, "taxi"], [3, 8, "taxi"],
