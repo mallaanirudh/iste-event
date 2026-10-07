@@ -3,7 +3,7 @@
 .dialog {
   width: min(720px, calc(100% - 24px));
   max-width: none;
-  max-height: calc(100svh - 24px);
+  max-height: calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   margin: auto;
   padding: 0;
   border: 0;
@@ -77,6 +77,10 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+}
+.head > :first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .title {

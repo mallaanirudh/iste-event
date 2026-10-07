@@ -177,6 +177,7 @@ type Fly = { t: string; x0: number; y0: number; x1: number; y1: number } | null;
 
 export default function Maze() {
   const stage = useRef<HTMLDivElement>(null);
+  const touchPointer = useRef<number | null>(null);
   const worldEl = useRef<HTMLDivElement>(null);
   const flaskEl = useRef<HTMLDivElement>(null);
   const flaskSvg = useRef<SVGSVGElement>(null);
@@ -217,7 +218,8 @@ export default function Maze() {
   // New random maze and code on every page load (browser only, so no hydration mismatch).
   // The intro restarts do not touch this, so the maze and code stay the same.
   useEffect(() => {
-    setWorld(buildWorld());
+    const frame = requestAnimationFrame(() => setWorld(buildWorld()));
+    return () => cancelAnimationFrame(frame);
   }, []);
   useEffect(() => {
     au.current = createAudio();
@@ -385,9 +387,17 @@ export default function Maze() {
   }, [plain, world, phase]);
 
   const aim = (e: React.PointerEvent) => {
+    if (st.current.lock || (e.pointerType !== "mouse" && touchPointer.current !== e.pointerId)) return;
     const r = e.currentTarget.getBoundingClientRect();
     st.current.px = e.clientX - r.left;
     st.current.py = e.clientY - r.top;
+  };
+  const stopTouch = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (touchPointer.current !== e.pointerId) return;
+    touchPointer.current = null;
+    st.current.px = st.current.fx - st.current.cx;
+    st.current.py = st.current.fy - st.current.cy;
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) e.currentTarget.releasePointerCapture(e.pointerId);
   };
   const glowText = (e: React.PointerEvent) => {
     card.current?.style.setProperty("--mx", `${e.clientX}px`);
@@ -460,7 +470,9 @@ export default function Maze() {
     }
     setOpen(null);
   };
-  closeRef.current = close;
+  useEffect(() => {
+    closeRef.current = close;
+  });
 
   if (!world) return <div className={styles.stage} />;
 
@@ -616,9 +628,17 @@ export default function Maze() {
       className={`${styles.stage} ${styles.arrive}`}
       onPointerMove={aim}
       onPointerDown={(e) => {
+        if (st.current.lock || (e.target instanceof Element && e.target.closest("button, a, [role='dialog']"))) return;
+        if (e.pointerType !== "mouse") {
+          touchPointer.current = e.pointerId;
+          e.currentTarget.setPointerCapture(e.pointerId);
+        }
         aim(e);
         au.current?.start();
       }}
+      onPointerUp={stopTouch}
+      onPointerCancel={stopTouch}
+      onLostPointerCapture={stopTouch}
     >
       <div
         ref={worldEl}
@@ -809,8 +829,8 @@ export default function Maze() {
         </div>
       </header>
       <p className={styles.hint}>
-        Guide the flask with your cursor. Walls stop you. Push toward the screen
-        edge to keep walking. Don&apos;t stand still.
+        Point with your mouse. On touch screens, hold and drag; release to stop.
+        Push toward the screen edge to keep walking. Walls stop you.
       </p>
 
       <div ref={flaskEl} className={styles.flask} aria-hidden="true">

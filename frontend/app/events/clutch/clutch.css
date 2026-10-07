@@ -4,9 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-display: var(--font-dela), 'Impact', sans-serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
-  --font-sans: var(--font-jetbrains), ui-monospace, monospace;
+  --font-display: var(--font-dela), "Impact", sans-serif;
 
   --color-asphalt: #0b0e14;
   --color-asphalt-2: #131822;
@@ -42,7 +40,7 @@
   --radius-xl: calc(var(--radius) * 1.4);
 }
 
-:root {
+.clutch-event {
   color-scheme: dark;
   --background: #0b0e14;
   --foreground: #f4f6fa;
@@ -63,21 +61,50 @@
   --input: #2a3242;
   --ring: #00e5ff;
   --radius: 0.25rem;
+  color: var(--foreground);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+.clutch-event :where(.font-mono, .font-sans) {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+}
+.clutch-event :where(main, section, article, footer) {
+  min-width: 0;
+}
+.clutch-event :where(h1, h2, h3, p, li) {
+  overflow-wrap: anywhere;
+}
+.clutch-event [role="tabpanel"] {
+  overscroll-behavior-x: contain;
+}
+.clutch-event :where(a, button, [tabindex]):focus-visible {
+  outline: 3px solid #00e5ff;
+  outline-offset: 4px;
+}
+.clutch-quick-contacts {
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 @layer base {
-  * {
+  .clutch-event :where(*) {
     @apply border-border outline-ring/50;
   }
-  html {
+  html:has(.clutch-event) {
     scroll-behavior: smooth;
   }
-  section[id],
-  footer[id] {
-    scroll-margin-top: 4rem;
+  .clutch-event :where(section, footer)[id] {
+    scroll-margin-top: 5rem;
   }
-  body {
-    @apply bg-transparent text-foreground font-mono;
+}
+
+@media (max-height: 480px) {
+  .clutch-quick-contacts {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.clutch-event) {
+    scroll-behavior: auto;
   }
 }
 

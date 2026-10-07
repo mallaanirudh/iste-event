@@ -132,7 +132,7 @@ const STARS: [number, number, number][] = [
 ];
 
 export async function renderOgImage() {
-  const tanker = await readFile(join(process.cwd(), "app/events/square1_charge/_fonts/Tanker-Regular.ttf"));
+  const tanker = await readFile(join(process.cwd(), "app/events/charge/_fonts/Tanker-Regular.ttf"));
 
   return new ImageResponse(
     (

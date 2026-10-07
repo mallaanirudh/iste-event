@@ -237,7 +237,7 @@
 
 .figureWrap {
   /* Width also capped by height, so on short phones the whole scene still fits on screen. */
-  --fig-w: min(100vw - 2 * var(--side), 420px, (100svh - 470px) * 1.88);
+  --fig-w: min(100vw - 2 * var(--side), 420px, max(180px, (100svh - 470px) * 1.88));
   /* Phones: the scene sits in the flow under the copy and takes the space that is left,
      so the two can never overlap; the beam rises through that space and fades at its top. */
   position: relative;

@@ -169,11 +169,14 @@
   z-index: 90;
   display: flex;
   flex-direction: column;
-  padding: 88px var(--side) 32px;
+  padding: max(88px, calc(env(safe-area-inset-top) + 64px)) var(--side) max(32px, env(safe-area-inset-bottom));
   background: var(--cocoa);
   color: var(--bone);
   clip-path: circle(150% at 100% 0);
   overflow-y: auto;
+}
+.sheetLink {
+  overflow-wrap: anywhere;
 }
 
 .sheet :focus-visible {

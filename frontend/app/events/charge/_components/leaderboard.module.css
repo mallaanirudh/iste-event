@@ -156,12 +156,32 @@
 
 /* The same bevelled frame language as the crafting GUI: a black outline and a soft inner bevel. */
 .sidebar {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
   border: 3px solid #0b0714;
   background: rgb(0 0 0 / 0.38);
   box-shadow:
     inset 2px 2px 0 rgb(255 255 255 / 0.08),
     inset -2px -2px 0 rgb(0 0 0 / 0.4),
     6px 6px 0 rgb(0 0 0 / 0.22);
+}
+.team {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 639px) {
+  .tabs {
+    grid-auto-columns: minmax(0, 1fr);
+  }
+  .tab {
+    min-width: 0;
+    padding: 8px;
+    white-space: normal;
+    line-height: 1.25;
+    text-align: center;
+  }
+  .sidebar .row td {
+    padding-inline: 10px;
+  }
 }
 
 .boardTitle {

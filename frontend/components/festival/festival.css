@@ -1,0 +1,740 @@
+.festival,
+.festival-dialog {
+  font-family: var(--font-nunito), sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+.festival :where(main, section, article),
+.festival-dialog :where(h2, p) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.festival-dialog {
+  overscroll-behavior: contain;
+  scroll-padding-block: 16px;
+}
+.festival-dialog button[aria-label="Close dialog"] {
+  min-width: 44px;
+  min-height: 44px;
+}
+.festival-heading {
+  font-family: var(--font-bangers), Impact, sans-serif;
+  font-weight: 400;
+}
+.festival-title {
+  text-shadow:
+    2px 3px 0 #ff007f,
+    0 0 26px #ff007f22;
+  -webkit-text-stroke: 1px #180c2a;
+}
+.festival-stars {
+  background-image:
+    radial-gradient(circle, #e6cfff80 1px, transparent 1.5px),
+    radial-gradient(circle, #ffd70055 1px, transparent 1.5px);
+  background-size:
+    143px 157px,
+    227px 211px;
+  background-position:
+    19px 29px,
+    83px 113px;
+  mask-image: linear-gradient(#000, #0003 70%, transparent);
+}
+.festival :where(a, button, input):focus-visible,
+.festival-dialog :where(a, button, input):focus-visible,
+.festival-mobile-menu :where(a, button):focus-visible {
+  outline: 3px solid #00e5ff;
+  outline-offset: 5px;
+}
+.festival-nav-space {
+  height: 85px;
+}
+.festival-navbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  height: 85px;
+  background: rgb(30 11 45 / 0.38);
+  backdrop-filter: blur(4px);
+  transition:
+    height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.4s ease,
+    backdrop-filter 0.4s ease;
+}
+.festival-navbar[data-scrolled="true"] {
+  height: 70px;
+  background: rgb(24 9 37 / 0.85);
+  backdrop-filter: blur(12px);
+}
+.festival-navbar-inner {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  height: 100%;
+  margin-inline: auto;
+  padding-inline: 32px;
+}
+.festival-navbar-brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 13px;
+  width: 208px;
+  overflow: hidden;
+  white-space: nowrap;
+  transition:
+    width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.3s ease,
+    visibility 0.3s;
+}
+.festival-navbar-wordmark {
+  color: #ffd700;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+}
+.festival-navbar-brand-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: 13px;
+  border-left: 1px solid #b69cff40;
+}
+.festival-navbar-brand-detail > :first-child {
+  color: #fff5df;
+  font-size: 13px;
+  font-weight: 800;
+}
+.festival-navbar-brand-detail > :last-child {
+  color: #bda4d1;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+.festival-nav-spacer-left,
+.festival-nav-spacer-right {
+  flex-basis: 0;
+  transition: flex-grow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.festival-nav-spacer-left {
+  flex-grow: 1;
+}
+.festival-nav-spacer-right {
+  flex-grow: 0;
+}
+.festival-navbar-links {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: clamp(18px, 2.2vw, 30px);
+  white-space: nowrap;
+}
+.festival-navbar-links :where(a, button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  color: #d9c8e9;
+  font-size: 12px;
+  font-weight: 800;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+.festival-navbar-links :where(a, button):hover,
+.festival-navbar-links a[aria-current="location"] {
+  color: #ffd700;
+}
+.festival-navbar-links .festival-navbar-ticket {
+  gap: 8px;
+  min-height: 40px;
+  border: 1px solid #ffd700;
+  border-radius: 8px;
+  padding: 0 14px;
+  color: #ffd700;
+  background: #ffd70008;
+  transition:
+    color 0.2s,
+    background-color 0.2s,
+    transform 0.2s;
+}
+.festival-navbar-links .festival-navbar-ticket:hover {
+  background: #ffd700;
+  color: #241037;
+}
+.festival-navbar-ticket:active {
+  transform: translateY(1px);
+}
+.festival-navbar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: #ffd700;
+  border: 1px solid #b69cff40;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.festival-mobile-menu {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  padding: max(24px, env(safe-area-inset-top)) 24px
+    max(24px, env(safe-area-inset-bottom));
+  background: rgb(22 8 35 / 0.97);
+  color: #fff5df;
+  font-family: var(--font-nunito), sans-serif;
+  overflow-y: auto;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease,
+    display 0.3s allow-discrete,
+    overlay 0.3s allow-discrete;
+}
+.festival-mobile-menu[open] {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+}
+.festival-mobile-menu::backdrop {
+  background: #160823;
+}
+.festival-mobile-menu-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.festival-mobile-menu-top p {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+.festival-mobile-menu-top p span {
+  color: #ffd700;
+}
+.festival-mobile-menu-top button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #b69cff40;
+  border-radius: 10px;
+  color: #ffd700;
+  cursor: pointer;
+}
+.festival-mobile-menu-links {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(12px, 3vh, 28px);
+  width: min(100%, 440px);
+  margin-inline: auto;
+  padding-block: 40px;
+}
+.festival-mobile-menu-links :where(a, button) {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-height: 48px;
+  text-align: left;
+  font-size: clamp(24px, 5vw, 36px);
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.festival-mobile-menu-links :where(a, button) span {
+  color: #a88cbd;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.festival-mobile-menu-links :where(a, button):hover,
+.festival-mobile-menu-links a[aria-current="location"] {
+  color: #ffd700;
+}
+.festival-mobile-menu-links .festival-mobile-ticket {
+  justify-content: space-between;
+  margin-top: 12px;
+  border-top: 1px solid #ffd70040;
+  padding-top: 22px;
+  color: #ffd700;
+  font-size: 18px;
+}
+.festival-mobile-menu-footer {
+  color: #a88cbd;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-align: center;
+}
+html:has(.festival-mobile-menu[open]) {
+  overflow: hidden;
+}
+@starting-style {
+  .festival-mobile-menu[open] {
+    opacity: 0;
+  }
+}
+@media (min-width: 901px) {
+  .festival-navbar[data-scrolled="true"] .festival-navbar-brand {
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .festival-navbar[data-scrolled="true"] .festival-nav-spacer-right {
+    flex-grow: 1;
+  }
+}
+@media (max-width: 900px) {
+  .festival-nav-space,
+  .festival-navbar {
+    height: 76px;
+  }
+  .festival-navbar {
+    background: transparent;
+    backdrop-filter: none;
+  }
+  .festival-navbar[data-scrolled="true"] {
+    height: 68px;
+  }
+  .festival-navbar-inner {
+    justify-content: space-between;
+    padding-inline: 24px;
+  }
+  .festival-navbar-brand {
+    min-width: 0;
+    width: auto;
+    max-width: 208px;
+    flex-shrink: 1;
+  }
+  .festival-navbar-toggle {
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+  .festival-navbar-links,
+  .festival-nav-spacer-left,
+  .festival-nav-spacer-right {
+    display: none;
+  }
+  .festival-navbar-toggle {
+    display: inline-flex;
+  }
+}
+.festival-button {
+  cursor: pointer;
+  transition:
+    transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s;
+}
+.festival-button:active {
+  transform: translate(2px, 2px);
+}
+.festival-entrance {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  isolation: isolate;
+  overflow: hidden;
+}
+.festival-entrance-bunting {
+  height: 72px;
+  margin-bottom: 24px;
+}
+.festival-entrance-scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.festival-entrance-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 1100px;
+  width: 100%;
+  margin-inline: auto;
+  padding: 0 20px 32px;
+  text-align: center;
+}
+.festival-entrance-copy {
+  position: relative;
+  z-index: 2;
+}
+.festival-entrance-label {
+  margin-bottom: 20px;
+  color: #e9cb80;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+.festival-entrance .festival-title {
+  margin-bottom: 18px;
+  font-size: clamp(3.2rem, 12vw, 6rem);
+  line-height: 1.12;
+  white-space: nowrap;
+}
+.festival-entrance-intro {
+  max-width: 440px;
+  margin-inline: auto;
+  color: #d9c8e9;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.festival-ticket-button {
+  position: relative;
+  border: 2px solid #e9cb80;
+  background: #ffd700;
+  color: #241037;
+  box-shadow: 4px 4px 0 #140a24;
+  margin-top: 28px;
+}
+.festival-ticket-button::before {
+  position: absolute;
+  inset: 3px;
+  border: 1px dashed #24103755;
+  content: "";
+  pointer-events: none;
+}
+.festival-entrance-art {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 320px);
+  margin-top: 10px;
+}
+.festival-entrance-gate {
+  display: none;
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  width: clamp(128px, 13vw, 184px);
+  height: calc(100% - 12px);
+  pointer-events: none;
+}
+.festival-entrance-gate svg {
+  width: 100%;
+  height: 100%;
+}
+.festival-entrance-gate-left {
+  left: 0;
+}
+.festival-entrance-gate-right {
+  right: 0;
+}
+.festival-entrance-gate-right svg {
+  transform: scaleX(-1);
+}
+.festival-noticeboard {
+  box-shadow: 6px 6px 0 #140a24;
+}
+.festival-noticeboard::before,
+.festival-noticeboard::after {
+  position: absolute;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+}
+.festival-noticeboard::before {
+  inset: 5px;
+  border: 1px solid #b68a4040;
+}
+.festival-noticeboard::after {
+  inset: 10px;
+  background:
+    radial-gradient(circle at 2px 2px, #e9cb80 2px, transparent 2.5px),
+    radial-gradient(
+      circle at calc(100% - 2px) 2px,
+      #e9cb80 2px,
+      transparent 2.5px
+    ),
+    radial-gradient(
+      circle at 2px calc(100% - 2px),
+      #e9cb80 2px,
+      transparent 2.5px
+    ),
+    radial-gradient(
+      circle at calc(100% - 2px) calc(100% - 2px),
+      #e9cb80 2px,
+      transparent 2.5px
+    );
+}
+.festival-card {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.festival-reveal {
+  transition:
+    opacity 0.65s ease,
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.festival-reveal-pending {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.festival-reveal-pending:focus-within {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s !important;
+}
+.festival section[id],
+.festival article[id] {
+  scroll-margin-top: 110px;
+}
+.festival-hero-enter > * {
+  animation: festival-arrive 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.festival-hero-enter > :nth-child(2) {
+  animation-delay: 0.06s;
+}
+.festival-hero-enter > :nth-child(3) {
+  animation-delay: 0.12s;
+}
+.festival-hero-enter > :nth-child(4) {
+  animation-delay: 0.2s;
+}
+.festival-button.festival-float {
+  animation: none;
+}
+.festival-float {
+  animation: festival-float 4s ease-in-out infinite;
+}
+.festival-live {
+  animation: festival-pulse 2s ease-in-out infinite;
+}
+.festival-wheel {
+  transform-origin: 217px 216px;
+  animation: festival-spin 100s linear infinite;
+}
+.festival-chamber {
+  border-color: #b68a40;
+  box-shadow: 6px 6px 0 #140a24;
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.3s,
+    border-color 0.3s;
+}
+.festival-chamber:hover,
+.festival-chamber:focus-within {
+  border-color: var(--chamber-color);
+  box-shadow: 6px 9px 0 #140a24;
+}
+@media (hover: hover) and (pointer: fine) {
+  .festival-chamber:hover {
+    transform: translate(-3px, -4px);
+  }
+  .festival-card:hover {
+    transform: translateY(-3px);
+  }
+  .festival-button:hover {
+    transform: translateY(-2px);
+  }
+  .festival-button:active {
+    transform: translate(2px, 2px);
+  }
+}
+.festival-chamber-sign {
+  border: 1px solid color-mix(in srgb, var(--chamber-color) 50%, #b68a40);
+  background: #1a0b29;
+  box-shadow: 0 3px 0 #140a24;
+}
+.festival-chamber-scene {
+  border-bottom: 1px solid #b68a4030;
+}
+.festival-chamber-scene .festival-chamber-art {
+  height: 160px;
+}
+.festival-chamber-art {
+  position: relative;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.festival-chamber:hover .festival-chamber-art {
+  transform: translateY(-3px);
+}
+.festival-chamber-link {
+  transition: color 0.2s;
+}
+.festival-chamber-link:hover {
+  background: #ffe76e;
+}
+.festival-chamber-link svg {
+  transition: transform 0.2s;
+}
+.festival-chamber-link:hover svg {
+  transform: translate(2px, -2px);
+}
+.festival-network-glow {
+  filter: drop-shadow(0 0 5px #ffd70066);
+}
+.festival-network-spark {
+  filter: drop-shadow(0 0 7px #fff5df);
+}
+.festival-event-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 2px solid #b69cff40;
+  border-radius: 12px;
+  background: #1b0c2c;
+  padding: 16px;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  cursor: pointer;
+}
+.festival-event-link:hover {
+  border-color: #00e5ff;
+  background: #00e5ff0a;
+}
+.festival-social {
+  transition:
+    transform 0.25s,
+    box-shadow 0.25s;
+}
+.festival-dialog::backdrop {
+  background: #10051dcc;
+  backdrop-filter: blur(8px);
+}
+.festival-dialog {
+  opacity: 0;
+  translate: 0 10px;
+  scale: 0.985;
+  transition:
+    opacity 0.2s,
+    translate 0.2s,
+    scale 0.2s,
+    display 0.2s allow-discrete,
+    overlay 0.2s allow-discrete;
+}
+.festival-dialog[open] {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+}
+@starting-style {
+  .festival-dialog[open] {
+    opacity: 0;
+    translate: 0 10px;
+    scale: 0.985;
+  }
+}
+html:has(.festival-dialog[open]) {
+  overflow: hidden;
+}
+html:has(.festival) {
+  scroll-behavior: smooth;
+}
+@keyframes festival-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -7px;
+  }
+}
+@keyframes festival-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 #ff007f60;
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px #ff007f00,
+      0 0 12px #ff007f;
+  }
+}
+@keyframes festival-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes festival-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (min-width: 1024px) {
+  .festival-title {
+    font-family: var(--font-festival-title), var(--font-nunito), sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+  }
+  .festival-entrance {
+    min-height: min(calc(100svh - 85px), 880px);
+  }
+  .festival-entrance-bunting {
+    height: 56px;
+    margin-bottom: 16px;
+  }
+  .festival-entrance-stage {
+    padding-bottom: 16px;
+  }
+  .festival-entrance-label {
+    margin-bottom: 12px;
+  }
+  .festival-entrance .festival-title {
+    margin-bottom: 14px;
+    font-size: clamp(4.5rem, min(8.5vw, 13svh), 8.2rem);
+  }
+  .festival-entrance-intro {
+    font-size: 17px;
+  }
+  .festival-entrance-gate {
+    display: block;
+  }
+  .festival-entrance-art {
+    width: clamp(200px, 33svh, 320px);
+    margin-top: 4px;
+  }
+  .festival-ticket-button {
+    margin-top: 20px;
+  }
+}
+@media (max-width: 639px) {
+  .festival-title {
+    font-size: clamp(3rem, 12.5vw, 4.7rem);
+    text-shadow:
+      1px 2px 0 #ff007f,
+      0 0 20px #ff007f22;
+  }
+  .festival :where(.festival-button) {
+    max-width: 100%;
+    text-align: center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.festival) {
+    scroll-behavior: auto;
+  }
+  .festival *,
+  .festival-dialog *,
+  .festival-mobile-menu,
+  .festival-mobile-menu * {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .festival-reveal-pending {
+    opacity: 1;
+    transform: none;
+  }
+  .festival-dialog {
+    transition: none;
+  }
+  .festival-network-spark {
+    display: none;
+  }
+}

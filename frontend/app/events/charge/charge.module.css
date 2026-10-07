@@ -77,6 +77,12 @@
   max-width: 100%;
   height: auto;
 }
+.root :where(main, section, article, .wrap) {
+  min-width: 0;
+}
+.root :where(h1, h2, h3, p, li) {
+  overflow-wrap: anywhere;
+}
 
 /* Static film grain: one fixed layer, never animated. Desktop mouse only: a full-screen
    blend layer is a compositing cost on phones and tablets. */
@@ -257,6 +263,19 @@
     background-color 0.3s,
     color 0.3s;
   -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 479px) {
+  .displayXl {
+    font-size: clamp(44px, 11vw, 60px);
+  }
+  .btn {
+    max-width: 100%;
+    padding-inline: 18px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.2;
+  }
 }
 
 .root .btn {

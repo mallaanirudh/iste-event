@@ -631,3 +631,86 @@
 .root :global(.f-type) { font-family: var(--type); }
 .root :global(.f-display) { font-family: var(--display); }
 .root :global(.f-serif) { font-family: var(--serif); }
+
+/* Keep the illustrated rooms intact while the surrounding copy can reflow. */
+.root :global(.building), .root :global(.room), .root :global(.note),
+.root :global(.telegram), .root :global(.what), .root :global(.fact) {
+  min-width: 0;
+}
+.root :global(p), .root :global(h2), .root :global(.what), .root :global(.fact) {
+  overflow-wrap: anywhere;
+}
+.root :global(.wheel-ctrls) {
+  flex-wrap: wrap;
+}
+.root :global(.wheel-ctrls button), .root :global(.torch-btn), .root :global(.tag) {
+  min-height: 44px;
+}
+.root :global(.casebook) {
+  max-width: calc(100% - 32px);
+  bottom: calc(16px + env(safe-area-inset-bottom));
+}
+.root :global(.casebook > span) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.root :global(.casebook svg) {
+  flex-shrink: 0;
+}
+@media (max-width: 520px) {
+  .root :global(h1.title) {
+    font-size: clamp(36px, 10vw, 52px);
+  }
+  .root :global(.subtitle) {
+    letter-spacing: 0.06em;
+  }
+  .root :global(.stamp) {
+    position: relative;
+    display: block;
+    top: auto;
+    right: auto;
+    width: fit-content;
+    margin: 0 0 18px auto;
+    transform: rotate(3deg);
+  }
+  .root :global(.facts) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .root :global(ol.timeline li) {
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 22px;
+  }
+  .root :global(ol.timeline::before) { left: 56px; }
+  .root :global(ol.timeline li::before) { left: 50px; }
+  .root :global(.torch-btn) {
+    bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+  .root :global(.toast) {
+    bottom: calc(156px + env(safe-area-inset-bottom));
+    max-width: calc(100% - 32px);
+  }
+  .root :global(footer) {
+    padding-bottom: calc(160px + env(safe-area-inset-bottom));
+  }
+}
+@media (pointer: coarse) {
+  .root {
+    background-attachment: scroll;
+  }
+  .root :global(.clue) {
+    width: 44px;
+    height: 44px;
+    padding: 7px;
+  }
+}
+@media (max-width: 520px) {
+  .root :global(.decoded-stamp) {
+    position: static;
+    display: none;
+    width: fit-content;
+  }
+  .root :global(.telegram.solved .decoded-stamp) {
+    display: block;
+    margin: 0 0 16px;
+  }
+}

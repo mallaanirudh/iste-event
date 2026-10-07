@@ -1,41 +1,33 @@
 import type { Metadata } from "next";
-import { Berkshire_Swash, Cinzel, Outfit } from "next/font/google";
+import { Bangers, Nunito } from "next/font/google";
 import "./globals.css";
 
-const berkshire = Berkshire_Swash({
+const bangers = Bangers({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-berkshire",
+  variable: "--font-bangers",
   display: "swap",
 });
 
-const cinzel = Cinzel({
+const nunito = Nunito({
   subsets: ["latin"],
-  variable: "--font-cinzel",
-  display: "swap",
-});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-nunito",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "The Grand Confectionery — Mega Event",
+  title: "FeISTEval | ISTE NITK",
   description:
-    "Step through the factory gates and claim your Golden Ticket to the most whimsical spectacle of the century.",
+    "Explore mysteries, experiments, and engineering challenges at FeISTEval, the ISTE NITK technical carnival.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${berkshire.variable} ${cinzel.variable} ${outfit.variable} h-full antialiased`}
+      className={`${bangers.variable} ${nunito.variable} min-h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#FDF8EE] text-[#1D120C]">
-        {children}
-      </body>
+      <body className="min-h-screen">{children}</body>
     </html>
   );
 }
