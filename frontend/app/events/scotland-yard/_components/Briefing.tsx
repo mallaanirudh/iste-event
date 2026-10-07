@@ -1,5 +1,6 @@
-import { briefing } from "../content";
+import { briefing, clues } from "../content";
 import Floor from "./Floor";
+import { Clue } from "./Casebook";
 
 export default function Briefing() {
   return (
@@ -49,6 +50,7 @@ export default function Briefing() {
           </svg>
         </div>
       </div>
+      <Clue at={{ right: "4%", bottom: "9%" }} note={clues.briefing} />
     </Floor>
   );
 }

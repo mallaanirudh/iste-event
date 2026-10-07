@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { cipher } from "../content";
+import { cipher, clues } from "../content";
 import Floor from "./Floor";
+import { Clue } from "./Casebook";
 
 const A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const N = 26;
@@ -132,6 +133,7 @@ export default function CipherMachine() {
           </div>
         </div>
       </div>
+      <Clue at={{ right: "6%", top: "14%" }} note={clues.cipher} />
     </Floor>
   );
 }

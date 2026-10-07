@@ -1,6 +1,8 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import logo from "@/public/events/scotland-yard/logo.webp";
+import { Clue } from "./Casebook";
+import { clues } from "../content";
 
 /** Marquee bulbs around the sign: [left %, top %] along the edges. */
 const BULBS: [number, number][] = [
@@ -30,6 +32,7 @@ export default function Roof() {
           <div className="legs" aria-hidden="true"><i /><i /><i /></div>
         </div>
 
+        <Clue at={{ left: "8%", top: "62%" }} note={clues.roof} />
         <div className="hero-copy">
           <p className="presents">ISTE presents, at the Grand Confectionery</p>
           <p>The ultimate mystery challenge. Crack the ciphers, ride the chase and corner Mr. X before he slips away.</p>

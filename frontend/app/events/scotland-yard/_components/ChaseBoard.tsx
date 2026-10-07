@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { board, ticketTypes, type Ticket } from "../content";
+import { board, clues, ticketTypes, type Ticket } from "../content";
 import Floor from "./Floor";
+import { Clue } from "./Casebook";
 
 const pos = new Map(board.stations.map((s) => [s.id, s]));
 const WIDTH: Record<Ticket, number> = { taxi: 5, bus: 8, tube: 12, black: 5 };
@@ -93,6 +94,7 @@ export default function ChaseBoard() {
           </div>
         </div>
       </div>
+      <Clue at={{ right: "3%", top: "12%" }} note={clues.chase} />
     </Floor>
   );
 }

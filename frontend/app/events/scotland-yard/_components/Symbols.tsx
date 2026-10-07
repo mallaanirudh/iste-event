@@ -58,6 +58,14 @@ export default function Symbols() {
           <ellipse cx="8" cy="28" rx="6" ry="2" fill="#2d1210" /><rect x="6.8" y="8" width="2.4" height="20" fill="#2d1210" />
           <path d="M4 5 H12 L10.5 9 H5.5Z" fill="#2d1210" /><rect x="11" y="10" width="3" height="9" rx="1.4" fill="#e5a93b" />
         </symbol>
+        {/* fingerprint */}
+        <symbol id="sy-fp" viewBox="0 0 20 24">
+          <g fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
+            <path d="M10 2.5c-4.2 0-7.2 3.2-7.2 8v4.5" /><path d="M10 2.5c4.2 0 7.2 3.2 7.2 8v6" />
+            <path d="M10 5.6c-2.6 0-4.6 2.1-4.6 5.2v6.6" /><path d="M10 5.6c2.6 0 4.6 2.1 4.6 5.2v8" />
+            <path d="M10 8.8c-1.3 0-2.1 1-2.1 2.6v8.4" /><path d="M10 8.8c1.3 0 2.1 1 2.1 2.6v9.4" /><path d="M10 12v10" />
+          </g>
+        </symbol>
         {/* gear */}
         <symbol id="sy-gear" viewBox="0 0 40 40">
           <path d="M17 2h6l1 5 4 2 4-3 4 4-3 4 2 4 5 1v6l-5 1-2 4 3 4-4 4-4-3-4 2-1 5h-6l-1-5-4-2-4 3-4-4 3-4-2-4-5-1v-6l5-1 2-4-3-4 4-4 4 3 4-2z" fill="currentColor" />

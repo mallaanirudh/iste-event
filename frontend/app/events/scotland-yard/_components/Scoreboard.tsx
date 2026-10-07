@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { LeaderboardEntry } from "@/lib/api/types";
 import Floor from "./Floor";
+import { Clue } from "./Casebook";
+import { clues } from "../content";
 
 export type Board = { id: string; label: string; entries: LeaderboardEntry[] };
 
@@ -66,6 +68,7 @@ export default function Scoreboard({ boards, online }: { boards: Board[]; online
           )}
         </div>
       </div>
+      <Clue at={{ right: "4%", top: "13%" }} note={clues.scores} />
     </Floor>
   );
 }

@@ -1,5 +1,6 @@
-import { agenda } from "../content";
+import { agenda, clues } from "../content";
 import Floor from "./Floor";
+import { Clue } from "./Casebook";
 
 export type RoundCard = { roundNumber: number; name: string; description: string | null; maxPoints: number | null };
 
@@ -46,6 +47,7 @@ export default function Rounds({ rounds, live }: { rounds: RoundCard[]; live: bo
           </div>
         </div>
       </div>
+      <Clue at={{ left: "2%", bottom: "8%" }} note={clues.rounds} />
     </Floor>
   );
 }

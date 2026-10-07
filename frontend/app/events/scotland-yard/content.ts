@@ -78,3 +78,15 @@ export const board = {
   reveals: [3, 6, 8],
   detectives: [1, 5, 13],
 };
+
+/** Fingerprints hidden one per floor, found by eye or with the "Lights out" torch. */
+export const clues = {
+  roof: "Soot on the chimney cap. Someone climbed out up here last night.",
+  briefing: "A smudge on the dossier's wax seal. It was opened before you.",
+  cipher: "A sticky print on the dial: toffee. Mr. X has a sweet tooth.",
+  chase: "A ticket stub under the map. A black ticket, used twice.",
+  rounds: "A print on the third door's handle, still warm.",
+  scores: "Someone polished the scoreboard. Only the top row.",
+  gate: "Golden flakes by the gate. He left with a ticket of his own.",
+};
+export const TOTAL_CLUES = Object.keys(clues).length;

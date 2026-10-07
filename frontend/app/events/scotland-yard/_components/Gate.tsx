@@ -1,5 +1,7 @@
 import TallyEmbed from "@/components/TallyEmbed";
 import Floor from "./Floor";
+import { Clue } from "./Casebook";
+import { clues } from "../content";
 
 export type GateFact = { k: string; v: string };
 
@@ -36,6 +38,7 @@ export default function Gate({ facts }: { facts: GateFact[] }) {
             />
           </div>
         </div>
+        <Clue at={{ left: "44%", bottom: "6%" }} note={clues.gate} />
       </Floor>
       <footer className="street">
         <p><strong>ISTE · Scotland Yard 2026</strong>, part of the Mega Event at the Grand Confectionery</p>

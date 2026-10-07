@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { floors, type FloorId } from "../content";
+import Casebook from "./Casebook";
 
 /**
  * Wraps the floors: drives the glass-elevator floor indicator, reveals floors as
@@ -54,7 +55,7 @@ export default function FactoryShell({ rootClass, children }: { rootClass: strin
 
   return (
     <div id="sy-root" className={rootClass}>
-      {children}
+      <Casebook>{children}</Casebook>
       <nav className="lift" aria-label="Floors">
         <div className="shaft" aria-hidden="true"><span className="car" style={{ "--i": index } as CSSProperties} /></div>
         <ul>
