@@ -1,12 +1,12 @@
 import { findEvent, getRounds } from "@/lib/api/events";
 import { EVENT, FALLBACK_ROUNDS } from "./_data/content";
 import { Briefing, type RoundView } from "./_components/Briefing";
+import { Faq } from "./_components/Faq";
 import { ChargeRoot } from "./_components/ChargeRoot";
 import { Ground } from "./_components/Ground";
 import { Nav } from "./_components/Nav";
 import { Roof } from "./_components/Roof";
 import { Slab, Tower } from "./_components/Tower";
-import { Vault } from "./_components/Vault";
 
 // The page is information only (registration and leaderboards live on the Square One main
 // page). Rounds come from the backend, so the route is regenerated at most once a minute.
@@ -53,9 +53,9 @@ export default async function ChargePage() {
         <Slab roof />
         <Briefing rounds={rounds} />
         <Slab />
-        <Ground />
+        <Faq />
         <Slab />
-        <Vault />
+        <Ground />
         <Slab foundation />
       </Tower>
     </ChargeRoot>

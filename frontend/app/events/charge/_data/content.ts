@@ -122,21 +122,51 @@ export const RULES = [
   "If the platform malfunctions or a rule is unclear, contact an organiser.",
 ] as const;
 
-/** Floor 4: the golden ticket. A keepsake with the essentials; registration is on the Square One page. */
-export const VAULT = {
-  kicker: "The last floor",
-  title: "Your golden ticket",
-  lede: "Registration is on the Square One main page. This one is for the walk to the hall.",
-  band: "Golden ticket",
-  serial: "No. 2029",
-  presents: "ISTE Charge at Square One presents",
-  details: [
-    { label: "Date", value: "Wed 14 Oct" },
-    { label: "Doors", value: "6 PM" },
-    { label: "Venue", value: "LHC A Seminar Hall" },
+/**
+ * Floor 3: questions. Laid out like the FAQ on HackMIT, TreeHacks and HackHarvard: a strip
+ * of numbers, then short questions that open one at a time. Every answer comes from the
+ * event brief or from the organisers; nothing here should be guessed.
+ */
+export const FAQ = {
+  kicker: "FAQ",
+  title: "Good questions",
+  lede: "The short answers. Anything else, call a point of contact at the bottom of the page.",
+  stats: [
+    { value: 150, suffix: "", label: "builders expected" },
+    { value: 2, suffix: "", label: "rounds" },
+    { value: 3, suffix: "", label: "per team, at most" },
+    { value: 1, suffix: "", label: "night in LHC A" },
   ],
-  fine: "Admits one team of up to 3. B.Tech batch of 2029.",
-  admit: "Admit one team",
+  items: [
+    {
+      q: "Who can take part?",
+      a: "Students of the B.Tech batch of 2029, in teams of up to 3.",
+    },
+    {
+      q: "Do I need to know electronics already?",
+      a: "No. The night opens with a knowledge session on the components you will work with.",
+    },
+    {
+      q: "Do I bring my own components?",
+      a: "No. Components are provided on the night. In Round 2, your team wins them at the auction.",
+    },
+    {
+      q: "Is the auction played with real money?",
+      a: "No. Every team bids with the same purse of virtual money.",
+    },
+    {
+      q: "How should I prepare?",
+      a: "Go through the cheatsheet we send you before the event. That is all the homework there is.",
+    },
+    {
+      q: "Where do I register?",
+      a: "On the Square One main page, along with the other Square One events.",
+    },
+    {
+      q: "When and where is it?",
+      a: "Wednesday 14 October, LHC A Seminar Hall, NITK Surathkal. Doors open at 6 PM.",
+    },
+  ],
 } as const;
 
 /** Points of contact, as listed in the event brief. `tel` is the dialable form. */

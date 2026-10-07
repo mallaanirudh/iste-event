@@ -9,9 +9,10 @@ live on the Square One main page. Copy lives in `_data/content.ts`; rounds come 
   led by its brick slab, slides up over it; the covered floor sinks back and dims (`--cover`).
 - **Reveals**: titles rise out of a mask (`_lib/titleReveal.ts`); `data-reveal` blocks fade up;
   `data-slide` rows (the closing facts) slide in tied to the scroll.
-- **Golden ticket** (`_components/Vault.tsx`, floor 4): a Wonka-style golden ticket with the
-  essentials. It tilts up into place as it scrolls in, a shine sweeps across it once, and on a
-  mouse it follows the pointer in 3D with a foil glare. Registration stays on the Square One page.
+- **FAQ** (`_components/Faq.tsx`, floor 3): numbers that count up as they come into view, then
+  short questions that open one at a time, modelled on the HackMIT / TreeHacks / HackHarvard FAQs.
+  It is the one floor that does not hold for the next to slide over (`data-nopin`), because opening
+  an answer changes its height.
 - **Roof**: the beacon powers on after load; the sky layers drift with the mouse and the skyline
   sinks as the roof scrolls away. The copper pipe on the left fills as you scroll down the tower.
 
