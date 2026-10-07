@@ -1,7 +1,6 @@
 import { findEvent, getRounds } from "@/lib/api/events";
 import { EVENT, FALLBACK_ROUNDS } from "./_data/content";
 import { Briefing, type RoundView } from "./_components/Briefing";
-import { Faq } from "./_components/Faq";
 import { ChargeRoot } from "./_components/ChargeRoot";
 import { Ground } from "./_components/Ground";
 import { Nav } from "./_components/Nav";
@@ -52,8 +51,6 @@ export default async function ChargePage() {
       <Tower roof={<Roof />}>
         <Slab roof />
         <Briefing rounds={rounds} />
-        <Slab />
-        <Faq />
         <Slab />
         <Ground />
         <Slab foundation />

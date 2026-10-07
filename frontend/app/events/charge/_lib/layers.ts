@@ -14,8 +14,6 @@ import { gsap, ScrollTrigger } from "./gsap";
 export function stackFloors(scope: HTMLElement) {
   const floors = gsap.utils.toArray<HTMLElement>("[data-bg]", scope);
   floors.slice(0, -1).forEach((floor, i) => {
-    // A floor whose height changes in use (the FAQ's answers open) scrolls normally instead.
-    if (floor.hasAttribute("data-nopin")) return;
     const next = floors[i + 1];
     ScrollTrigger.create({
       trigger: floor,
