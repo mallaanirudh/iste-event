@@ -5,10 +5,6 @@ live on the Square One main page. Copy lives in `_data/content.ts`; rounds come 
 
 ## Motion
 
-- **Opening curtain** (`_components/Roof.tsx`): two red-wool drapes and an "ISTE Charge presents"
-  plaque cover the roof. Scrolling through the empty runway under the roof (`.runway` in
-  `tower.module.css`) parts them while the headline settles in; a tap on the curtain plays the
-  same scroll. Shown only with scripting on and motion allowed (`@media (scripting: enabled)`).
 - **Stacked floors** (`_lib/layers.ts`, every screen size): each floor holds while the next one,
   led by its brick slab, slides up over it; the covered floor sinks back and dims (`--cover`).
 - **Reveals**: titles rise out of a mask (`_lib/titleReveal.ts`); `data-reveal` blocks fade up;

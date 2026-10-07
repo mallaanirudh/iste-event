@@ -176,14 +176,3 @@
     box-shadow: 0 -22px 44px rgb(0 0 0 / 0.35);
   }
 }
-
-/* The curtain's scroll room (Roof.tsx). Zero height unless the curtain can actually run. */
-.runway {
-  height: 0;
-}
-
-@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .runway {
-    height: 75svh;
-  }
-}

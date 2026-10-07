@@ -50,8 +50,6 @@ export function Tower({ roof, children }: { roof: ReactNode; children: ReactNode
   return (
     <main className={s.tower} id="main">
       {roof}
-      {/* Scroll room for the opening curtain: the pinned roof stays put while this passes under it. */}
-      <div className={s.runway} data-runway="" aria-hidden="true" />
       <div ref={shaft} className={s.shaft}>
         <div className={s.pipe} aria-hidden="true">
           <span className={s.current} data-current="" />
