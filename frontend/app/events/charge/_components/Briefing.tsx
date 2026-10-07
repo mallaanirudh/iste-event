@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { BRIEFING, CRAFT, END_ISO, EVENT, KSS, RESULTS, START_ISO } from "../_data/content";
+import { BRIEFING, CHEATSHEET, CRAFT, EVENT, KSS, RESULTS } from "../_data/content";
 import { gsap, MQ, prefersReducedMotion, useGSAP } from "../_lib/gsap";
 import { HEADS, ItemIcon, Sprite, type IconName } from "../_lib/sprite";
 import { floorProps } from "../_lib/tokens";
@@ -16,83 +16,6 @@ export type RoundView = {
   time: string | null;
   maxPoints: number | null;
 };
-
-const START = new Date(START_ISO).getTime();
-const END = new Date(END_ISO).getTime();
-
-/* ---------- countdown (odometer reels) ---------- */
-
-function Reel({ value }: { value: number }) {
-  const digits = String(value).padStart(2, "0").split("").map(Number);
-  const ref = useRef<HTMLSpanElement>(null);
-  useLayoutEffect(() => {
-    ref.current?.querySelectorAll<HTMLElement>("[data-reel]").forEach((reel, i) => {
-      const y = -10 * digits[i];
-      if (prefersReducedMotion()) gsap.set(reel, { yPercent: y });
-      else gsap.to(reel, { yPercent: y, duration: 0.8, ease: "power3.out", overwrite: "auto" });
-    });
-  });
-  return (
-    <span ref={ref} className={s.reelGroup} aria-hidden="true">
-      {digits.map((_, i) => (
-        <span key={i} className={s.window}>
-          <span className={s.reel} data-reel="">
-            {Array.from({ length: 10 }, (_, n) => (
-              <span key={n}>{n}</span>
-            ))}
-          </span>
-        </span>
-      ))}
-    </span>
-  );
-}
-
-/** Days, hours and minutes to doors open. `big` is the closing floor's headline size. */
-export function Countdown({ big = false }: { big?: boolean }) {
-  const [now, setNow] = useState<number | null>(null);
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- the clock only exists after mount
-    setNow(Date.now());
-    const id = window.setInterval(() => setNow(Date.now()), 15_000);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const done = `${s.countDone} ${big ? s.countBig : ""}`;
-  if (now !== null && now >= END) return <p className={done}>That&apos;s a wrap. Thank you for coming.</p>;
-  if (now !== null && now >= START) return <p className={done}>Happening now</p>;
-
-  // Before mount, a same-size placeholder so nothing shifts.
-  const mins = now === null ? 0 : Math.floor((START - now) / 60_000);
-  const d = Math.min(99, Math.floor(mins / 1440));
-  const h = Math.floor((mins % 1440) / 60);
-  const m = mins % 60;
-  return (
-    <p className={`${s.countRow} ${big ? s.countBig : ""}`}>
-      {now === null ? (
-        <>
-          <span className={s.placeholder}>00</span>
-          <span className={s.unit}>d</span>
-          <span className={s.placeholder}>00</span>
-          <span className={s.unit}>h</span>
-          <span className={s.placeholder}>00</span>
-          <span className={s.unit}>m</span>
-        </>
-      ) : (
-        <>
-          <Reel value={d} />
-          <span className={s.unit}>d</span>
-          <Reel value={h} />
-          <span className={s.unit}>h</span>
-          <Reel value={m} />
-          <span className={s.unit}>m</span>
-          <span className={c.vh}>
-            {d} days, {h} hours and {m} minutes until doors open
-          </span>
-        </>
-      )}
-    </p>
-  );
-}
 
 /* ---------- the crafting table GUI ---------- */
 
@@ -289,7 +212,7 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
         lines: ["6 PM, Wednesday 14 October", "Knowledge session first"],
         art: icon("lamp"),
       },
-      caption: <Countdown />,
+      caption: "Doors open 6 PM",
     },
   ];
 
@@ -314,6 +237,7 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
   }, [active]);
 
   const steps: Step[] = [
+    { key: "cheatsheet", time: CHEATSHEET.time, title: CHEATSHEET.title, detail: CHEATSHEET.detail, meta: null },
     ...rounds.map((r) => ({
       key: r.key,
       time: r.time ?? "",

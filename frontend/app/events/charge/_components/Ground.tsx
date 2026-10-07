@@ -1,10 +1,9 @@
 import { CONTACTS, GROUND, RULES } from "../_data/content";
 import { floorProps } from "../_lib/tokens";
-import { Countdown } from "./Briefing";
 import c from "../charge.module.css";
 import s from "./ground.module.css";
 
-/** Floor 3: the ground floor. A closing countdown to doors open, then house rules and points of contact. */
+/** Floor 3: the ground floor. The night's three facts set large, then house rules and points of contact. */
 export function Ground() {
   return (
     <section {...floorProps("ground", "ground-title")} className={`${c.floor} ${s.ground}`}>
@@ -15,10 +14,14 @@ export function Ground() {
         <h2 id="ground-title" className={s.title} data-title="">
           {GROUND.title}
         </h2>
-        <div className={s.count} data-reveal="">
-          <p className={s.countLabel}>{GROUND.countLabel}</p>
-          <Countdown big />
-        </div>
+        <dl className={s.facts}>
+          {GROUND.facts.map((f) => (
+            <div key={f.label} className={s.fact} data-slide="">
+              <dt className={s.factLabel}>{f.label}</dt>
+              <dd className={s.factValue}>{f.value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
 
       <div id="contacts" className={`${c.wrap} ${s.panels}`}>

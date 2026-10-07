@@ -170,9 +170,20 @@
   }
 }
 
-/* Desktop stacking: the slab leads each floor over the one below it, so it casts the shadow. */
-@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+/* Stacking: the slab leads each floor over the one below it, so it casts the shadow. */
+@media (prefers-reduced-motion: no-preference) {
   .slab {
     box-shadow: 0 -22px 44px rgb(0 0 0 / 0.35);
+  }
+}
+
+/* The curtain's scroll room (Roof.tsx). Zero height unless the curtain can actually run. */
+.runway {
+  height: 0;
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .runway {
+    height: 75svh;
   }
 }

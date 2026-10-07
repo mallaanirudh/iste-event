@@ -24,9 +24,6 @@ export const EVENT = {
   expected: "About 150 builders",
 } as const;
 
-/** Doors open (the knowledge session) and the end of the night, in IST. */
-export const START_ISO = "2026-10-14T18:00:00+05:30";
-export const END_ISO = "2026-10-14T23:00:00+05:30";
 
 export const HERO = {
   kicker: "ISTE Charge at Square One",
@@ -65,11 +62,18 @@ export const CRAFT = {
 } as const;
 
 /*
- * The evening, from the event brief: "KSS and Round 1: 2 hrs (6PM-8PM)", "Round 2: 2 hrs
- * (9PM-11PM)", then result declaration (no time given). Anirudh asked to keep the round
- * details short, so each round gets a one-line teaser, not the full format.
+ * The evening, from the event brief: "KSS and Round 1: 2 hrs (6PM-8PM)", then Round 2 from
+ * 9 PM (Samarth, 7 Oct: it ends at 10:30 PM), then result declaration (no time given).
+ * Anirudh asked to keep the round details short, so each round gets a one-line teaser.
  */
 export const KSS = "Knowledge session";
+
+/** Sent to registered teams before the night (Samarth, 7 Oct). */
+export const CHEATSHEET = {
+  time: "Before the event",
+  title: "Cheatsheet",
+  detail: "We will send you a cheatsheet ahead of the night. Go through it before you come.",
+} as const;
 
 export const RESULTS = {
   time: "End of the night",
@@ -95,15 +99,19 @@ export const FALLBACK_ROUNDS: FallbackRound[] = [
   {
     roundNumber: 2,
     name: "Auction and hackathon",
-    time: "9 PM to 11 PM",
+    time: "9 PM to 10:30 PM",
     teaser: "Bid for parts, then build with what you win. The rest stays a surprise.",
   },
 ];
 
 export const GROUND = {
-  kicker: "Wednesday 14 October, LHC A Seminar Hall",
+  kicker: "The night of the beacon",
   title: "See you at the beacon",
-  countLabel: "Doors open in",
+  facts: [
+    { label: "Date", value: "Wednesday 14 October" },
+    { label: "Doors open", value: "6 PM" },
+    { label: "Venue", value: "LHC A Seminar Hall" },
+  ],
   rulesTitle: "House rules",
   contactsTitle: "Points of contact",
 } as const;

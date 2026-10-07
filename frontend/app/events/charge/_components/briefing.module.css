@@ -62,7 +62,7 @@
 
 @media (min-width: 1280px) {
   .text .steps {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -500,76 +500,6 @@ button.slot:focus-visible {
   color: #6b3300;
 }
 
-/* ---------- countdown (reused in the inventory caption) ---------- */
-
-.countRow,
-.countDone {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 2px;
-  margin: 0;
-  font-family: var(--font-tanker), Impact, sans-serif;
-  font-size: 18px;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: #1a110e;
-}
-
-.countDone {
-  font-size: 14px;
-}
-
-.unit {
-  margin-right: 4px;
-  font-size: 12px;
-}
-
-.unit:last-of-type {
-  margin-right: 0;
-}
-
-.placeholder {
-  opacity: 0.35;
-}
-
-/* The closing floor's countdown: the same reels at headline size, left aligned. */
-.countBig {
-  justify-content: flex-start;
-  color: var(--bone);
-  gap: 0.04em;
-  font-size: clamp(64px, 11vw, 168px);
-}
-
-.countBig .unit {
-  margin-right: 0.28em;
-  font-size: 0.32em;
-  color: var(--enig);
-}
-
-.reelGroup {
-  display: inline-flex;
-}
-
-.window {
-  display: inline-block;
-  height: 1em;
-  overflow: hidden;
-}
-
-.reel {
-  display: flex;
-  flex-direction: column;
-  will-change: transform;
-}
-
-.reel > span {
-  display: block;
-  height: 1em;
-  width: 0.56em;
-  text-align: center;
-}
-
 @media (max-width: 1023px) {
   .text {
     max-width: 40rem;
@@ -590,7 +520,3 @@ button.slot:focus-visible {
   }
 }
 
-
-.countDone.countBig {
-  font-size: clamp(32px, 5vw, 64px);
-}

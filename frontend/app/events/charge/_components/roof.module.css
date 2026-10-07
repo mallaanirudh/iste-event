@@ -459,3 +459,150 @@
   }
 }
 
+/* ---------- opening curtain ---------- */
+
+/*
+ * Two drapes of red wool with a gold trim meet over the roof, under a valance, with a
+ * plaque on the seam. Shown only when scripting is on and motion is allowed, because
+ * the scroll timeline in Roof.tsx is what opens it.
+ */
+.curtain {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  overflow: clip;
+}
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .curtain {
+    display: block;
+  }
+
+  /* With the curtain the roof holds the full screen; the parapet slab arrives with the next floor. */
+  .roof {
+    min-height: 100svh;
+  }
+}
+
+.drape {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* Slightly parted, so the beacon's light shows through the gap once it powers on. */
+  width: 48%;
+  pointer-events: auto;
+  cursor: pointer;
+  /* Wool: a 16-block pixel weave, then hard-edged folds, then a shadow towards the seam. */
+  background-color: #a3221c;
+  background-image:
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 0.26) 0 14px, transparent 14px 44px, rgb(255 255 255 / 0.07) 44px 58px, transparent 58px 96px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cg fill='%23b8352c'%3E%3Crect x='1' y='2' width='2' height='1'/%3E%3Crect x='9' y='0' width='3' height='1'/%3E%3Crect x='5' y='7' width='2' height='1'/%3E%3Crect x='12' y='11' width='2' height='1'/%3E%3Crect x='2' y='13' width='3' height='1'/%3E%3C/g%3E%3Cg fill='%238a1c17'%3E%3Crect x='6' y='3' width='2' height='1'/%3E%3Crect x='13' y='5' width='2' height='1'/%3E%3Crect x='0' y='9' width='3' height='1'/%3E%3Crect x='8' y='14' width='2' height='1'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 96px 100%, 48px 48px;
+  image-rendering: pixelated;
+  will-change: transform;
+}
+
+.drapeL {
+  left: 0;
+  box-shadow:
+    inset -10px 0 0 #e9b949,
+    inset -14px 0 0 #7a3e14,
+    inset -60px 0 60px -20px rgb(0 0 0 / 0.45);
+}
+
+.drapeR {
+  right: 0;
+  box-shadow:
+    inset 10px 0 0 #e9b949,
+    inset 14px 0 0 #7a3e14,
+    inset 60px 0 60px -20px rgb(0 0 0 / 0.45);
+}
+
+/* Blocky hem along the bottom of both drapes. */
+.drape::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 24px;
+  background:
+    repeating-linear-gradient(90deg, #e9b949 0 24px, #c9773a 24px 48px) 0 0 / 100% 8px no-repeat,
+    #6e1511;
+}
+
+.valance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--nav-h) + 36px);
+  background:
+    linear-gradient(transparent calc(100% - 12px), #e9b949 calc(100% - 12px) calc(100% - 4px), #7a3e14 calc(100% - 4px)),
+    repeating-linear-gradient(90deg, #7e1813 0 32px, #8f1d17 32px 64px);
+  box-shadow: 0 10px 24px rgb(0 0 0 / 0.4);
+  will-change: transform;
+}
+
+.plaque {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  translate: -50% -50%;
+  width: min(84vw, 420px);
+  padding: 20px 22px 18px;
+  pointer-events: auto;
+  cursor: pointer;
+  text-align: center;
+  color: var(--bone);
+  background: #1a110e;
+  border: 3px solid #e9b949;
+  box-shadow:
+    inset 0 0 0 3px #7a3e14,
+    0 18px 40px rgb(0 0 0 / 0.5);
+}
+
+.presents {
+  margin: 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: clamp(26px, 6vw, 40px);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--enig);
+}
+
+.plaqueSub {
+  margin: 8px 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cueArrow {
+  width: 14px;
+  height: 16px;
+  animation: cue 1.6s ease-in-out infinite;
+}
+
+@keyframes cue {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}

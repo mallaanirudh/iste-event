@@ -3,7 +3,7 @@
 import Lenis from "lenis";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { gsap, MQ, ScrollTrigger, useGSAP } from "../_lib/gsap";
-import { revealBlocks, stackFloors } from "../_lib/layers";
+import { revealBlocks, slideRows, stackFloors } from "../_lib/layers";
 import { LenisContext } from "../_lib/lenis";
 import { revealTitles } from "../_lib/titleReveal";
 import { Cursor } from "./Cursor";
@@ -100,12 +100,13 @@ export function ChargeRoot({ children }: { children: ReactNode }) {
       if (first) gsap.set(el, vars(first));
 
       const mm = gsap.matchMedia();
+      // Each floor holds while the next slides over it, on every screen size (_lib/layers.ts).
       mm.add(MQ.motion, () => {
         revealTitles(el);
         revealBlocks(el);
+        slideRows(el);
+        stackFloors(el);
       });
-      // Desktop: each floor holds while the next slides over it (see _lib/layers.ts).
-      mm.add(`${MQ.desktop} and ${MQ.motion}`, () => stackFloors(el));
 
       document.fonts?.ready.then(() => ScrollTrigger.refresh());
 

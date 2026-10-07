@@ -6,7 +6,7 @@ import { gsap, ScrollTrigger } from "./gsap";
  * Stacked floors: each floor holds still while the next one (led by its brick slab)
  * slides up over it, and the covered floor sinks back and dims. A floor taller than
  * the screen holds once its bottom reaches the bottom of the screen, so nothing is
- * skipped. Desktop with motion allowed only; call inside a gsap.matchMedia() branch.
+ * skipped. Any screen size with motion allowed; call inside a gsap.matchMedia() branch.
  *
  * The sink is driven through the --cover custom property (charge.module.css turns it
  * into `scale` and `filter`), so it never fights the transform the pin may set.
@@ -49,5 +49,24 @@ export function revealBlocks(scope: HTMLElement) {
     once: true,
     onEnter: (batch) =>
       gsap.to(batch, { y: 0, autoAlpha: 1, duration: 0.9, ease: "expo.out", stagger: 0.09, overwrite: true }),
+  });
+}
+
+/**
+ * Rows marked [data-slide] slide in from the left tied to the scroll, so they move as
+ * the reader does. Call inside a gsap.matchMedia() motion branch.
+ */
+export function slideRows(scope: HTMLElement) {
+  gsap.utils.toArray<HTMLElement>("[data-slide]", scope).forEach((row) => {
+    gsap.fromTo(
+      row,
+      { xPercent: -14, autoAlpha: 0 },
+      {
+        xPercent: 0,
+        autoAlpha: 1,
+        ease: "power2.out",
+        scrollTrigger: { trigger: row, start: "top 96%", end: "top 70%", scrub: 0.6 },
+      },
+    );
   });
 }

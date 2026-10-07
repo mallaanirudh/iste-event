@@ -3,7 +3,8 @@
 import { CalendarDays, Clock, GraduationCap, MapPin, Users, type LucideIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { EVENT, HERO, HERO_FACTS } from "../_data/content";
-import { gsap, MQ, prefersReducedMotion, ScrollTrigger } from "../_lib/gsap";
+import { gsap, MQ, prefersReducedMotion, ScrollTrigger, useGSAP } from "../_lib/gsap";
+import { scrollToY, useLenis } from "../_lib/lenis";
 import { floorProps } from "../_lib/tokens";
 import { useMagnet } from "../_lib/useMagnet";
 import { BeaconScene } from "./BeaconScene";
@@ -40,6 +41,45 @@ export function Roof() {
   const primary = useRef<HTMLAnchorElement>(null);
   const figure = useRef<HTMLDivElement>(null);
   const sky = useRef<SVGSVGElement>(null);
+  const section = useRef<HTMLElement>(null);
+  const curtain = useRef<HTMLDivElement>(null);
+  const lenis = useLenis();
+
+  /*
+   * The opening curtain. It only exists with scripting on and motion allowed (CSS), and is
+   * scrubbed open over the empty runway below the roof while the roof is pinned
+   * (_lib/layers.ts): the drapes part, the plaque lifts away and the headline settles in.
+   */
+  useGSAP(
+    () => {
+      const el = curtain.current;
+      if (!el || getComputedStyle(el).display === "none") return;
+      const runway = () => document.querySelector<HTMLElement>("[data-runway]")?.offsetHeight ?? window.innerHeight * 0.75;
+      gsap
+        .timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: section.current,
+            start: "top top",
+            end: () => `+=${runway()}`,
+            scrub: 0.8,
+            invalidateOnRefresh: true,
+          },
+        })
+        .to("[data-plaque]", { autoAlpha: 0, yPercent: -40, ease: "power1.in", duration: 0.4 }, 0)
+        .to("[data-drape='l']", { xPercent: -104, ease: "power2.inOut", duration: 1 }, 0)
+        .to("[data-drape='r']", { xPercent: 104, ease: "power2.inOut", duration: 1 }, 0)
+        .to("[data-valance]", { yPercent: -110, ease: "power2.in", duration: 0.45 }, 0.55)
+        .fromTo("[data-stage]", { scale: 0.92, autoAlpha: 0.35 }, { scale: 1, autoAlpha: 1, ease: "power2.out", duration: 1 }, 0.05);
+    },
+    { scope: section },
+  );
+
+  /** A tap on the curtain plays the same opening by scrolling through the runway. */
+  const enter = () => {
+    const runway = document.querySelector<HTMLElement>("[data-runway]");
+    scrollToY(lenis, runway?.offsetHeight ?? window.innerHeight * 0.75, 1.6);
+  };
   useMagnet(primary);
 
   /*
@@ -114,7 +154,7 @@ export function Roof() {
   }, []);
 
   return (
-    <section {...floorProps("top", "roof-title")} className={`${c.floor} ${s.roof}`}>
+    <section ref={section} {...floorProps("top", "roof-title")} className={`${c.floor} ${s.roof}`}>
       <div className={s.sky} aria-hidden="true">
         <svg ref={sky} className={s.skySvg} viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" shapeRendering="crispEdges">
           <g data-depth="10"><g className={s.stars}>
@@ -148,7 +188,7 @@ export function Roof() {
         </svg>
       </div>
 
-      <div className={`${c.wrap} ${s.stage}`}>
+      <div className={`${c.wrap} ${s.stage}`} data-stage="">
         <div className={s.copy}>
           <h1 id="roof-title" className={s.title}>
             <span className={s.line}>Power the</span> <span className={s.line}>Beacon</span>
@@ -183,6 +223,22 @@ export function Roof() {
         </div>
       </div>
 
+
+      <div ref={curtain} className={s.curtain} aria-hidden="true">
+        <div className={`${s.drape} ${s.drapeL}`} data-drape="l" onClick={enter} />
+        <div className={`${s.drape} ${s.drapeR}`} data-drape="r" onClick={enter} />
+        <div className={s.valance} data-valance="" />
+        <div className={s.plaque} data-plaque="" onClick={enter}>
+          <p className={s.presents}>ISTE Charge presents</p>
+          <p className={s.plaqueSub}>Square One, 14 October</p>
+          <p className={s.cue}>
+            Scroll to enter
+            <svg className={s.cueArrow} viewBox="0 0 7 8" shapeRendering="crispEdges" aria-hidden="true">
+              <path fill="currentColor" d="M2 0h3v4h2v1H6v1H5v1H4v1H3V7H2V6H1V5H0V4h2z" />
+            </svg>
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

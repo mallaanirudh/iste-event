@@ -1,10 +1,10 @@
-/* Floor 3: the ground floor, in Wonka purple. A closing countdown, house rules and contacts. */
+/* Floor 3: the ground floor, in Wonka purple. The night's facts, house rules and contacts. */
 
 .ground {
   gap: clamp(40px, 7vh, 80px);
 }
 
-/* ---------- closing headline and countdown ---------- */
+/* ---------- closing headline and facts ---------- */
 
 .closing {
   display: grid;
@@ -33,17 +33,38 @@
   color: var(--bone);
 }
 
-.count {
-  margin-top: clamp(12px, 3vh, 32px);
-  padding-top: clamp(16px, 3vh, 28px);
+/* The three facts, one per row, in the headline face. Each slides in from the left on scroll. */
+.facts {
+  display: grid;
+  margin: clamp(12px, 3vh, 32px) 0 0;
   border-top: 2px solid rgb(255 255 255 / 0.14);
 }
 
-.countLabel {
-  margin: 0 0 6px;
+.fact {
+  display: grid;
+  grid-template-columns: minmax(96px, 0.35fr) 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding: clamp(12px, 2.2vh, 20px) 0;
+  border-bottom: 2px solid rgb(255 255 255 / 0.14);
+}
+
+.factLabel {
   font-size: 15px;
-  font-weight: 600;
-  opacity: 0.75;
+  font-weight: 700;
+  font-stretch: 88%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--enig);
+}
+
+.factValue {
+  margin: 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: clamp(30px, 4.4vw, 64px);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--bone);
 }
 
 /* ---------- rules and contacts ---------- */
