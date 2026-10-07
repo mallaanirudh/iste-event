@@ -31,7 +31,7 @@ export const END_ISO = "2026-10-14T23:00:00+05:30";
 export const HERO = {
   kicker: "ISTE Charge at Square One",
   primary: "See the rounds",
-  secondary: "Wire the beacon",
+  secondary: "Points of contact",
 } as const;
 
 /**
@@ -101,6 +101,9 @@ export const FALLBACK_ROUNDS: FallbackRound[] = [
 ];
 
 export const GROUND = {
+  kicker: "Wednesday 14 October, LHC A Seminar Hall",
+  title: "See you at the beacon",
+  countLabel: "Doors open in",
   rulesTitle: "House rules",
   contactsTitle: "Points of contact",
 } as const;
@@ -117,37 +120,3 @@ export const CONTACTS = [
   { name: "Sanjeetha", phone: "+91 88615 78766", tel: "+918861578766" },
 ] as const;
 
-/**
- * The workbench puzzle on floor 3: turn the wire tiles until the redstone runs from the
- * power block to the lamp. Solving it sends the beacon on the roof to full power.
- */
-export const WORKBENCH = {
-  kicker: "Workbench",
-  title: "Wire the beacon",
-  lede: "Watch the redstone find its way from the power block to the lamp. Then scramble the wires and try it yourself.",
-  solved: "Circuit complete. The beacon on the roof is at full power.",
-  watching: "Wiring the beacon",
-  yourTurn: "Your turn: tap a tile to turn it",
-  tryIt: "Try it yourself",
-  replay: "Watch again",
-} as const;
-
-/**
- * Five parts hidden around the page. Each one found drops into the hotbar and shows a fact.
- * `id` is also the sprite name in _lib/sprite.tsx.
- */
-export const PARTS = [
-  { id: "led", name: "LED", fact: "Doors open at 6 PM on Wednesday 14 October, in the LHC A Seminar Hall." },
-  { id: "battery", name: "Battery", fact: "Your budget will be limited. Spend it wisely." },
-  { id: "capacitor", name: "Capacitor", fact: "Teams of up to 3, open to the B.Tech batch of 2029." },
-  { id: "resistor", name: "Resistor", fact: "Round 1 is a screening. Clear it to reach the auction." },
-  { id: "transistor", name: "Transistor", fact: "In Round 2, what you win is all you build with." },
-] as const;
-
-export type PartId = (typeof PARTS)[number]["id"];
-
-export const HUNT = {
-  hint: "5 parts are hidden on this page",
-  done: "All 5 parts found",
-  doneFact: "Inventory full. See you in the hall on 14 October.",
-} as const;

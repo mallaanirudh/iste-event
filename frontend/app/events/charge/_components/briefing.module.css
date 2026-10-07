@@ -533,6 +533,20 @@ button.slot:focus-visible {
   opacity: 0.35;
 }
 
+/* The closing floor's countdown: the same reels at headline size, left aligned. */
+.countBig {
+  justify-content: flex-start;
+  color: var(--bone);
+  gap: 0.04em;
+  font-size: clamp(64px, 11vw, 168px);
+}
+
+.countBig .unit {
+  margin-right: 0.28em;
+  font-size: 0.32em;
+  color: var(--enig);
+}
+
 .reelGroup {
   display: inline-flex;
 }
@@ -576,27 +590,7 @@ button.slot:focus-visible {
   }
 }
 
-/* ---------- hidden parts ---------- */
 
-/* The capacitor waits by the top edge of the floor; the resistor near the bottom corner. */
-.partCapacitor {
-  top: 12px;
-  right: calc(var(--pillar) + 16px);
-}
-
-.partResistor {
-  bottom: 8px;
-  left: calc(var(--pillar) + 30%);
-}
-
-@media (min-width: 900px) {
-  .partCapacitor {
-    top: calc(var(--nav-h) + 8px);
-    right: calc(var(--pillar) + 8%);
-  }
-
-  .partResistor {
-    bottom: 3%;
-    left: calc(var(--pillar) + 38%);
-  }
+.countDone.countBig {
+  font-size: clamp(32px, 5vw, 64px);
 }

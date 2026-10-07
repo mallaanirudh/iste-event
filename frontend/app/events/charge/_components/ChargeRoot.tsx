@@ -3,7 +3,7 @@
 import Lenis from "lenis";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { gsap, MQ, ScrollTrigger, useGSAP } from "../_lib/gsap";
-import { GameProvider } from "../_lib/game";
+import { revealBlocks, stackFloors } from "../_lib/layers";
 import { LenisContext } from "../_lib/lenis";
 import { revealTitles } from "../_lib/titleReveal";
 import { Cursor } from "./Cursor";
@@ -100,7 +100,12 @@ export function ChargeRoot({ children }: { children: ReactNode }) {
       if (first) gsap.set(el, vars(first));
 
       const mm = gsap.matchMedia();
-      mm.add(MQ.motion, () => revealTitles(el));
+      mm.add(MQ.motion, () => {
+        revealTitles(el);
+        revealBlocks(el);
+      });
+      // Desktop: each floor holds while the next slides over it (see _lib/layers.ts).
+      mm.add(`${MQ.desktop} and ${MQ.motion}`, () => stackFloors(el));
 
       document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
@@ -115,7 +120,7 @@ export function ChargeRoot({ children }: { children: ReactNode }) {
         <a className={s.skip} href="#briefing">
           Skip to the briefing
         </a>
-        <GameProvider>{children}</GameProvider>
+        {children}
         <Cursor />
       </div>
     </LenisContext.Provider>

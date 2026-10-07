@@ -125,6 +125,18 @@
 }
 
 /*
+ * Desktop stacking (_lib/layers.ts): as the next floor slides over, the covered one sinks
+ * back and dims. --cover runs 0 to 1; `scale` and `filter` leave the pin's transform alone.
+ */
+@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .floor {
+    --cover: 0;
+    scale: calc(1 - var(--cover) * 0.06);
+    filter: brightness(calc(1 - var(--cover) * 0.5));
+  }
+}
+
+/*
  * Phones and small tablets: floors are not viewport-snapped, so the floors below the roof
  * only need a short lead-in after their slab. Anchor jumps stop below the fixed nav instead.
  */

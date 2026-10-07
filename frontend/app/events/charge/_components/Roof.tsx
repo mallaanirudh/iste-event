@@ -3,12 +3,10 @@
 import { CalendarDays, Clock, GraduationCap, MapPin, Users, type LucideIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { EVENT, HERO, HERO_FACTS } from "../_data/content";
-import { useGame } from "../_lib/game";
 import { gsap, MQ, prefersReducedMotion, ScrollTrigger } from "../_lib/gsap";
 import { floorProps } from "../_lib/tokens";
 import { useMagnet } from "../_lib/useMagnet";
 import { BeaconScene } from "./BeaconScene";
-import { Part } from "./Part";
 import c from "../charge.module.css";
 import s from "./roof.module.css";
 
@@ -40,9 +38,8 @@ const SKYLINE: [number, number, number][] = [
 
 export function Roof() {
   const primary = useRef<HTMLAnchorElement>(null);
-  const figure = useRef<HTMLButtonElement>(null);
+  const figure = useRef<HTMLDivElement>(null);
   const sky = useRef<SVGSVGElement>(null);
-  const { charged } = useGame();
   useMagnet(primary);
 
   /*
@@ -116,31 +113,6 @@ export function Roof() {
     };
   }, []);
 
-  // Clicking the beacon sends a surge up the beam.
-  const pulse = () => {
-    const root = figure.current;
-    if (!root) return;
-    const beam = root.querySelector<SVGGElement>("[data-pulse]");
-    const ring = root.querySelector<SVGRectElement>("[data-ring]");
-    const halo = root.querySelector<SVGCircleElement>("[data-halo]");
-    if (!beam || !ring || !halo) return;
-    if (prefersReducedMotion()) {
-      gsap.fromTo(halo, { opacity: 1.6 }, { opacity: 1, duration: 0.6, ease: "power2.out", overwrite: true });
-      return;
-    }
-    gsap
-      .timeline({ defaults: { overwrite: "auto" } })
-      .fromTo(beam, { scaleX: 1 }, { scaleX: 2.4, duration: 0.14, ease: "power2.out", svgOrigin: "60 0" })
-      .to(beam, { scaleX: 1, duration: 0.9, ease: "elastic.out(1, 0.45)", svgOrigin: "60 0" })
-      .fromTo(
-        ring,
-        { attr: { x: 46, y: -74, width: 28, height: 28 }, opacity: 1 },
-        { attr: { x: 30, y: -90, width: 60, height: 60 }, opacity: 0, duration: 0.7, ease: "power2.out" },
-        0,
-      )
-      .fromTo(halo, { opacity: 1.8 }, { opacity: 1, duration: 0.9, ease: "power2.out" }, 0);
-  };
-
   return (
     <section {...floorProps("top", "roof-title")} className={`${c.floor} ${s.roof}`}>
       <div className={s.sky} aria-hidden="true">
@@ -198,7 +170,7 @@ export function Roof() {
             <a ref={primary} href="#briefing" className={`${c.btn} ${s.primary}`} data-cursor="Rounds">
               {HERO.primary}
             </a>
-            <a href="#workbench" className={`${c.btn} ${c.btnGhost} ${s.secondary}`} data-cursor="Play">
+            <a href="#contacts" className={`${c.btn} ${c.btnGhost} ${s.secondary}`} data-cursor="Contact">
               {HERO.secondary}
             </a>
           </div>
@@ -206,21 +178,11 @@ export function Roof() {
       </div>
 
       <div className={s.figureWrap}>
-        <button
-          ref={figure}
-          type="button"
-          className={s.figure}
-          data-charged={charged ? "" : undefined}
-          onClick={pulse}
-          aria-label="Send a surge up the beacon"
-          data-cursor="Surge"
-        >
+        <div ref={figure} className={s.figure} data-figure="">
           <BeaconScene />
-        </button>
+        </div>
       </div>
 
-      <Part id="led" className={s.partLed} />
-      <Part id="battery" className={s.partBattery} />
     </section>
   );
 }

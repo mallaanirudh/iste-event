@@ -5,7 +5,6 @@ import { BRIEFING, CRAFT, END_ISO, EVENT, KSS, RESULTS, START_ISO } from "../_da
 import { gsap, MQ, prefersReducedMotion, useGSAP } from "../_lib/gsap";
 import { HEADS, ItemIcon, Sprite, type IconName } from "../_lib/sprite";
 import { floorProps } from "../_lib/tokens";
-import { Part } from "./Part";
 import c from "../charge.module.css";
 import s from "./briefing.module.css";
 
@@ -48,7 +47,8 @@ function Reel({ value }: { value: number }) {
   );
 }
 
-function Countdown() {
+/** Days, hours and minutes to doors open. `big` is the closing floor's headline size. */
+export function Countdown({ big = false }: { big?: boolean }) {
   const [now, setNow] = useState<number | null>(null);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the clock only exists after mount
@@ -57,8 +57,9 @@ function Countdown() {
     return () => window.clearInterval(id);
   }, []);
 
-  if (now !== null && now >= END) return <p className={s.countDone}>That&apos;s a wrap. Winners are announced in the hall.</p>;
-  if (now !== null && now >= START) return <p className={s.countDone}>Happening now</p>;
+  const done = `${s.countDone} ${big ? s.countBig : ""}`;
+  if (now !== null && now >= END) return <p className={done}>That&apos;s a wrap. Thank you for coming.</p>;
+  if (now !== null && now >= START) return <p className={done}>Happening now</p>;
 
   // Before mount, a same-size placeholder so nothing shifts.
   const mins = now === null ? 0 : Math.floor((START - now) / 60_000);
@@ -66,7 +67,7 @@ function Countdown() {
   const h = Math.floor((mins % 1440) / 60);
   const m = mins % 60;
   return (
-    <p className={s.countRow}>
+    <p className={`${s.countRow} ${big ? s.countBig : ""}`}>
       {now === null ? (
         <>
           <span className={s.placeholder}>00</span>
@@ -390,7 +391,7 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
           <h3 className={c.vh}>{BRIEFING.circuitLabel}</h3>
           <ol className={s.steps}>
             {steps.map((st) => (
-              <li key={st.key} className={s.step}>
+              <li key={st.key} className={s.step} data-reveal="">
                 <p className={s.time}>{st.time}</p>
                 <p className={s.stepTitle}>{st.title}</p>
                 <p className={s.detail}>{st.detail}</p>
@@ -401,8 +402,6 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
         </div>
       </div>
 
-      <Part id="capacitor" className={s.partCapacitor} />
-      <Part id="resistor" className={s.partResistor} />
     </section>
   );
 }

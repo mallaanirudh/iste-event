@@ -1,30 +1,18 @@
-/* Floor 3: the ground floor, in Wonka purple. The workbench puzzle, house rules, contacts. */
+/* Floor 3: the ground floor, in Wonka purple. A closing countdown, house rules and contacts. */
 
 .ground {
-  gap: clamp(36px, 6vh, 64px);
+  gap: clamp(40px, 7vh, 80px);
 }
 
-/* Room for the fixed hotbar under the last line (doubled class beats the shared .floor rules). */
-.ground.ground {
-  padding-bottom: calc(clamp(40px, 8vh, 96px) + 96px);
-}
+/* ---------- closing headline and countdown ---------- */
 
-.workbench {
+.closing {
   display: grid;
-  gap: 24px;
-  scroll-margin-top: 88px;
-}
-
-@media (min-width: 1024px) {
-  .workbench {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    column-gap: clamp(40px, 5vw, 80px);
-    align-items: center;
-  }
+  gap: 14px;
 }
 
 .kicker {
-  margin: 0 0 8px;
+  margin: 0;
   font-size: 15px;
   font-weight: 700;
   font-stretch: 88%;
@@ -35,82 +23,76 @@
 
 .title {
   margin: 0;
+  max-width: 14ch;
   font-family: var(--font-tanker), Impact, sans-serif;
   font-weight: 400;
-  font-size: clamp(44px, 5.4vw, 84px);
+  font-size: clamp(48px, 6.2vw, 104px);
   line-height: 0.9;
   text-transform: uppercase;
   font-kerning: none;
-  color: var(--enig);
+  color: var(--bone);
 }
 
-.lede {
-  margin: 14px 0 0;
-  max-width: 46ch;
-  font-size: 17px;
-  line-height: 1.5;
-  font-weight: 500;
+.count {
+  margin-top: clamp(12px, 3vh, 32px);
+  padding-top: clamp(16px, 3vh, 28px);
+  border-top: 2px solid rgb(255 255 255 / 0.14);
 }
 
-/* The transistor hides by the contacts: bottom right on wide screens, beside the rules on phones. */
-.partTransistor {
-  right: calc(var(--pillar) + 18px);
-  bottom: 120px;
+.countLabel {
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 0.75;
 }
 
-@media (min-width: 900px) {
-  .partTransistor {
-    right: auto;
-    left: 46%;
-    bottom: calc(clamp(40px, 8vh, 96px) + 110px);
-  }
-}
+/* ---------- rules and contacts ---------- */
 
-/* ---------- rules and organisers ---------- */
-
-.strip {
+.panels {
   display: grid;
-  gap: 20px;
-  padding-top: clamp(24px, 4vh, 36px);
-  border-top: 2px solid rgb(255 255 255 / 0.12);
+  gap: 16px;
   scroll-margin-top: 88px;
 }
 
 @media (min-width: 900px) {
-  .strip {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 48px;
-    align-items: start;
+  .panels {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 24px;
   }
 }
 
-.stripTitle {
-  margin: 0 0 8px;
+/* Panels in the Minecraft GUI's dark-slot language: a bevelled frame, no rounded corners. */
+.panel {
+  padding: clamp(20px, 3vw, 32px);
+  background: rgb(0 0 0 / 0.22);
+  border: 2px solid rgb(0 0 0 / 0.45);
+  box-shadow:
+    inset 2px 2px 0 rgb(255 255 255 / 0.08),
+    inset -2px -2px 0 rgb(0 0 0 / 0.25);
+}
+
+.panelTitle {
+  margin: 0 0 14px;
   font-size: 15px;
   font-weight: 700;
   font-stretch: 88%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--enig);
 }
 
 .ruleList {
   display: grid;
-  gap: 8px;
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-@media (min-width: 900px) {
-  .ruleList {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 28px;
-  }
-}
-
 .ruleList li {
   position: relative;
-  padding-left: 20px;
-  font-size: 15px;
+  padding-left: 22px;
+  font-size: 16px;
   line-height: 1.5;
 }
 

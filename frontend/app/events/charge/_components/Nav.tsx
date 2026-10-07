@@ -8,7 +8,6 @@ import s from "./nav.module.css";
 
 const LINKS = [
   { href: "#briefing", label: "Briefing" },
-  { href: "#workbench", label: "Workbench" },
   { href: "#contacts", label: "Contacts" },
 ];
 
