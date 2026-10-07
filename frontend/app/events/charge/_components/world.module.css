@@ -1,11 +1,13 @@
-/* Floor 4: the overworld at the foot of the tower, a golden ticket hanging from an oak beam. */
+/* Floor 4: the overworld at night at the foot of the tower, a golden ticket hanging on two threads. */
 
 .world {
-  --chain: clamp(96px, 20vh, 210px);
+  /* How far the ticket hangs below the top of the floor (the threads come down from above). */
+  --thread: clamp(150px, 30vh, 300px);
   --ticket-w: min(84vw, 620px);
   justify-content: flex-start;
   overflow: clip;
-  background-image: linear-gradient(#5f93f2, #9cc3ff 70%, #c4dcff) !important;
+  min-height: max(100svh, calc(var(--thread) + 560px));
+  background-image: linear-gradient(#0d0a24, #1f1338 55%, #2b1d4a) !important;
 }
 
 /* ---------- the world ---------- */
@@ -25,6 +27,33 @@
 
   .beam {
     animation: beamShimmer 2.6s ease-in-out infinite alternate;
+  }
+
+  .twinkle {
+    animation: twinkle 3.2s steps(2, jump-none) infinite;
+  }
+
+  .torchGlow {
+    animation: flicker 1.8s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes flicker {
+  from {
+    opacity: 0.75;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -46,28 +75,15 @@
   }
 }
 
-/* An oak log running across the top of the floor; the chains hang from it. */
-.beamLog {
-  position: relative;
-  z-index: 2;
-  height: 28px;
-  margin-top: calc(var(--nav-h) + 8px);
-  background:
-    repeating-linear-gradient(90deg, transparent 0 22px, rgb(0 0 0 / 0.12) 22px 26px, transparent 26px 48px),
-    linear-gradient(#8a6a3a 0 4px, #6b4f2a 4px 22px, #4e381d 22px);
-  box-shadow: 0 8px 18px rgb(0 0 0 / 0.25);
-}
-
 /* ---------- the rig ---------- */
 
 .hang {
-  position: relative;
+  position: absolute;
+  inset: 0 0 auto;
   z-index: 3;
   display: flex;
   justify-content: center;
   perspective: 1200px;
-  /* Bolts sit on the beam's lower edge. */
-  margin-top: -10px;
 }
 
 .rig {
@@ -78,58 +94,26 @@
   will-change: transform;
 }
 
-.mount {
+/* Two fine gold threads from above; they fade in from the top so they seem to come from nowhere. */
+.threads {
   position: absolute;
   top: 0;
-  width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  left: 0;
+  width: 100%;
+  height: var(--thread);
+  overflow: visible;
+  pointer-events: none;
 }
 
-.mountL {
-  left: 13%;
-}
-
-.mountR {
-  right: 13%;
-}
-
-.bolt {
-  position: relative;
-  z-index: 2;
-  width: 18px;
-  height: 18px;
-  flex: none;
-  margin-bottom: -6px;
-}
-
-/* A Minecraft chain: alternating face-on and edge-on iron links. */
-.chain {
-  display: block;
-  width: 12px;
-  height: var(--chain);
-  transform-origin: 50% 0;
-  background:
-    repeating-linear-gradient(
-      #2e3238 0 2px,
-      transparent 2px 10px,
-      #2e3238 10px 12px,
-      transparent 12px 14px,
-      #4b525c 14px 16px,
-      #8e97a3 16px 22px,
-      #4b525c 22px 24px,
-      transparent 24px 26px
-    ),
-    linear-gradient(90deg, transparent 0 3px, #5c6470 3px 4px, #a9b2bd 4px 8px, #5c6470 8px 9px, transparent 9px);
-  background-size: 12px 26px, 12px 26px;
-  image-rendering: pixelated;
-  will-change: transform;
+.thread {
+  stroke: #f3d98a;
+  stroke-width: 1.5;
+  stroke-opacity: 0.85;
 }
 
 .ticketWrap {
   position: relative;
-  margin-top: calc(var(--chain) + 12px);
+  margin-top: var(--thread);
   cursor: pointer;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -150,8 +134,8 @@
     linear-gradient(135deg, #f6d673, #e9b949 40%, #d39b33 75%, #f0c75c);
   box-shadow:
     0 2px 0 #fff0b8 inset,
-    0 26px 50px rgb(20 40 80 / 0.45),
-    0 8px 16px rgb(0 0 0 / 0.25);
+    0 26px 50px rgb(0 0 0 / 0.5),
+    0 8px 16px rgb(0 0 0 / 0.3);
   -webkit-mask:
     radial-gradient(circle at 74% 0, #0000 14px, #000 14.5px) top / 100% 51% no-repeat,
     radial-gradient(circle at 74% 100%, #0000 14px, #000 14.5px) bottom / 100% 51% no-repeat;
@@ -170,17 +154,17 @@
   pointer-events: none;
 }
 
-/* The punched holes the chains pass through, under each bolt. */
+/* The small punched holes the threads pass through. */
 .eyelet {
   position: absolute;
-  top: -6px;
+  top: 0;
   z-index: 2;
-  width: 16px;
-  height: 16px;
+  width: 8px;
+  height: 8px;
   translate: -50% 0;
   border-radius: 50%;
-  background: #2e3238;
-  box-shadow: 0 0 0 3px #8e97a3;
+  background: #1f1338;
+  box-shadow: 0 0 0 2px rgb(122 62 20 / 0.6);
 }
 
 .eyeletL {
@@ -233,8 +217,18 @@
   background: rgb(122 62 20 / 0.12);
 }
 
-.beacon {
-  width: clamp(40px, 8vw, 72px);
-  height: clamp(40px, 8vw, 72px);
-  filter: drop-shadow(2px 2px 0 rgb(0 0 0 / 0.3));
+.beaconIcon {
+  width: clamp(34px, 7vw, 60px);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgb(94 242 255 / 0.55));
+}
+
+/* A warm halo behind the ticket, as if a torch were below it. */
+.glow {
+  position: absolute;
+  inset: -30% -15%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgb(255 178 30 / 0.28), transparent);
+  pointer-events: none;
 }

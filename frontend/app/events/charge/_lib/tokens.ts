@@ -8,7 +8,6 @@ export const C = {
   enig: "#E9B949",
   copper: "#C9773A",
   plum: "#3B1340",
-  daySky: "#7BA9FF",
   night: "#1F1338",
   inkSoft: "#5C4E47",
 } as const;
@@ -23,7 +22,7 @@ export const THEME: Record<FloorId, FloorTheme> = {
   top: { bg: C.night, fg: C.bone, btnBg: C.filament, btnFg: C.cocoa, label: "Roof" },
   briefing: { bg: C.filament, fg: C.cocoa, btnBg: C.cocoa, btnFg: C.bone, label: "Briefing room" },
   ground: { bg: C.plum, fg: C.bone, btnBg: C.filament, btnFg: C.cocoa, label: "Ground floor" },
-  world: { bg: C.daySky, fg: C.cocoa, btnBg: C.cocoa, btnFg: C.bone, label: "Overworld" },
+  world: { bg: C.night, fg: C.bone, btnBg: C.filament, btnFg: C.cocoa, label: "Overworld at night" },
 };
 
 /**

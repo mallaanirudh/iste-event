@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import { EVENT, WORLD } from "../_data/content";
 import { gsap, MQ, prefersReducedMotion, useGSAP } from "../_lib/gsap";
-import { ItemIcon } from "../_lib/sprite";
 import { floorProps } from "../_lib/tokens";
 import c from "../charge.module.css";
 import s from "./world.module.css";
 
-/* ---------- the overworld (pixel SVG, 1440 x 900, 32px blocks) ---------- */
+/* ---------- the overworld at night (pixel SVG, 1440 x 900, 32px blocks) ---------- */
 
 const B = 32;
 
@@ -17,80 +16,123 @@ const NEAR = [5, 5, 6, 6, 6, 7, 7, 6, 6, 5, 5, 4, 4, 4, 5, 5, 4, 4, 4, 4, 5, 5, 
 /** Far hills, in blocks, drawn flat and hazy. */
 const FAR = [9, 9, 10, 10, 11, 11, 11, 10, 10, 9, 9, 9, 10, 11, 12, 12, 12, 11, 10, 10, 9, 9, 9, 10, 10, 11, 11, 12, 13, 13, 12, 12, 11, 10, 10, 10, 11, 11, 12, 12, 11, 10, 10, 9, 9, 9];
 /** The far hill the beacon stands on (clear of the hanging ticket on wide screens). */
-const BEACON = 38;
-/** Blocky clouds: [x, y, width in blocks]. */
+const BEACON = 35;
+/** Stars: [x, y, size]. Every third one twinkles. */
+const STARS: [number, number, number][] = [
+  [60, 90, 4], [170, 40, 6], [300, 150, 4], [410, 70, 4], [520, 30, 6], [640, 120, 4], [760, 60, 4],
+  [880, 170, 4], [960, 40, 6], [1080, 110, 4], [1240, 220, 4], [1330, 60, 6], [1400, 160, 4], [230, 240, 4],
+  [700, 230, 4], [1010, 260, 4], [120, 330, 4], [1360, 330, 4],
+];
+/** Faint night clouds: [x, y, width in blocks]. */
 const CLOUDS: [number, number, number][] = [
-  [80, 120, 5], [420, 70, 7], [860, 140, 4], [1150, 90, 6], [1500, 130, 5],
+  [80, 200, 5], [500, 150, 6], [980, 230, 4], [1500, 180, 5],
 ];
 /** Oak trees: [column, trunk height in blocks]. */
 const TREES: [number, number][] = [
   [3, 4],
   [40, 5],
 ];
-/** Flowers on the grass: [column, colour]. */
-const FLOWERS: [number, string][] = [
-  [8, "#E0281F"], [13, "#FFD23F"], [19, "#E0281F"], [24, "#FFD23F"], [31, "#E0281F"], [36, "#FFD23F"],
-];
+/** Torches on the hills: columns. */
+const TORCHES = [9, 17, 26, 34];
+
+/** A Minecraft beacon in three-quarter view: a glass block, a glowing core on obsidian, a beam. */
+function BeaconBlock({ x, y, size, beam = 0 }: { x: number; y: number; size: number; beam?: number }) {
+  const u = size / 16;
+  const P = (pts: [number, number][]) => pts.map(([a, b]) => `${x + a * u},${y + b * u}`).join(" ");
+  return (
+    <g>
+      {beam ? (
+        <g className={s.beam}>
+          <rect x={x + 6 * u} y={y + 3 * u - beam} width={4 * u} height={beam} fill="url(#ptb-night-beam)" />
+          <rect x={x + 7.3 * u} y={y + 3 * u - beam} width={1.4 * u} height={beam} fill="#f2feff" />
+        </g>
+      ) : null}
+      {/* Obsidian base, inside the glass. */}
+      <polygon points={P([[2, 12], [8, 15], [14, 12], [8, 9]])} fill="#3b2a5c" />
+      <polygon points={P([[2, 12], [8, 15], [8, 18], [2, 15]])} fill="#1b1030" />
+      <polygon points={P([[8, 15], [14, 12], [14, 15], [8, 18]])} fill="#2a1a46" />
+      {/* The core. */}
+      <polygon points={P([[5, 8], [8, 9.5], [11, 8], [8, 6.5]])} fill="#e6feff" />
+      <polygon points={P([[5, 8], [8, 9.5], [8, 13], [5, 11.5]])} fill="#5ef2ff" />
+      <polygon points={P([[8, 9.5], [11, 8], [11, 11.5], [8, 13]])} fill="#2fc7d6" />
+      {/* Glass faces and edges. */}
+      <polygon points={P([[0, 4], [8, 8], [16, 4], [8, 0]])} fill="#bff3ff" fillOpacity="0.35" stroke="#e8fdff" strokeWidth={u * 0.7} />
+      <polygon points={P([[0, 4], [8, 8], [8, 18], [0, 14]])} fill="#9fe6f5" fillOpacity="0.28" stroke="#e8fdff" strokeWidth={u * 0.7} />
+      <polygon points={P([[8, 8], [16, 4], [16, 14], [8, 18]])} fill="#7fd6ea" fillOpacity="0.22" stroke="#e8fdff" strokeWidth={u * 0.7} />
+    </g>
+  );
+}
 
 function Overworld() {
   const ground = (h: number) => 900 - h * B;
+  const bx = BEACON * B;
+  const by = ground(FAR[BEACON]) - 36;
   return (
-    <svg className={s.worldSvg} viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" shapeRendering="crispEdges" aria-hidden="true">
+    <svg className={s.worldSvg} viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
       <defs>
         <pattern id="ptb-grass" width={B} height={B} patternUnits="userSpaceOnUse">
-          <rect width={B} height={B} fill="#8a5a33" />
-          <rect y="0" width={B} height="10" fill="#5daa3c" />
-          <rect x="4" y="10" width="4" height="4" fill="#5daa3c" />
-          <rect x="18" y="10" width="6" height="4" fill="#5daa3c" />
-          <rect x="10" y="0" width="6" height="4" fill="#77c24f" />
-          <rect x="24" y="4" width="4" height="4" fill="#4a8f2e" />
-          <rect x="6" y="20" width="4" height="4" fill="#6e4526" />
-          <rect x="22" y="24" width="4" height="4" fill="#a06c40" />
+          <rect width={B} height={B} fill="#3e2a1a" />
+          <rect y="0" width={B} height="10" fill="#2f5e2a" />
+          <rect x="4" y="10" width="4" height="4" fill="#2f5e2a" />
+          <rect x="18" y="10" width="6" height="4" fill="#2f5e2a" />
+          <rect x="10" y="0" width="6" height="4" fill="#3d7536" />
+          <rect x="24" y="4" width="4" height="4" fill="#244b20" />
+          <rect x="6" y="20" width="4" height="4" fill="#2f2014" />
+          <rect x="22" y="24" width="4" height="4" fill="#4d3622" />
         </pattern>
         <pattern id="ptb-dirt" width={B} height={B} patternUnits="userSpaceOnUse">
-          <rect width={B} height={B} fill="#8a5a33" />
-          <rect x="4" y="6" width="4" height="4" fill="#6e4526" />
-          <rect x="20" y="2" width="4" height="4" fill="#a06c40" />
-          <rect x="14" y="18" width="4" height="4" fill="#6e4526" />
-          <rect x="26" y="24" width="4" height="4" fill="#a06c40" />
+          <rect width={B} height={B} fill="#3e2a1a" />
+          <rect x="4" y="6" width="4" height="4" fill="#2f2014" />
+          <rect x="20" y="2" width="4" height="4" fill="#4d3622" />
+          <rect x="14" y="18" width="4" height="4" fill="#2f2014" />
+          <rect x="26" y="24" width="4" height="4" fill="#4d3622" />
         </pattern>
-        <linearGradient id="ptb-world-beam" x1="0" x2="1">
-          <stop offset="0" stopColor="#bff4ff" stopOpacity="0" />
-          <stop offset="0.5" stopColor="#e6fdff" stopOpacity="0.95" />
-          <stop offset="1" stopColor="#bff4ff" stopOpacity="0" />
+        <linearGradient id="ptb-night-beam" x1="0" x2="1">
+          <stop offset="0" stopColor="#7feaff" stopOpacity="0" />
+          <stop offset="0.5" stopColor="#c9fbff" stopOpacity="0.9" />
+          <stop offset="1" stopColor="#7feaff" stopOpacity="0" />
         </linearGradient>
+        <radialGradient id="ptb-torch-glow">
+          <stop offset="0" stopColor="#ffb21e" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#ffb21e" stopOpacity="0" />
+        </radialGradient>
       </defs>
 
-      {/* The sun, square as in the game. */}
-      <rect x="1180" y="60" width="96" height="96" fill="#fff6a8" opacity="0.35" />
-      <rect x="1196" y="76" width="64" height="64" fill="#fffbd6" />
+      <g shapeRendering="crispEdges">
+        <g>
+          {STARS.map(([x, y, sz], i) => (
+            <rect key={i} className={i % 3 === 0 ? s.twinkle : undefined} x={x} y={y} width={sz} height={sz} fill="#fff6d8" style={{ animationDelay: `${(i % 5) * -0.7}s` }} />
+          ))}
+        </g>
 
-      <g className={s.clouds}>
-        {CLOUDS.map(([x, y, w]) => (
-          <g key={x} fill="#ffffff" opacity="0.92">
-            <rect x={x} y={y} width={w * B} height={B / 2} />
-            <rect x={x + B} y={y - B / 2} width={(w - 2) * B} height={B / 2} />
-          </g>
-        ))}
+        {/* The moon, square as in the game. */}
+        <rect x="1150" y="70" width="104" height="104" fill="#e8ecf5" opacity="0.16" />
+        <rect x="1166" y="86" width="72" height="72" fill="#e8ecf5" />
+        <rect x="1180" y="100" width="16" height="16" fill="#c9cfdc" />
+        <rect x="1210" y="126" width="12" height="12" fill="#c9cfdc" />
+
+        <g className={s.clouds}>
+          {CLOUDS.map(([x, y, w]) => (
+            <g key={x} fill="#4a3f78" opacity="0.45">
+              <rect x={x} y={y} width={w * B} height={B / 2} />
+              <rect x={x + B} y={y - B / 2} width={(w - 2) * B} height={B / 2} />
+            </g>
+          ))}
+        </g>
       </g>
 
-      {/* Far hills, hazy, with the beacon on the highest one. */}
+      {/* Far hills, hazy, with the beacon on one of them. */}
       <g data-world-depth="0.3">
-        <g fill="#8fbf9a" opacity="0.75">
+        <g fill="#2a2f52" shapeRendering="crispEdges">
           {FAR.map((h, i) => (
             <rect key={i} x={i * B} y={ground(h)} width={B} height={h * B} />
           ))}
         </g>
-        <g className={s.beam}>
-          <rect x={BEACON * B + 8} y="-40" width="16" height={ground(FAR[BEACON]) + 40} fill="url(#ptb-world-beam)" />
-          <rect x={BEACON * B + 13} y="-40" width="6" height={ground(FAR[BEACON]) + 40} fill="#f2feff" />
-        </g>
-        <rect x={BEACON * B} y={ground(FAR[BEACON]) - B} width={B} height={B} fill="#5ed6e0" />
-        <rect x={BEACON * B + 6} y={ground(FAR[BEACON]) - B + 6} width={20} height={20} fill="#c9fbff" />
+        <BeaconBlock x={bx - 2} y={by} size={36} beam={by + 60} />
       </g>
 
-      {/* Near hills: grass blocks over dirt, trees and flowers. */}
-      <g data-world-depth="0.7">
+      {/* Near hills: grass blocks over dirt, trees, and torches with a warm glow. */}
+      <g data-world-depth="0.7" shapeRendering="crispEdges">
         {NEAR.map((h, i) => (
           <g key={i}>
             <rect x={i * B} y={ground(h)} width={B} height={B} fill="url(#ptb-grass)" />
@@ -101,21 +143,22 @@ function Overworld() {
           const base = ground(NEAR[col]);
           return (
             <g key={col}>
-              <rect x={col * B} y={base - trunk * B} width={B} height={trunk * B} fill="#6b4f2a" />
-              <rect x={col * B + 6} y={base - trunk * B} width="4" height={trunk * B} fill="#563f21" />
-              <rect x={(col - 2) * B} y={base - (trunk + 2) * B} width={5 * B} height={2 * B} fill="#3f7f2a" />
-              <rect x={(col - 1) * B} y={base - (trunk + 3) * B} width={3 * B} height={B} fill="#4a8f32" />
-              <rect x={(col - 1) * B + 8} y={base - (trunk + 2) * B + 10} width="8" height="8" fill="#2f6420" />
-              <rect x={(col + 1) * B + 4} y={base - (trunk + 1) * B - 18} width="8" height="8" fill="#5aa040" />
+              <rect x={col * B} y={base - trunk * B} width={B} height={trunk * B} fill="#3e2c17" />
+              <rect x={col * B + 6} y={base - trunk * B} width="4" height={trunk * B} fill="#2e2010" />
+              <rect x={(col - 2) * B} y={base - (trunk + 2) * B} width={5 * B} height={2 * B} fill="#1f4a1c" />
+              <rect x={(col - 1) * B} y={base - (trunk + 3) * B} width={3 * B} height={B} fill="#275a23" />
+              <rect x={(col - 1) * B + 8} y={base - (trunk + 2) * B + 10} width="8" height="8" fill="#163814" />
             </g>
           );
         })}
-        {FLOWERS.map(([col, colour]) => {
+        {TORCHES.map((col) => {
           const base = ground(NEAR[col]);
           return (
             <g key={col}>
-              <rect x={col * B + 14} y={base - 14} width="4" height="14" fill="#3f7f2a" />
-              <rect x={col * B + 10} y={base - 22} width="12" height="8" fill={colour} />
+              <circle className={s.torchGlow} cx={col * B + 16} cy={base - 20} r="46" fill="url(#ptb-torch-glow)" />
+              <rect x={col * B + 14} y={base - 22} width="4" height="22" fill="#6b4f2a" />
+              <rect x={col * B + 13} y={base - 28} width="6" height="6" fill="#ffd36e" />
+              <rect x={col * B + 15} y={base - 26} width="2" height="2" fill="#fff6d8" />
             </g>
           );
         })}
@@ -124,34 +167,46 @@ function Overworld() {
   );
 }
 
-/* ---------- the hanging ticket ---------- */
-
-/** A pixel iron bolt where a chain meets the beam. */
-function Bolt({ className }: { className: string }) {
+/** The beacon for the ticket's stub, as its own small SVG. */
+function StubBeacon() {
+  const gid = useId().replace(/:/g, "");
   return (
-    <svg className={className} viewBox="0 0 8 8" shapeRendering="crispEdges" aria-hidden="true">
-      <rect x="1" y="1" width="6" height="6" fill="#5a5a5a" />
-      <rect x="2" y="2" width="4" height="4" fill="#a8a8a8" />
-      <rect x="3" y="3" width="2" height="2" fill="#dcdcdc" />
+    <svg className={s.beaconIcon} viewBox="-2 -14 20 34" aria-hidden="true">
+      <defs>
+        <linearGradient id={`${gid}-b`} x1="0" x2="1">
+          <stop offset="0" stopColor="#5ef2ff" stopOpacity="0" />
+          <stop offset="0.5" stopColor="#c9fbff" stopOpacity="0.95" />
+          <stop offset="1" stopColor="#5ef2ff" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <rect x="5.5" y="-14" width="5" height="18" fill={`url(#${gid}-b)`} />
+      <polygon points="2,12 8,15 14,12 8,9" fill="#3b2a5c" />
+      <polygon points="2,12 8,15 8,18 2,15" fill="#1b1030" />
+      <polygon points="8,15 14,12 14,15 8,18" fill="#2a1a46" />
+      <polygon points="5,8 8,9.5 11,8 8,6.5" fill="#e6feff" />
+      <polygon points="5,8 8,9.5 8,13 5,11.5" fill="#5ef2ff" />
+      <polygon points="8,9.5 11,8 11,11.5 8,13" fill="#2fc7d6" />
+      <polygon points="0,4 8,8 16,4 8,0" fill="#bff3ff" fillOpacity="0.4" stroke="#1a110e" strokeWidth="0.6" />
+      <polygon points="0,4 8,8 8,18 0,14" fill="#9fe6f5" fillOpacity="0.32" stroke="#1a110e" strokeWidth="0.6" />
+      <polygon points="8,8 16,4 16,14 8,18" fill="#7fd6ea" fillOpacity="0.26" stroke="#1a110e" strokeWidth="0.6" />
     </svg>
   );
 }
 
 /**
- * Floor 4: the overworld at the foot of the tower, with the golden ticket hanging from
- * two chains under an oak beam.
+ * Floor 4: the overworld at night at the foot of the tower, with the golden ticket
+ * hanging on two fine threads that come down from above.
  *
- * The rig behaves like a two-chain swing: both chains turn by the same angle about their
- * bolts, so the ticket stays level and travels along an arc (a parallelogram). A light
- * spring-damper gives that swing, and a second one tips the whole rig back in depth
- * (rotateX about the beam) when the ticket is hit. A pointer moving near the ticket nudges
- * it with its own speed; a tap punches it back and to the side of the hit.
+ * The threads behave like a two-thread swing: both turn by the same angle, the ticket rides
+ * their ends along an arc and lags into a slight twist, and a soft breeze keeps it drifting.
+ * A pointer moving near the ticket nudges it with its own speed; a tap punches it back in
+ * depth (rotateX about the thread tops) and away from the side that was hit.
  */
 export function World() {
   const ref = useRef<HTMLElement>(null);
   const rig = useRef<HTMLDivElement>(null);
   const ticket = useRef<HTMLDivElement>(null);
-  const chains = useRef<(HTMLSpanElement | null)[]>([]);
+  const threads = useRef<(SVGLineElement | null)[]>([]);
 
   // Depth parallax of the hills as the floor scrolls in.
   useGSAP(
@@ -187,38 +242,48 @@ export function World() {
     let visible = false;
     let lastX = 0;
     let lastT = 0;
-    let breeze = performance.now() + 2500;
 
-    const chainLength = () => chains.current[0]?.offsetHeight ?? 160;
-
-    const render = () => {
-      const L = chainLength();
-      const deg = (theta * 180) / Math.PI;
-      chains.current.forEach((ch) => {
-        if (ch) ch.style.transform = `rotate(${-deg}deg)`;
-      });
-      // The ticket rides the chain ends: out along the arc and up as it swings.
-      t.style.transform = `translate(${L * Math.sin(theta)}px, ${-L * (1 - Math.cos(theta))}px) scale(${1 - press * 0.04})`;
+    const render = (now: number) => {
+      // Thread length = how far the ticket hangs below the thread tops (its offset in the rig).
+      const L = t.offsetTop;
+      const w = t.offsetWidth;
+      const h = t.offsetHeight;
+      // The ticket lags into a slight twist as it swings, and bobs a little on the air.
+      const twist = Math.max(-3, Math.min(3, -omega * 2.5)) + Math.sin(now / 1700) * 0.5;
+      const tx = L * Math.sin(theta);
+      const ty = -L * (1 - Math.cos(theta)) + Math.sin(now / 1300) * 3;
+      t.style.transform = `translate(${tx}px, ${ty}px) rotate(${twist}deg) scale(${1 - press * 0.04})`;
       r.style.transform = `rotateX(${phi}deg)`;
+      // Each thread runs from its fixed top to the ticket's hole, wherever the ticket is.
+      const a = (twist * Math.PI) / 180;
+      const cx = w / 2 + tx;
+      const cy = L + h / 2 + ty;
+      [-1, 1].forEach((side, i) => {
+        const line = threads.current[i];
+        if (!line) return;
+        const ex = side * w * 0.37;
+        const ey = -h / 2 + 4;
+        line.setAttribute("x1", String(w / 2 + side * w * 0.37));
+        line.setAttribute("y1", "0");
+        line.setAttribute("x2", String(cx + ex * Math.cos(a) - ey * Math.sin(a)));
+        line.setAttribute("y2", String(cy + ex * Math.sin(a) + ey * Math.cos(a)));
+      });
     };
 
     const tick = (now: number) => {
       const dt = Math.min(0.032, (now - (last || now)) / 1000);
       last = now;
-      // A faint breeze now and then, so the ticket never looks pinned in place.
-      if (now > breeze) {
-        omega += (Math.random() - 0.5) * 0.12;
-        breeze = now + 3000 + Math.random() * 3000;
-      }
-      omega += (-15 * Math.sin(theta) - 0.9 * omega) * dt;
-      theta = Math.max(-0.6, Math.min(0.6, theta + omega * dt));
-      psi += (-70 * phi - 7 * psi) * dt;
+      // Soft, continuous breeze: never quite still, never busy.
+      const breeze = Math.sin(now / 2300) * 0.035 + Math.sin(now / 900) * 0.012;
+      omega += (-9 * Math.sin(theta) - 0.55 * omega + breeze) * dt;
+      // The widest swing keeps the ticket on screen: ~0.55 rad on desktop, less on phones.
+      const limit = 0.18 + 0.37 * Math.min(1, window.innerWidth / 900);
+      theta = Math.max(-limit, Math.min(limit, theta + omega * dt));
+      psi += (-55 * phi - 5 * psi) * dt;
       phi = Math.max(-40, Math.min(14, phi + psi * dt));
       press = Math.max(0, press - dt * 6);
-      render();
-      const settled = Math.abs(theta) < 0.0005 && Math.abs(omega) < 0.0005 && Math.abs(phi) < 0.02 && Math.abs(psi) < 0.02 && press === 0;
-      raf = visible && !settled ? requestAnimationFrame(tick) : 0;
-      if (settled) last = 0;
+      render(now);
+      raf = visible ? requestAnimationFrame(tick) : 0;
     };
     const wake = () => {
       if (!raf && visible) {
@@ -240,8 +305,8 @@ export function World() {
       if (dx > 0 || dy > 0) return;
       const inside = e.clientX > b.left && e.clientX < b.right && e.clientY > b.top && e.clientY < b.bottom;
       // Narrow screens get a smaller swing, so the ticket stays on screen.
-      const reach = Math.min(1, window.innerWidth / 900);
-      omega += Math.max(-1.2, Math.min(1.2, vx)) * (inside ? 0.5 : 0.28) * reach;
+      const reach = Math.min(1, window.innerWidth / 900) ** 1.6;
+      omega += Math.max(-1.2, Math.min(1.2, vx)) * (inside ? 0.42 : 0.24) * reach;
       wake();
     };
 
@@ -249,8 +314,8 @@ export function World() {
     const onDown = (e: PointerEvent) => {
       const b = t.getBoundingClientRect();
       const hit = ((e.clientX - b.left) / b.width) * 2 - 1; // -1 left edge .. 1 right edge
-      omega += -hit * 1.6 * Math.min(1, window.innerWidth / 900);
-      psi -= 260;
+      omega += -hit * 1.3 * Math.min(1, window.innerWidth / 900) ** 1.6;
+      psi -= 240;
       press = 1;
       wake();
     };
@@ -262,13 +327,11 @@ export function World() {
     io.observe(section);
     section.addEventListener("pointermove", onMove, { passive: true });
     t.addEventListener("pointerdown", onDown);
-    window.addEventListener("resize", render);
     return () => {
       io.disconnect();
       cancelAnimationFrame(raf);
       section.removeEventListener("pointermove", onMove);
       t.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("resize", render);
     };
   }, []);
 
@@ -279,24 +342,27 @@ export function World() {
       </h2>
       <Overworld />
 
-      <div className={s.beamLog} aria-hidden="true" />
-
       <div className={s.hang}>
         <div ref={rig} className={s.rig}>
-          {[0, 1].map((i) => (
-            <span key={i} className={`${s.mount} ${i === 0 ? s.mountL : s.mountR}`}>
-              <Bolt className={s.bolt} />
-              <span
+          <svg className={s.threads} aria-hidden="true">
+            {[0, 1].map((i) => (
+              <line
+                key={i}
                 ref={(el) => {
-                  chains.current[i] = el;
+                  threads.current[i] = el;
                 }}
-                className={s.chain}
-                aria-hidden="true"
+                className={s.thread}
+                // Resting position without script or with reduced motion; the loop takes over otherwise.
+                x1={i === 0 ? "13%" : "87%"}
+                x2={i === 0 ? "13%" : "87%"}
+                y1="0"
+                y2="100%"
               />
-            </span>
-          ))}
+            ))}
+          </svg>
 
           <div ref={ticket} className={s.ticketWrap} data-cursor="Hit it">
+            <span className={s.glow} aria-hidden="true" />
             <article className={s.ticket}>
               <span className={`${s.eyelet} ${s.eyeletL}`} aria-hidden="true" />
               <span className={`${s.eyelet} ${s.eyeletR}`} aria-hidden="true" />
@@ -306,7 +372,7 @@ export function World() {
                 <p className={s.admit}>{WORLD.admit}</p>
               </div>
               <div className={s.stub} aria-hidden="true">
-                <ItemIcon name="beacon" className={s.beacon} />
+                <StubBeacon />
               </div>
             </article>
           </div>
