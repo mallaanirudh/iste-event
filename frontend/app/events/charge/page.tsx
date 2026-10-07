@@ -6,6 +6,7 @@ import { Ground } from "./_components/Ground";
 import { Nav } from "./_components/Nav";
 import { Roof } from "./_components/Roof";
 import { Slab, Tower } from "./_components/Tower";
+import { World } from "./_components/World";
 
 // The page is information only (registration and leaderboards live on the Square One main
 // page). Rounds come from the backend, so the route is regenerated at most once a minute.
@@ -53,7 +54,8 @@ export default async function ChargePage() {
         <Briefing rounds={rounds} />
         <Slab />
         <Ground />
-        <Slab foundation />
+        <Slab />
+        <World />
       </Tower>
     </ChargeRoot>
   );

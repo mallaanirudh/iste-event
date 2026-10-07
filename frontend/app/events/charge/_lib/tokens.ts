@@ -8,12 +8,13 @@ export const C = {
   enig: "#E9B949",
   copper: "#C9773A",
   plum: "#3B1340",
+  daySky: "#7BA9FF",
   night: "#1F1338",
   inkSoft: "#5C4E47",
 } as const;
 
 /** The three floors of the tower, top to bottom. */
-export type FloorId = "top" | "briefing" | "ground";
+export type FloorId = "top" | "briefing" | "ground" | "world";
 
 /** `btnBg`/`btnFg` colour the nav's buttons while that floor is under the nav. */
 export type FloorTheme = { bg: string; fg: string; btnBg: string; btnFg: string; label: string };
@@ -22,6 +23,7 @@ export const THEME: Record<FloorId, FloorTheme> = {
   top: { bg: C.night, fg: C.bone, btnBg: C.filament, btnFg: C.cocoa, label: "Roof" },
   briefing: { bg: C.filament, fg: C.cocoa, btnBg: C.cocoa, btnFg: C.bone, label: "Briefing room" },
   ground: { bg: C.plum, fg: C.bone, btnBg: C.filament, btnFg: C.cocoa, label: "Ground floor" },
+  world: { bg: C.daySky, fg: C.cocoa, btnBg: C.cocoa, btnFg: C.bone, label: "Overworld" },
 };
 
 /**

@@ -122,6 +122,12 @@ export const RULES = [
   "If the platform malfunctions or a rule is unclear, contact an organiser.",
 ] as const;
 
+/** Floor 4: the golden ticket hanging in the overworld. Deliberately nothing else on it. */
+export const WORLD = {
+  band: "Golden ticket",
+  admit: "Admit up to 3 members",
+} as const;
+
 /** Points of contact, as listed in the event brief. `tel` is the dialable form. */
 export const CONTACTS = [
   { name: "Pratheek", phone: "+91 82172 99491", tel: "+918217299491" },

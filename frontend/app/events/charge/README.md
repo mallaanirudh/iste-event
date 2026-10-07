@@ -9,6 +9,9 @@ live on the Square One main page. Copy lives in `_data/content.ts`; rounds come 
   led by its brick slab, slides up over it; the covered floor sinks back and dims (`--cover`).
 - **Reveals**: titles rise out of a mask (`_lib/titleReveal.ts`); `data-reveal` blocks fade up;
   `data-slide` rows (the closing facts) slide in tied to the scroll.
+- **Overworld** (`_components/World.tsx`, floor 4): a pixel Minecraft landscape with a far beacon
+  beam, and the golden ticket hanging from two chains under an oak beam. It swings like a two-chain
+  swing (spring-damped): a pointer passing near it nudges it, a tap punches it back in depth.
 - **Roof**: the beacon powers on after load; the sky layers drift with the mouse and the skyline
   sinks as the roof scrolls away. The copper pipe on the left fills as you scroll down the tower.
 

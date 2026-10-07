@@ -1,0 +1,240 @@
+/* Floor 4: the overworld at the foot of the tower, a golden ticket hanging from an oak beam. */
+
+.world {
+  --chain: clamp(96px, 20vh, 210px);
+  --ticket-w: min(84vw, 620px);
+  justify-content: flex-start;
+  overflow: clip;
+  background-image: linear-gradient(#5f93f2, #9cc3ff 70%, #c4dcff) !important;
+}
+
+/* ---------- the world ---------- */
+
+.worldSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .clouds {
+    animation: drift 70s linear infinite;
+  }
+
+  .beam {
+    animation: beamShimmer 2.6s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-220px);
+  }
+  to {
+    transform: translateX(220px);
+  }
+}
+
+@keyframes beamShimmer {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* An oak log running across the top of the floor; the chains hang from it. */
+.beamLog {
+  position: relative;
+  z-index: 2;
+  height: 28px;
+  margin-top: calc(var(--nav-h) + 8px);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 22px, rgb(0 0 0 / 0.12) 22px 26px, transparent 26px 48px),
+    linear-gradient(#8a6a3a 0 4px, #6b4f2a 4px 22px, #4e381d 22px);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.25);
+}
+
+/* ---------- the rig ---------- */
+
+.hang {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  perspective: 1200px;
+  /* Bolts sit on the beam's lower edge. */
+  margin-top: -10px;
+}
+
+.rig {
+  position: relative;
+  width: var(--ticket-w);
+  transform-origin: 50% 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.mount {
+  position: absolute;
+  top: 0;
+  width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mountL {
+  left: 13%;
+}
+
+.mountR {
+  right: 13%;
+}
+
+.bolt {
+  position: relative;
+  z-index: 2;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin-bottom: -6px;
+}
+
+/* A Minecraft chain: alternating face-on and edge-on iron links. */
+.chain {
+  display: block;
+  width: 12px;
+  height: var(--chain);
+  transform-origin: 50% 0;
+  background:
+    repeating-linear-gradient(
+      #2e3238 0 2px,
+      transparent 2px 10px,
+      #2e3238 10px 12px,
+      transparent 12px 14px,
+      #4b525c 14px 16px,
+      #8e97a3 16px 22px,
+      #4b525c 22px 24px,
+      transparent 24px 26px
+    ),
+    linear-gradient(90deg, transparent 0 3px, #5c6470 3px 4px, #a9b2bd 4px 8px, #5c6470 8px 9px, transparent 9px);
+  background-size: 12px 26px, 12px 26px;
+  image-rendering: pixelated;
+  will-change: transform;
+}
+
+.ticketWrap {
+  position: relative;
+  margin-top: calc(var(--chain) + 12px);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+}
+
+/* ---------- the golden ticket ---------- */
+
+.ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 26%;
+  overflow: hidden;
+  border-radius: 12px;
+  color: var(--cocoa);
+  background:
+    repeating-linear-gradient(135deg, rgb(122 62 20 / 0.07) 0 1px, transparent 1px 7px),
+    linear-gradient(135deg, #f6d673, #e9b949 40%, #d39b33 75%, #f0c75c);
+  box-shadow:
+    0 2px 0 #fff0b8 inset,
+    0 26px 50px rgb(20 40 80 / 0.45),
+    0 8px 16px rgb(0 0 0 / 0.25);
+  -webkit-mask:
+    radial-gradient(circle at 74% 0, #0000 14px, #000 14.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 74% 100%, #0000 14px, #000 14.5px) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle at 74% 0, #0000 14px, #000 14.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 74% 100%, #0000 14px, #000 14.5px) bottom / 100% 51% no-repeat;
+  user-select: none;
+}
+
+.ticket::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 2px solid rgb(26 17 14 / 0.5);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* The punched holes the chains pass through, under each bolt. */
+.eyelet {
+  position: absolute;
+  top: -6px;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: #2e3238;
+  box-shadow: 0 0 0 3px #8e97a3;
+}
+
+.eyeletL {
+  left: 13%;
+}
+
+.eyeletR {
+  left: 87%;
+}
+
+.main {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: clamp(22px, 4vw, 40px) clamp(18px, 4vw, 40px);
+}
+
+.band {
+  margin: 0;
+  font-size: clamp(11px, 1.6vw, 14px);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #7a3e14;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: clamp(34px, 7.4vw, 76px);
+  line-height: 0.88;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 rgb(255 240 184 / 0.6);
+}
+
+.admit {
+  margin: 4px 0 0;
+  padding-top: 10px;
+  border-top: 2px solid rgb(26 17 14 / 0.3);
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: clamp(18px, 3vw, 28px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.stub {
+  display: grid;
+  place-items: center;
+  border-left: 3px dashed rgb(26 17 14 / 0.4);
+  background: rgb(122 62 20 / 0.12);
+}
+
+.beacon {
+  width: clamp(40px, 8vw, 72px);
+  height: clamp(40px, 8vw, 72px);
+  filter: drop-shadow(2px 2px 0 rgb(0 0 0 / 0.3));
+}
