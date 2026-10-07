@@ -59,6 +59,10 @@ export default async function ScotlandYardPage() {
 
   return (
     <FactoryShell rootClass={styles.root}>
+      {/* Without JavaScript nothing can turn the lights on, so never show the dark overlay. */}
+      <noscript>
+        <style>{"#sy-root .torch, #sy-root .casebar, #sy-root .switch { display: none !important; }"}</style>
+      </noscript>
       <Symbols />
       <div className="tower">
         <div className="pipe l" aria-hidden="true" />

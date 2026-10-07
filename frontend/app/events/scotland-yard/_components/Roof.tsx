@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
 import logo from "@/public/events/scotland-yard/logo.webp";
-import { Clue } from "./Casebook";
+import { Clue, LightSwitch } from "./Casebook";
 import { clues } from "../content";
 
 /** Marquee bulbs around the sign: [left %, top %] along the edges. */
@@ -33,6 +33,7 @@ export default function Roof() {
         </div>
 
         <Clue at={{ left: "8%", top: "62%" }} note={clues.roof} />
+        <LightSwitch at={{ right: "5%", top: "58%" }} />
         <div className="hero-copy">
           <p className="presents">ISTE presents, at the Grand Confectionery</p>
           <p>The ultimate mystery challenge. Crack the ciphers, ride the chase and corner Mr. X before he slips away.</p>
