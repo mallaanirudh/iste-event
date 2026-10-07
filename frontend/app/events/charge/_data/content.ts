@@ -57,34 +57,32 @@ export const BRIEFING = {
 /** Tooltip copy for the crafting grid. Round slots take their names from the rounds data. */
 export const CRAFT = {
   teammates: [
-    { name: "Teammate 1", lines: ["One person registers the whole team"] },
-    { name: "Teammate 2", lines: ["Teams of up to 3"] },
-    { name: "Teammate 3", lines: ["B.Tech batch of 2029"] },
+    { name: "Teammate 1", lines: ["Teams of up to 3"] },
+    { name: "Teammate 2", lines: ["B.Tech batch of 2029"] },
+    { name: "Teammate 3", lines: ["A third teammate is optional"] },
   ],
-  winner: { name: "Winner", lines: ["Light the beacon", "Results after 11 PM"] },
+  winner: { name: "Winner", lines: ["Light the beacon", "Results at the end of the night"] },
 } as const;
 
-export type Step = { time: string; title: string; detail: string };
+/*
+ * The evening, from the event brief: "KSS and Round 1: 2 hrs (6PM-8PM)", "Round 2: 2 hrs
+ * (9PM-11PM)", then result declaration (no time given). Anirudh asked to keep the round
+ * details short, so each round gets a one-line teaser, not the full format.
+ */
+export const KSS = "Knowledge session";
 
-/** The evening, in order. Rounds 1 and 2 take their names and descriptions from the backend when it has them. */
-export const KNOWLEDGE_SESSION: Step = {
-  time: "6 PM",
-  title: "Knowledge session",
-  detail: "A quick walk through the components you'll be bidding on and how they work.",
-};
-
-export const RESULTS: Step = {
-  time: "After 11 PM",
+export const RESULTS = {
+  time: "End of the night",
   title: "Results",
-  detail: "The winners are announced in the hall at the end of the night.",
-};
+  detail: "The winners are declared.",
+} as const;
 
 export type FallbackRound = {
   roundNumber: number;
   name: string;
-  description: string;
+  /** A one-line teaser. It always wins over the backend description, to keep the page brief. */
+  teaser: string;
   time: string;
-  mode: string;
 };
 
 export const FALLBACK_ROUNDS: FallbackRound[] = [
@@ -92,15 +90,13 @@ export const FALLBACK_ROUNDS: FallbackRound[] = [
     roundNumber: 1,
     name: "Screening",
     time: "6 PM to 8 PM",
-    mode: "Offline, in the hall",
-    description: "Checks the basics you'll need for the build. The top teams go through to Round 2.",
+    teaser: "Learn the parts in the knowledge session, then clear the screening.",
   },
   {
     roundNumber: 2,
-    name: "Auction and build",
+    name: "Auction and hackathon",
     time: "9 PM to 11 PM",
-    mode: "Live auction, then the build",
-    description: "Every team gets the same purse of virtual money. Bid for components, then build a working circuit from only what you won.",
+    teaser: "Bid for parts, then build with what you win. The rest stays a surprise.",
   },
 ];
 
@@ -109,9 +105,9 @@ export const GROUND = {
   contactsTitle: "Points of contact",
 } as const;
 
+/** The general rules from the event brief. */
 export const RULES = [
-  "Sharing or copying answers with other teams leads to disqualification.",
-  "In Round 2 you build only with the components your team won at auction.",
+  "Sharing or copying answers with or from other teams leads to disqualification.",
   "If the platform malfunctions or a rule is unclear, contact an organiser.",
 ] as const;
 
@@ -128,9 +124,12 @@ export const CONTACTS = [
 export const WORKBENCH = {
   kicker: "Workbench",
   title: "Wire the beacon",
-  lede: "Tap a tile to turn it. Run the redstone from the power block to the lamp. In Round 2 you build for real, with only the parts your team wins.",
+  lede: "Watch the redstone find its way from the power block to the lamp. Then scramble the wires and try it yourself.",
   solved: "Circuit complete. The beacon on the roof is at full power.",
-  scramble: "Scramble",
+  watching: "Wiring the beacon",
+  yourTurn: "Your turn: tap a tile to turn it",
+  tryIt: "Try it yourself",
+  replay: "Watch again",
 } as const;
 
 /**
@@ -139,10 +138,10 @@ export const WORKBENCH = {
  */
 export const PARTS = [
   { id: "led", name: "LED", fact: "Doors open at 6 PM on Wednesday 14 October, in the LHC A Seminar Hall." },
-  { id: "battery", name: "Battery", fact: "In Round 2 every team starts the auction with the same purse of virtual money." },
+  { id: "battery", name: "Battery", fact: "Your budget will be limited. Spend it wisely." },
   { id: "capacitor", name: "Capacitor", fact: "Teams of up to 3, open to the B.Tech batch of 2029." },
-  { id: "resistor", name: "Resistor", fact: "Round 1, the screening, runs offline in the hall from 6 PM to 8 PM." },
-  { id: "transistor", name: "Transistor", fact: "Round 2 runs from 9 PM to 11 PM: a live auction, then the build." },
+  { id: "resistor", name: "Resistor", fact: "Round 1 is a screening. Clear it to reach the auction." },
+  { id: "transistor", name: "Transistor", fact: "In Round 2, what you win is all you build with." },
 ] as const;
 
 export type PartId = (typeof PARTS)[number]["id"];

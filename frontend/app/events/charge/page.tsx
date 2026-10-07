@@ -22,7 +22,7 @@ export default async function ChargePage() {
 
   const fallbackFor = (n: number) => FALLBACK_ROUNDS.find((r) => r.roundNumber === n);
 
-  // Backend rounds win; the brief's copy fills in anything the backend doesn't store.
+  // Backend rounds supply names and points; the short teasers and times come from the brief.
   const rounds: RoundView[] =
     apiRounds && apiRounds.length > 0
       ? apiRounds.map((r) => {
@@ -31,9 +31,8 @@ export default async function ChargePage() {
             key: r.id,
             roundNumber: r.roundNumber,
             name: r.name,
-            description: r.description?.trim() || fb?.description || "",
+            description: fb?.teaser || r.description?.trim() || "",
             time: fb?.time ?? null,
-            mode: fb?.mode ?? null,
             maxPoints: r.maxPoints,
           };
         })
@@ -41,9 +40,8 @@ export default async function ChargePage() {
           key: `fallback-${r.roundNumber}`,
           roundNumber: r.roundNumber,
           name: r.name,
-          description: r.description,
+          description: r.teaser,
           time: r.time,
-          mode: r.mode,
           maxPoints: null,
         }));
 

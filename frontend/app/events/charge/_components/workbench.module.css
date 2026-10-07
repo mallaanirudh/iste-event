@@ -22,6 +22,7 @@
 }
 
 .board {
+  position: relative;
   display: grid;
   gap: var(--gap);
   padding: 12px 10px;
@@ -183,7 +184,13 @@
   font-variant-numeric: tabular-nums;
 }
 
-.scramble {
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.action {
   min-height: 44px;
   padding: 0 16px;
   border: 2px solid currentColor;
@@ -193,8 +200,53 @@
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.scramble:hover {
+.action:hover {
   background: rgb(255 255 255 / 0.1);
+}
+
+.actionPrimary {
+  border-color: var(--enig);
+  background: var(--enig);
+  color: var(--cocoa);
+}
+
+.actionPrimary:hover {
+  background: #f5cd6a;
+}
+
+/* ---------- the demo pointer ---------- */
+
+/* The tile the demo is about to turn gets a soft highlight. */
+.tile[data-target] {
+  outline: 3px solid rgb(255 211 110 / 0.9);
+  outline-offset: 1px;
+  z-index: 1;
+}
+
+.hand {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: calc(var(--tile) * 0.5);
+  height: calc(var(--tile) * 0.58);
+  margin: -4px 0 0 -6px;
+  pointer-events: none;
+  transition: transform 0.38s cubic-bezier(0.3, 0.7, 0.2, 1);
+  filter: drop-shadow(2px 3px 0 rgb(0 0 0 / 0.35));
+}
+
+.handArt {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 20% 0;
+  transition: scale 0.12s;
+}
+
+.hand[data-down] .handArt {
+  scale: 0.85;
 }

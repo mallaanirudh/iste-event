@@ -3,7 +3,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { HUNT, PARTS, WORKBENCH, type PartId } from "../_data/content";
-import { SFX, type SfxName } from "./sfx";
 import { ItemIcon } from "./sprite";
 import s from "./game.module.css";
 
@@ -15,9 +14,6 @@ type Game = {
   /** The workbench circuit has been closed at least once: the roof beacon is at full power. */
   charged: boolean;
   charge: () => void;
-  sound: boolean;
-  toggleSound: () => void;
-  sfx: (name: SfxName) => void;
 };
 
 const GameContext = createContext<Game | null>(null);
@@ -28,45 +24,14 @@ export function useGame() {
   return g;
 }
 
-const SOUND_KEY = "ptb-sound";
-
 /** Shared layout id, so a part flies from where it was hidden into its hotbar slot. */
 export const partLayoutId = (id: PartId) => `ptb-part-${id}`;
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [found, setFound] = useState<PartId[]>([]);
   const [charged, setCharged] = useState(false);
-  const [sound, setSound] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
-  const soundRef = useRef(false);
   const seq = useRef(0);
-
-  useEffect(() => {
-    try {
-      const on = window.localStorage.getItem(SOUND_KEY) === "on";
-      soundRef.current = on;
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- the preference only exists on the client
-      setSound(on);
-    } catch {
-      /* storage blocked: sound stays off */
-    }
-  }, []);
-
-  const sfx = useCallback((name: SfxName) => {
-    if (soundRef.current) SFX[name]();
-  }, []);
-
-  const toggleSound = useCallback(() => {
-    const next = !soundRef.current;
-    soundRef.current = next;
-    setSound(next);
-    try {
-      window.localStorage.setItem(SOUND_KEY, next ? "on" : "off");
-    } catch {
-      /* ignore */
-    }
-    if (next) SFX.tick();
-  }, []);
 
   const toast = useCallback((t: Omit<Toast, "id">) => {
     const id = ++seq.current;
@@ -86,14 +51,12 @@ export function GameProvider({ children }: { children: ReactNode }) {
       setFound(next);
       const part = PARTS.find((p) => p.id === id)!;
       if (next.length === PARTS.length) {
-        sfx("fanfare");
         toast({ title: HUNT.done, body: HUNT.doneFact, icon: "beacon" });
       } else {
-        sfx("pickup");
         toast({ title: `Part found: ${part.name}`, body: part.fact, icon: id });
       }
     },
-    [sfx, toast],
+    [toast],
   );
 
   const charge = useCallback(() => {
@@ -104,8 +67,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   }, [toast]);
 
   const value = useMemo(
-    () => ({ found, collect, charged, charge, sound, toggleSound, sfx }),
-    [found, collect, charged, charge, sound, toggleSound, sfx],
+    () => ({ found, collect, charged, charge }),
+    [found, collect, charged, charge],
   );
 
   return (

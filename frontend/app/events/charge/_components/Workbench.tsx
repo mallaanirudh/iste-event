@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { WORKBENCH } from "../_data/content";
 import { useGame } from "../_lib/game";
 import { gsap, prefersReducedMotion } from "../_lib/gsap";
@@ -29,8 +29,19 @@ const SOLVED = [
   N | E, W | E, N | E | S, W | S, N | S,
 ];
 
+/** The wire, in the order the current travels it. The demo turns these tiles in this order. */
+const PATH = [5, 6, 11, 12, 7, 2, 3, 8, 13, 14];
+
 /** A fixed opening scramble (the same on server and client). The first tile always starts broken. */
 const START = [1, 2, 3, 0, 1, 1, 3, 0, 2, 2, 1, 2, 1, 0, 3, 2, 1, 1, 3, 0];
+
+const isStraight = (m: number) => m === (N | S) || m === (E | W);
+
+/** Quarter turns still needed to put tile `i` back in its solved orientation. */
+const needed = (i: number, t: number) => {
+  const k = (4 - (((t % 4) + 4) % 4)) % 4;
+  return isStraight(SOLVED[i]) ? k % 2 : k;
+};
 
 const rotate = (m: number, k: number) => {
   let r = m;
@@ -97,15 +108,22 @@ const DIR_NAMES: [number, string][] = [
 ];
 const describe = (m: number) => DIR_NAMES.filter(([b]) => m & b).map(([, n]) => n).join(" and ");
 
+type Mode = "idle" | "demo" | "play";
+
 export function Workbench() {
-  const { charge, sfx } = useGame();
+  const { charge } = useGame();
   const [turns, setTurns] = useState<number[]>(START);
   // The latest board, so taps faster than a render never read a stale one.
   const turnsRef = useRef<number[]>(START);
   const [moves, setMoves] = useState(0);
   const [focus, setFocus] = useState(0);
+  const [mode, setMode] = useState<Mode>("idle");
+  /** The tile the demo's pointer is over, and whether it is pressing. */
+  const [hand, setHand] = useState<{ i: number; down: boolean } | null>(null);
+  const bench = useRef<HTMLDivElement>(null);
   const board = useRef<HTMLDivElement>(null);
   const tiles = useRef<(HTMLButtonElement | null)[]>([]);
+  const timers = useRef<number[]>([]);
   const wasLit = useRef(false);
 
   const { order, lit } = useMemo(() => trace(turns), [turns]);
@@ -123,31 +141,113 @@ export function Workbench() {
     if (lamp) gsap.fromTo(lamp, { scale: 1.4 }, { scale: 1, duration: 0.7, ease: "elastic.out(1, 0.4)", delay: path.length * 0.05 });
   };
 
-  const turn = (i: number) => {
-    const next = turnsRef.current.slice();
-    next[i] += 1;
+  const apply = (next: number[]) => {
     turnsRef.current = next;
     setTurns(next);
-    setMoves((m) => m + 1);
-    sfx("tick");
     const result = trace(next);
     if (result.lit && !wasLit.current) {
-      sfx("power");
       celebrate(result.order);
       charge();
     }
     wasLit.current = result.lit;
   };
 
-  const scramble = () => {
+  const clearTimers = () => {
+    timers.current.forEach((id) => window.clearTimeout(id));
+    timers.current = [];
+  };
+  const later = (fn: () => void, ms: number) => {
+    timers.current.push(window.setTimeout(fn, ms));
+  };
+
+  /*
+   * The demo: a pointer glides to each broken tile along the wire, in the order the current
+   * travels, and taps it round, so the redstone visibly creeps towards the lamp. With reduced
+   * motion the board simply shows its solved state.
+   */
+  const playDemo = () => {
+    clearTimers();
+    setMoves(0);
+    wasLit.current = false;
+    turnsRef.current = START;
+    setTurns(START);
+    if (prefersReducedMotion()) {
+      apply(START.map((t, i) => t + needed(i, t)));
+      setMode("idle");
+      return;
+    }
+    setMode("demo");
+    let at = 500;
+    for (const i of PATH) {
+      const k = needed(i, START[i]);
+      if (k === 0) continue;
+      later(() => setHand({ i, down: false }), at);
+      at += 420;
+      for (let n = 0; n < k; n++) {
+        later(() => {
+          setHand({ i, down: true });
+          const next = turnsRef.current.slice();
+          next[i] += 1;
+          apply(next);
+        }, at);
+        later(() => setHand({ i, down: false }), at + 140);
+        at += 300;
+      }
+    }
+    later(() => {
+      setHand(null);
+      setMode("idle");
+    }, at + 500);
+  };
+
+  // Play the demo once, the first time the workbench is mostly in view.
+  useEffect(() => {
+    const el = bench.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        playDemo();
+      },
+      { threshold: 0.6 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      clearTimers();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs once on mount
+  }, []);
+
+  /** Hand the board over: only the wire is scrambled, so it stays a short puzzle. */
+  const tryIt = () => {
+    clearTimers();
+    setHand(null);
     let next: number[];
-    do next = turnsRef.current.map((t) => t + 1 + Math.floor(Math.random() * 3));
-    while (trace(next).lit);
+    do {
+      next = turnsRef.current.slice();
+      for (const i of PATH) next[i] += 1 + Math.floor(Math.random() * 3);
+    } while (trace(next).lit);
+    wasLit.current = false;
     turnsRef.current = next;
     setTurns(next);
     setMoves(0);
-    wasLit.current = false;
-    sfx("surge");
+    setMode("play");
+    setFocus(PATH[0]);
+  };
+
+  const turn = (i: number) => {
+    // A tap during the demo takes over from it.
+    if (mode !== "play") {
+      clearTimers();
+      setHand(null);
+      setMode("play");
+    }
+    const next = turnsRef.current.slice();
+    next[i] += 1;
+    setMoves((m) => m + 1);
+    apply(next);
   };
 
   // Arrow keys move between tiles (one tab stop for the whole board).
@@ -166,8 +266,20 @@ export function Workbench() {
     tiles.current[to]?.focus();
   };
 
+  // Where the demo pointer sits: the centre of its tile, in the board's coordinates.
+  const handTile = hand ? tiles.current[hand.i] : null;
+  const handPos = handTile
+    ? { x: handTile.offsetLeft + handTile.offsetWidth / 2, y: handTile.offsetTop + handTile.offsetHeight / 2 }
+    : null;
+
+  const status =
+    lit ? "Lamp on. Circuit complete."
+    : mode === "demo" ? WORKBENCH.watching
+    : mode === "play" ? WORKBENCH.yourTurn
+    : "Lamp off";
+
   return (
-    <div className={s.bench} data-lit={lit ? "" : undefined}>
+    <div ref={bench} className={s.bench} data-lit={lit ? "" : undefined} data-mode={mode}>
       <div ref={board} className={s.board} role="group" aria-label="Circuit board, 5 columns by 4 rows">
         {Array.from({ length: ROWS }, (_, r) => (
           <div key={r} className={s.row}>
@@ -186,6 +298,7 @@ export function Workbench() {
                   type="button"
                   className={s.tile}
                   data-on={on ? "" : undefined}
+                  data-target={hand?.i === i ? "" : undefined}
                   tabIndex={focus === i ? 0 : -1}
                   onClick={() => turn(i)}
                   onFocus={() => setFocus(i)}
@@ -204,18 +317,46 @@ export function Workbench() {
             </span>
           </div>
         ))}
+        {handPos ? (
+          <span
+            className={s.hand}
+            data-down={hand?.down ? "" : undefined}
+            style={{ transform: `translate(${handPos.x}px, ${handPos.y}px)` }}
+            aria-hidden="true"
+          >
+            <PointerIcon />
+          </span>
+        ) : null}
       </div>
 
       <div className={s.status}>
         <p className={s.state} aria-live="polite">
           <span className={s.dot} aria-hidden="true" />
-          {lit ? "Lamp on. Circuit complete." : "Lamp off"}
+          {status}
         </p>
-        <p className={s.moves}>{moves === 1 ? "1 turn" : `${moves} turns`}</p>
-        <button type="button" className={s.scramble} onClick={scramble} data-cursor="Scramble">
-          {WORKBENCH.scramble}
-        </button>
+        {mode === "play" ? <p className={s.moves}>{moves === 1 ? "1 turn" : `${moves} turns`}</p> : null}
+        <div className={s.actions}>
+          <button type="button" className={`${s.action} ${s.actionPrimary}`} onClick={tryIt} data-cursor="Play">
+            {WORKBENCH.tryIt}
+          </button>
+          <button type="button" className={s.action} onClick={playDemo} data-cursor="Replay">
+            {WORKBENCH.replay}
+          </button>
+        </div>
       </div>
     </div>
+  );
+}
+
+/** A pixel hand pointer for the demo, fingertip at the top left. */
+function PointerIcon() {
+  return (
+    <svg className={s.handArt} viewBox="0 0 12 14" shapeRendering="crispEdges">
+      <path
+        fill="#1a110e"
+        d="M3 0h2v1H3zM2 1h1v6H2zM5 1h1v4H5zM6 4h3v1H6zM9 5h1v1H9zM10 6h1v5h-1zM0 6h2v1H0zM0 7h1v2H0zM1 9h1v1H1zM2 10h1v2H2zM3 12h7v1H3zM9 11h1v1H9z"
+      />
+      <path fill="#fff6d8" d="M3 1h2v5H3zM5 5h4v1H5zM3 6h7v1H3zM1 7h9v2H1zM2 9h8v1H2zM3 10h7v1H3zM3 11h6v1H3z" />
+    </svg>
   );
 }

@@ -5,16 +5,19 @@ live on the Square One main page. Copy lives in `_data/content.ts`; rounds come 
 
 ## Interactive pieces
 
-- **Workbench** (`_components/Workbench.tsx`): a 5 x 4 board of redstone wire tiles. Tap a tile to
-  turn it; current runs live from the power block, and closing the circuit lights the lamp and
-  puts the roof beacon at full power (the beam cycles colour).
+- **Workbench** (`_components/Workbench.tsx`): a 5 x 4 board of redstone wire tiles. The first
+  time it comes into view, a pointer plays a short demo, turning the wire tiles one by one until
+  the current reaches the lamp. "Try it yourself" scrambles only the wire for the visitor to
+  solve; "Watch again" replays the demo. Closing the circuit puts the roof beacon at full power
+  (a wider beam that cycles colour).
 - **Parts hunt** (`_components/Part.tsx`, `_lib/game.tsx`): five parts are hidden across the
-  floors. Each one picked up flies into the hotbar at the bottom of the screen and shows a fact
-  about the event. Their positions are the `.part*` classes in each floor's CSS module.
-- **Sound** (`_lib/sfx.ts`): synthesised Web Audio effects, off until the visitor turns them on
-  with the speaker button in the nav. The choice is remembered in `localStorage`.
+  floors. Each one picked up flies into the hotbar at the bottom of the screen and shows a short
+  fact. Their positions are the `.part*` classes in each floor's CSS module.
 - **Sky parallax** (`_components/Roof.tsx`): on a mouse the stars, clouds and skyline drift at
   different depths; the skyline also sinks as the roof scrolls away.
+
+Round copy is deliberately short (a one-line teaser per round, `FALLBACK_ROUNDS[].teaser`), and the
+teaser is shown even when the backend has a longer description. Times follow the event brief.
 
 All motion respects `prefers-reduced-motion`.
 

@@ -1,16 +1,25 @@
 "use client";
 
+import { CalendarDays, Clock, GraduationCap, MapPin, Users, type LucideIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { EVENT, HERO, HERO_FACTS } from "../_data/content";
 import { useGame } from "../_lib/game";
 import { gsap, MQ, prefersReducedMotion, ScrollTrigger } from "../_lib/gsap";
-import { ItemIcon } from "../_lib/sprite";
 import { floorProps } from "../_lib/tokens";
 import { useMagnet } from "../_lib/useMagnet";
 import { BeaconScene } from "./BeaconScene";
 import { Part } from "./Part";
 import c from "../charge.module.css";
 import s from "./roof.module.css";
+
+/** Clean line icons for the hero facts (the pixel set stays in the briefing's game GUI). */
+const FACT_ICONS: Record<(typeof HERO_FACTS)[number]["icon"], LucideIcon> = {
+  calendar: CalendarDays,
+  clock: Clock,
+  compass: MapPin,
+  book: GraduationCap,
+  head: Users,
+};
 
 /** When the beacon powers on by itself, in ms; must match the 2.5s delays in roof.module.css. */
 const POWER_ON_MS = 2500;
@@ -33,7 +42,7 @@ export function Roof() {
   const primary = useRef<HTMLAnchorElement>(null);
   const figure = useRef<HTMLButtonElement>(null);
   const sky = useRef<SVGSVGElement>(null);
-  const { charged, sfx } = useGame();
+  const { charged } = useGame();
   useMagnet(primary);
 
   /*
@@ -115,7 +124,6 @@ export function Roof() {
     const ring = root.querySelector<SVGRectElement>("[data-ring]");
     const halo = root.querySelector<SVGCircleElement>("[data-halo]");
     if (!beam || !ring || !halo) return;
-    sfx("surge");
     if (prefersReducedMotion()) {
       gsap.fromTo(halo, { opacity: 1.6 }, { opacity: 1, duration: 0.6, ease: "power2.out", overwrite: true });
       return;
@@ -175,13 +183,16 @@ export function Roof() {
           </h1>
           <p className={s.tagline}>{EVENT.tagline}</p>
           <ul className={s.facts}>
-            {HERO_FACTS.map((f) => (
-              <li key={f.label} className={f.phone ? s.fact : `${s.fact} ${s.factWide}`}>
-                <ItemIcon name={f.icon} className={s.factIcon} />
-                <span className={s.factLabel}>{f.label}</span>
-                <span className={s.factValue}>{f.value}</span>
-              </li>
-            ))}
+            {HERO_FACTS.map((f) => {
+              const Icon = FACT_ICONS[f.icon];
+              return (
+                <li key={f.label} className={f.phone ? s.fact : `${s.fact} ${s.factWide}`}>
+                  <Icon className={s.factIcon} strokeWidth={2} aria-hidden="true" />
+                  <span className={s.factLabel}>{f.label}</span>
+                  <span className={s.factValue}>{f.value}</span>
+                </li>
+              );
+            })}
           </ul>
           <div className={s.ctas}>
             <a ref={primary} href="#briefing" className={`${c.btn} ${s.primary}`} data-cursor="Rounds">

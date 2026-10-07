@@ -147,7 +147,7 @@
 .factIcon {
   width: 22px;
   height: 22px;
-  filter: drop-shadow(2px 2px 0 rgb(0 0 0 / 0.45));
+  color: var(--filament);
 }
 
 .factLabel {

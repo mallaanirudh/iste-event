@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { BRIEFING, CRAFT, END_ISO, EVENT, KNOWLEDGE_SESSION, RESULTS, START_ISO } from "../_data/content";
+import { BRIEFING, CRAFT, END_ISO, EVENT, KSS, RESULTS, START_ISO } from "../_data/content";
 import { gsap, MQ, prefersReducedMotion, useGSAP } from "../_lib/gsap";
 import { HEADS, ItemIcon, Sprite, type IconName } from "../_lib/sprite";
 import { floorProps } from "../_lib/tokens";
@@ -15,7 +15,6 @@ export type RoundView = {
   name: string;
   description: string;
   time: string | null;
-  mode: string | null;
   maxPoints: number | null;
 };
 
@@ -226,7 +225,7 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
           id,
           name: `Round ${r.roundNumber}: ${r.name}`,
           lines: [
-            [r.time, r.mode?.toLowerCase()].filter(Boolean).join(", "),
+            r.time ?? "",
             r.maxPoints ? `Up to ${r.maxPoints} points` : "",
           ].filter(Boolean),
           art,
@@ -314,13 +313,12 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
   }, [active]);
 
   const steps: Step[] = [
-    { key: "kss", time: KNOWLEDGE_SESSION.time, title: KNOWLEDGE_SESSION.title, detail: KNOWLEDGE_SESSION.detail, meta: null },
     ...rounds.map((r) => ({
       key: r.key,
       time: r.time ?? "",
-      title: `Round ${r.roundNumber}: ${r.name}`,
+      title: r.roundNumber === 1 ? `${KSS} and Round 1: ${r.name}` : `Round ${r.roundNumber}: ${r.name}`,
       detail: r.description,
-      meta: [r.mode, r.maxPoints ? `Up to ${r.maxPoints} points` : null].filter(Boolean).join(". ") || null,
+      meta: null,
     })),
     { key: "results", time: RESULTS.time, title: RESULTS.title, detail: RESULTS.detail, meta: null },
   ];
