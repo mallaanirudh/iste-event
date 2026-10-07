@@ -9,13 +9,13 @@ export type GateFact = { k: string; v: string };
 export default function Gate({ facts }: { facts: GateFact[] }) {
   return (
     <>
-      <Floor id="gate" label="G" name="Front Gate" wall="#eab3a0" className="gate" labelledBy="h-gate">
+      <Floor id="gate" label="G" name="Factory Gates" wall="#fbd3e6" className="gate" labelledBy="h-gate">
         <div className="gate-grid">
           <div>
             <p className="kicker" data-pop>Enlist your squad</p>
             <h2 id="h-gate" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>Claim a <em>golden ticket</em></h2>
             <p className="lede" data-pop style={{ "--d": 2 } as React.CSSProperties}>
-              One ticket gets your squad through the factory gates and into the chase. Registration runs through the Mega Event form.
+              One golden ticket gets your squad through the factory gates and into the chase. Registration runs through the Mega Event form.
             </p>
             <div className="facts" data-pop style={{ "--d": 3 } as React.CSSProperties}>
               {facts.map((f) => <div className="fact" key={f.k}><b>{f.k}</b><span>{f.v}</span></div>)}

@@ -7,19 +7,20 @@ export type RoundCard = { roundNumber: number; name: string; description: string
 /** Floor 2: one factory door per round (native <details>, no script), and the day on a conveyor belt. */
 export default function Rounds({ rounds, live }: { rounds: RoundCard[]; live: boolean }) {
   return (
-    <Floor id="rounds" label="2" name="The Rounds" wall="#f6d2b4" labelledBy="h-rounds">
+    <Floor id="rounds" label="2" name="Tasting Hall" wall="#ffd8b8" labelledBy="h-rounds">
       <div style={{ paddingTop: 44 }}>
         <p className="kicker" data-pop>{live ? "From the event desk" : "Provisional"}</p>
-        <h2 id="h-rounds" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>Three doors, <em>one culprit</em></h2>
-        <p className="lede" data-pop style={{ "--d": 2 } as React.CSSProperties}>Each round opens a new room of the factory. Open a door to see what waits inside.</p>
+        <h2 id="h-rounds" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>Three bars, <em>one thief</em></h2>
+        <p className="lede" data-pop style={{ "--d": 2 } as React.CSSProperties}>Each round unwraps a new room of the factory. Tap a bar to unwrap it.</p>
 
         <div className="doors" data-pop style={{ "--d": 3 } as React.CSSProperties}>
           {rounds.map((r) => (
-            <details key={r.roundNumber} className="door">
+            <details key={r.roundNumber} className="door bar">
               <summary>
+                <span className="foil" aria-hidden="true" />
                 <span className="rn" aria-hidden="true">{r.roundNumber}</span>
                 <span className="rname">{r.name}</span>
-                <span className="knob">Round {r.roundNumber} · open the door</span>
+                <span className="knob">Round {r.roundNumber} · unwrap</span>
               </summary>
               <div className="inside">
                 <p>{r.description || "Details are sealed until the day."}</p>

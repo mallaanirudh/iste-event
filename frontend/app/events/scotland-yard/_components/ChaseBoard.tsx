@@ -20,25 +20,28 @@ export default function ChaseBoard() {
   const k = known ? pos.get(known)! : null;
 
   const status = !move
-    ? "Mr. X has slipped into the city. Press Next move to follow his tickets."
+    ? "Mr. X has slipped into the factory with the recipe. Press Next move to follow his tickets."
     : surfacedNow
       ? `Move ${step}: he used a ${ticketTypes[move.ticket].label.toLowerCase()} and surfaced at station ${move.to}!`
       : `Move ${step}: he used a ${ticketTypes[move.ticket].label.toLowerCase()}. ${known ? `Last seen at station ${known}.` : "Nobody has seen him yet."}`;
 
   return (
-    <Floor id="chase" label="3" name="Chase Room" wall="#b9d9d6" labelledBy="h-chase">
+    <Floor id="chase" label="3" name="Chocolate River" wall="#c8ecd9" labelledBy="h-chase">
       <div style={{ paddingTop: 44 }}>
         <p className="kicker" data-pop>The main event</p>
-        <h2 id="h-chase" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>Track <em>Mr. X</em></h2>
+        <h2 id="h-chase" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>Chase <em>Mr. X</em></h2>
         <p className="lede" data-pop style={{ "--d": 2 } as React.CSSProperties}>
-          He moves in secret by taxi, bus and underground. You only see the tickets he spends, and his face on reveal turns. Read the pattern and close the net.
+          He sneaks through the factory by sweet cart, river boat and pipe. You only see the tickets he spends, and his face on reveal turns. Read the pattern and close the net.
         </p>
 
         <div className="chase" data-pop style={{ "--d": 3 } as React.CSSProperties}>
           <div className="board">
-            <svg viewBox="0 0 840 470" role="img" aria-label={`City board. ${status}`}>
-              <path d="M0 300 C160 270 220 330 360 300 S560 240 640 300 S780 330 840 290" fill="none" stroke="#9fd3d6" strokeWidth="38" />
-              <ellipse cx="200" cy="140" rx="70" ry="34" fill="#c9dcae" /><ellipse cx="690" cy="190" rx="60" ry="28" fill="#c9dcae" />
+            <svg viewBox="0 0 840 470" role="img" aria-label={`Factory board. ${status}`}>
+              <path d="M0 300 C160 270 220 330 360 300 S560 240 640 300 S780 330 840 290" fill="none" stroke="#5a2a1b" strokeWidth="44" />
+              <path d="M0 300 C160 270 220 330 360 300 S560 240 640 300 S780 330 840 290" fill="none" stroke="#7a3b26" strokeWidth="14" strokeDasharray="30 40" className="river-flow" />
+              <ellipse cx="200" cy="140" rx="70" ry="34" fill="#9be0b8" /><ellipse cx="690" cy="190" rx="60" ry="28" fill="#9be0b8" />
+              <g color="#e2457a"><use href="#sy-gum" x="180" y="128" width="14" height="12" /><use href="#sy-gum" x="210" y="140" width="12" height="10" /></g>
+              <use href="#sy-shroom" x="676" y="170" width="30" height="26" />
               {ORDER.map((type) =>
                 board.links.filter(([, , t]) => t === type).map(([a, b]) => {
                   const p = pos.get(a)!, q = pos.get(b)!;
@@ -56,7 +59,7 @@ export default function ChaseBoard() {
               ))}
               {board.detectives.map((d, i) => {
                 const p = pos.get(d)!;
-                return <use key={d} href={i === 1 ? "#sy-cop" : "#sy-det"} x={p.x + 8} y={p.y - 56} width="24" height="48" />;
+                return <use key={d} href={i === 1 ? "#sy-helper" : "#sy-kid"} x={p.x + 8} y={p.y - 52} width="26" height="46" />;
               })}
               {k && (
                 <g className="token" style={{ transform: `translate(${k.x - 16}px, ${k.y - 74}px)` }}>

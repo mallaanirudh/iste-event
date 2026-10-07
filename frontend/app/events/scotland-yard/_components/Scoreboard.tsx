@@ -32,10 +32,10 @@ export default function Scoreboard({ boards, online }: { boards: Board[]; online
   const rows = [...(board?.entries ?? [])].sort((a, b) => (a.rank ?? 1e9) - (b.rank ?? 1e9) || b.points - a.points);
 
   return (
-    <Floor id="scores" label="1" name="Scoreboard" wall="#dcc095" labelledBy="h-scores">
+    <Floor id="scores" label="1" name="Scoreboard" wall="#e3d4f7" labelledBy="h-scores">
       <div style={{ paddingTop: 44 }}>
         <p className="kicker" data-pop>Who&apos;s closing in</p>
-        <h2 id="h-scores" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>The <em>Scoreboard</em></h2>
+        <h2 id="h-scores" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>The <em>Sweetest Squads</em></h2>
 
         <div className="scoreboard" data-pop style={{ "--d": 2 } as React.CSSProperties}>
           <div className="sb-head">

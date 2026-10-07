@@ -73,12 +73,12 @@ export default function CipherMachine() {
     text.split("").map((c, i) => <span key={i} className={c === " " ? "gap" : undefined}>{c === " " ? "" : c}</span>);
 
   return (
-    <Floor id="cipher" label="4" name="Cipher Works" wall="#efdcb8" labelledBy="h-cipher">
+    <Floor id="cipher" label="4" name="Wrapping Room" wall="#fff1a8" labelledBy="h-cipher">
       <div style={{ paddingTop: 44 }}>
-        <p className="kicker" data-pop>Round one warm-up</p>
-        <h2 id="h-cipher" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>Solve the <em>Clues</em></h2>
+        <p className="kicker" data-pop>A warm-up puzzle</p>
+        <h2 id="h-cipher" className="title" data-pop style={{ "--d": 1 } as React.CSSProperties}>Crack the <em>Wrapper Code</em></h2>
         <p className="lede" data-pop style={{ "--d": 2 } as React.CSSProperties}>
-          Mr. X left a coded note in the wrapping room. Turn the decoder dial until it reads clearly.
+          Mr. X scribbled a coded note on a chocolate wrapper. Turn the decoder dial until it reads clearly.
         </p>
 
         <div className="machine" data-pop style={{ "--d": 3 } as React.CSSProperties}>
@@ -99,26 +99,26 @@ export default function CipherMachine() {
             onKeyDown={onKey}
           >
             <svg viewBox="0 0 300 300" aria-hidden="true">
-              <circle cx="150" cy="150" r="149" fill="#2d1210" />
-              <circle cx="150" cy="150" r="143" fill="#e5a93b" />
-              <circle cx="150" cy="150" r="114" fill="#2d1210" />
-              <g fontSize="17" fill="#2d1210" textAnchor="middle" dominantBaseline="central" style={{ fontFamily: "var(--font-cinzel), serif", fontWeight: 700 }}>
+              <circle cx="150" cy="150" r="149" fill="#2b1236" />
+              <circle cx="150" cy="150" r="143" fill="#f5c834" />
+              <circle cx="150" cy="150" r="114" fill="#2b1236" />
+              <g fontSize="17" fill="#2b1236" textAnchor="middle" dominantBaseline="central" style={{ fontFamily: "var(--font-cinzel), serif", fontWeight: 700 }}>
                 {OUTER.map((l) => <text key={l.letter} x={l.x} y={l.y} transform={`rotate(${l.rot} ${l.x} ${l.y})`}>{l.letter}</text>)}
               </g>
               <g ref={disc} className="disc" fontSize="15" fill="#fff0b8" textAnchor="middle" dominantBaseline="central" style={{ fontFamily: "var(--font-cinzel), serif", fontWeight: 700 }}>
-                <circle cx="150" cy="150" r="110" fill="#f0484c" />
+                <circle cx="150" cy="150" r="110" fill="#7b3fb8" />
                 <circle cx="150" cy="150" r="76" fill="none" stroke="#fff0b8" strokeWidth="1.5" strokeDasharray="3 6" />
                 {INNER.map((l) => <text key={l.letter} x={l.x} y={l.y} transform={`rotate(${l.rot} ${l.x} ${l.y})`}>{l.letter}</text>)}
               </g>
-              <circle cx="150" cy="150" r="44" fill="#fdf8ee" stroke="#2d1210" strokeWidth="5" />
-              <text x="150" y="137" textAnchor="middle" fontSize="12" fill="#6b3423" style={{ fontFamily: "var(--font-cinzel), serif", fontWeight: 700, letterSpacing: 2 }}>KEY</text>
-              <text x="150" y="164" textAnchor="middle" fontSize="32" fill="#f0484c" style={{ fontFamily: "var(--font-berkshire), serif" }}>{key}</text>
+              <circle cx="150" cy="150" r="44" fill="#fdf8ee" stroke="#2b1236" strokeWidth="5" />
+              <text x="150" y="137" textAnchor="middle" fontSize="12" fill="#7b3fb8" style={{ fontFamily: "var(--font-cinzel), serif", fontWeight: 700, letterSpacing: 2 }}>KEY</text>
+              <text x="150" y="164" textAnchor="middle" fontSize="32" fill="#e2457a" style={{ fontFamily: "var(--font-berkshire), serif" }}>{key}</text>
               <rect x="134" y="2" width="32" height="80" rx="6" fill="rgba(255,240,184,.25)" stroke="#fdf8ee" strokeWidth="3" />
             </svg>
           </div>
 
           <div className={`tape${solved ? " solved" : ""}`}>
-            <span className="lbl">Coded note</span>
+            <span className="lbl">The wrapper says</span>
             <div className="row" aria-label={CODED}>{tiles(CODED)}</div>
             <span className="lbl">Your reading</span>
             <div className="row read" aria-hidden="true">{tiles(reading)}</div>

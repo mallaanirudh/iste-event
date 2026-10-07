@@ -7,51 +7,51 @@ export const EVENT_NAME = "Scotland Yard";
 
 export const floors = [
   { id: "roof", label: "R", name: "The Roof" },
-  { id: "briefing", label: "5", name: "Briefing Room" },
-  { id: "cipher", label: "4", name: "Cipher Works" },
-  { id: "chase", label: "3", name: "Chase Room" },
-  { id: "rounds", label: "2", name: "The Rounds" },
+  { id: "briefing", label: "5", name: "Inventing Room" },
+  { id: "cipher", label: "4", name: "Wrapping Room" },
+  { id: "chase", label: "3", name: "Chocolate River" },
+  { id: "rounds", label: "2", name: "Tasting Hall" },
   { id: "scores", label: "1", name: "Scoreboard" },
-  { id: "gate", label: "G", name: "Front Gate" },
+  { id: "gate", label: "G", name: "Factory Gates" },
 ] as const;
 
 export type FloorId = (typeof floors)[number]["id"];
 
 export const briefing = {
-  title: "The Case Begins",
+  title: "The Recipe Is Missing",
   body:
-    "Somewhere in the city, Mr. X is on the move. Your squad gets a sealed dossier, a city map and a fistful of tickets. Read the file, plan the route, and start the chase before the trail goes cold.",
+    "Last night the factory's secret recipe vanished from the Inventing Room. The Chocolatier has called in squads of sharp-eyed ticket holders. Read the case file, follow the sticky fingerprints, and chase the thief through the factory before the trail melts away.",
   facts: [
-    { k: "Format", v: "Squads of detectives" },
-    { k: "Rounds", v: "Three, each harder" },
-    { k: "Goal", v: "Corner Mr. X" },
+    { k: "Format", v: "Squads of ticket holders" },
+    { k: "Rounds", v: "Three, each one sweeter" },
+    { k: "Goal", v: "Catch Mr. X, save the recipe" },
   ],
 };
 
-export const cipher = { plain: "MEET AT THE CLOCK TOWER", key: 5 };
+export const cipher = { plain: "MEET BY THE CHOCOLATE RIVER", key: 5 };
 
 export const fallbackRounds = [
-  { roundNumber: 1, name: "The Dossier", description: "Decode the case file and the first ciphers before anyone else.", maxPoints: null as number | null },
-  { roundNumber: 2, name: "The Chase", description: "Track Mr. X across the board with a limited set of tickets.", maxPoints: null as number | null },
-  { roundNumber: 3, name: "The Interrogation", description: "Question the suspects, connect the evidence, name the culprit.", maxPoints: null as number | null },
+  { roundNumber: 1, name: "The Missing Recipe", description: "Crack the wrapper codes and piece together what was stolen.", maxPoints: null as number | null },
+  { roundNumber: 2, name: "The Chocolate Chase", description: "Track Mr. X through the factory with a limited bag of tickets.", maxPoints: null as number | null },
+  { roundNumber: 3, name: "The Final Unwrapping", description: "Question the suspects, match the evidence, unmask the thief.", maxPoints: null as number | null },
 ];
 
 /** Provisional timings. */
 export const agenda = [
   { time: "09:00", title: "Report for duty", detail: "Check-in and squad badges" },
-  { time: "09:30", title: "Briefing", detail: "Dossiers handed out" },
-  { time: "10:00", title: "Round 1", detail: "The Dossier" },
-  { time: "12:00", title: "Tea break", detail: "Compare notes" },
-  { time: "13:00", title: "Round 2", detail: "The Chase" },
-  { time: "15:00", title: "Round 3", detail: "The Interrogation" },
-  { time: "16:30", title: "The Reveal", detail: "Culprit unmasked, prizes" },
+  { time: "09:30", title: "Briefing", detail: "The recipe is missing" },
+  { time: "10:00", title: "Round 1", detail: "The Missing Recipe" },
+  { time: "12:00", title: "Cocoa break", detail: "Compare notes" },
+  { time: "13:00", title: "Round 2", detail: "The Chocolate Chase" },
+  { time: "15:00", title: "Round 3", detail: "The Final Unwrapping" },
+  { time: "16:30", title: "The Reveal", detail: "Thief unmasked, prizes" },
 ];
 
 export const ticketTypes = {
-  taxi: { label: "Taxi", color: "#f4c430" },
-  bus: { label: "Bus", color: "#3f9e5a" },
-  tube: { label: "Underground", color: "#e04848" },
-  black: { label: "Black ticket", color: "#2b1d16" },
+  taxi: { label: "Sweet cart", color: "#f5c834" },
+  bus: { label: "River boat", color: "#e2457a" },
+  tube: { label: "Pipe", color: "#7b3fb8" },
+  black: { label: "Glass elevator", color: "#2b1236" },
 } as const;
 export type Ticket = keyof typeof ticketTypes;
 
@@ -81,12 +81,12 @@ export const board = {
 
 /** Fingerprints hidden one per floor, found by eye or with the "Lights out" torch. */
 export const clues = {
-  roof: "Soot on the chimney cap. Someone climbed out up here last night.",
-  briefing: "A smudge on the dossier's wax seal. It was opened before you.",
-  cipher: "A sticky print on the dial: toffee. Mr. X has a sweet tooth.",
-  chase: "A ticket stub under the map. A black ticket, used twice.",
-  rounds: "A print on the third door's handle, still warm.",
-  scores: "Someone polished the scoreboard. Only the top row.",
-  gate: "Golden flakes by the gate. He left with a ticket of his own.",
+  roof: "Cocoa dust on the chimney cap. Someone climbed out up here last night.",
+  briefing: "A chocolate thumbprint on the empty recipe box. Still a little soft.",
+  cipher: "A sticky print on the decoder: toffee. Mr. X has a sweet tooth.",
+  chase: "A torn wrapper by the river. A glass elevator ticket, used twice.",
+  rounds: "Someone nibbled the corner of the third bar. Tiny teeth marks.",
+  scores: "Fudge smears on the scoreboard. Only on the top row.",
+  gate: "Golden foil flakes by the gates. He left with a ticket of his own.",
 };
 export const TOTAL_CLUES = Object.keys(clues).length;
