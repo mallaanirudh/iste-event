@@ -3,23 +3,25 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CONTACTS, EVENT, GROUND, HERO } from "../_data/content";
+import { useGame } from "../_lib/game";
 import { gsap, MQ } from "../_lib/gsap";
 import { useMagnet } from "../_lib/useMagnet";
-import c from "../charge.module.css";
 import s from "./nav.module.css";
 
 const LINKS = [
   { href: "#briefing", label: "Briefing" },
-  { href: "#leaderboard", label: "Leaderboard" },
+  { href: "#workbench", label: "Workbench" },
+  { href: "#contacts", label: "Contacts" },
 ];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const register = useRef<HTMLAnchorElement>(null);
+  const soundBtn = useRef<HTMLButtonElement>(null);
+  const { sound, toggleSound } = useGame();
   const menuBtn = useRef<HTMLButtonElement>(null);
   const sheet = useRef<HTMLDivElement>(null);
-  useMagnet(register, { radius: 80, strength: 0.3 });
+  useMagnet(soundBtn, { radius: 80, strength: 0.3 });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -113,18 +115,17 @@ export function Nav() {
           </nav>
 
           <div className={s.actions}>
-            <a
-              ref={register}
-              href={EVENT.registerHref}
-              className={`${c.btn} ${c.btnSmall} ${s.register}`}
-              data-cursor="Register"
-              data-register-open=""
-              data-register-fallback=""
-              aria-haspopup="dialog"
+            <button
+              ref={soundBtn}
+              type="button"
+              className={s.sound}
+              aria-pressed={sound}
+              onClick={toggleSound}
+              data-cursor={sound ? "Mute" : "Sound"}
             >
-              <span className={s.registerLong}>Register your team</span>
-              <span className={s.registerShort}>Register</span>
-            </a>
+              <SpeakerIcon on={sound} />
+              <span className={s.soundLabel}>{sound ? "Sound on" : "Sound off"}</span>
+            </button>
             <button
               ref={menuBtn}
               type="button"
@@ -157,17 +158,6 @@ export function Nav() {
                 </a>
               </li>
             ))}
-            <li>
-              <a
-                href={EVENT.registerHref}
-                className={s.sheetLink}
-                data-register-open=""
-                aria-haspopup="dialog"
-                onClick={() => setOpen(false)}
-              >
-                Register
-              </a>
-            </li>
           </ul>
           <div className={s.sheetFoot}>
             <p className={s.sheetWhen}>
@@ -187,5 +177,19 @@ export function Nav() {
         </div>
       ) : null}
     </>
+  );
+}
+
+/** A pixel speaker, with sound waves when on and a cross when muted. */
+function SpeakerIcon({ on }: { on: boolean }) {
+  return (
+    <svg className={s.speaker} viewBox="0 0 12 12" shapeRendering="crispEdges" aria-hidden="true" fill="currentColor">
+      <path d="M1 4h2v4H1zM3 4h1v4H3zM4 3h1v6H4zM5 2h1v8H5z" />
+      {on ? (
+        <path d="M7 5h1v2H7zM8 3h1v1H8zM9 4h1v4H9zM8 8h1v1H8z" />
+      ) : (
+        <path d="M7 4h1v1H7zM10 4h1v1h-1zM8 5h2v2H8zM7 7h1v1H7zM10 7h1v1h-1z" />
+      )}
+    </svg>
   );
 }

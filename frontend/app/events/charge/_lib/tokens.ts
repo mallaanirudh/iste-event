@@ -15,7 +15,7 @@ export const C = {
 /** The three floors of the tower, top to bottom. */
 export type FloorId = "top" | "briefing" | "ground";
 
-/** `btnBg`/`btnFg` colour the nav's Register button while that floor is under the nav. */
+/** `btnBg`/`btnFg` colour the nav's sound button while that floor is under the nav. */
 export type FloorTheme = { bg: string; fg: string; btnBg: string; btnFg: string; label: string };
 
 export const THEME: Record<FloorId, FloorTheme> = {

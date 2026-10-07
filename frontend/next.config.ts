@@ -12,8 +12,8 @@ const chargeSecurityHeaders = [
 const nextConfig: NextConfig = {
   async headers() {
     return [
-      { source: "/events/square1_charge", headers: chargeSecurityHeaders },
-      { source: "/events/square1_charge/:path*", headers: chargeSecurityHeaders },
+      { source: "/events/charge", headers: chargeSecurityHeaders },
+      { source: "/events/charge/:path*", headers: chargeSecurityHeaders },
     ];
   },
 };

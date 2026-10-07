@@ -5,6 +5,7 @@ import { BRIEFING, CRAFT, END_ISO, EVENT, KNOWLEDGE_SESSION, RESULTS, START_ISO 
 import { gsap, MQ, prefersReducedMotion, useGSAP } from "../_lib/gsap";
 import { HEADS, ItemIcon, Sprite, type IconName } from "../_lib/sprite";
 import { floorProps } from "../_lib/tokens";
+import { Part } from "./Part";
 import c from "../charge.module.css";
 import s from "./briefing.module.css";
 
@@ -57,7 +58,7 @@ function Countdown() {
     return () => window.clearInterval(id);
   }, []);
 
-  if (now !== null && now >= END) return <p className={s.countDone}>That&apos;s a wrap. Results are on the leaderboard.</p>;
+  if (now !== null && now >= END) return <p className={s.countDone}>That&apos;s a wrap. Winners are announced in the hall.</p>;
   if (now !== null && now >= START) return <p className={s.countDone}>Happening now</p>;
 
   // Before mount, a same-size placeholder so nothing shifts.
@@ -401,6 +402,9 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
           </ol>
         </div>
       </div>
+
+      <Part id="capacitor" className={s.partCapacitor} />
+      <Part id="resistor" className={s.partResistor} />
     </section>
   );
 }

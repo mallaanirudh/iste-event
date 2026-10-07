@@ -3,6 +3,7 @@
 import Lenis from "lenis";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { gsap, MQ, ScrollTrigger, useGSAP } from "../_lib/gsap";
+import { GameProvider } from "../_lib/game";
 import { LenisContext } from "../_lib/lenis";
 import { revealTitles } from "../_lib/titleReveal";
 import { Cursor } from "./Cursor";
@@ -111,10 +112,10 @@ export function ChargeRoot({ children }: { children: ReactNode }) {
   return (
     <LenisContext.Provider value={lenis}>
       <div ref={root} className={s.root} data-charge-root="">
-        <a className={s.skip} href="#register">
-          Skip to registration
+        <a className={s.skip} href="#briefing">
+          Skip to the briefing
         </a>
-        {children}
+        <GameProvider>{children}</GameProvider>
         <Cursor />
       </div>
     </LenisContext.Provider>

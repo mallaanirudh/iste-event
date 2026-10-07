@@ -1,21 +1,36 @@
-/* Floor 3: the ground floor, in Wonka purple. Leaderboard, golden ticket, house rules. */
+/* Floor 3: the ground floor, in Wonka purple. The workbench puzzle, house rules, contacts. */
 
 .ground {
-  gap: clamp(28px, 5vh, 48px);
+  gap: clamp(36px, 6vh, 64px);
 }
 
-.ticketBlock {
+/* Room for the fixed hotbar under the last line (doubled class beats the shared .floor rules). */
+.ground.ground {
+  padding-bottom: calc(clamp(40px, 8vh, 96px) + 96px);
+}
+
+.workbench {
   display: grid;
-  gap: 18px;
+  gap: 24px;
   scroll-margin-top: 88px;
 }
 
 @media (min-width: 1024px) {
-  .ticketBlock {
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  .workbench {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     column-gap: clamp(40px, 5vw, 80px);
-    align-items: start;
+    align-items: center;
   }
+}
+
+.kicker {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  font-stretch: 88%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--enig);
 }
 
 .title {
@@ -30,10 +45,25 @@
 }
 
 .lede {
-  margin: 10px 0 0;
+  margin: 14px 0 0;
+  max-width: 46ch;
   font-size: 17px;
-  line-height: 1.45;
+  line-height: 1.5;
   font-weight: 500;
+}
+
+/* The transistor hides by the contacts: bottom right on wide screens, beside the rules on phones. */
+.partTransistor {
+  right: calc(var(--pillar) + 18px);
+  bottom: 120px;
+}
+
+@media (min-width: 900px) {
+  .partTransistor {
+    right: auto;
+    left: 46%;
+    bottom: calc(clamp(40px, 8vh, 96px) + 110px);
+  }
 }
 
 /* ---------- rules and organisers ---------- */
@@ -41,16 +71,9 @@
 .strip {
   display: grid;
   gap: 20px;
-  padding-bottom: clamp(20px, 3vh, 28px);
-  border-bottom: 2px solid rgb(255 255 255 / 0.12);
-}
-
-/* On wide screens the strip needs extra room before the leaderboard; below that the floor's own
-   gap is enough. */
-@media (min-width: 1024px) {
-  .strip {
-    margin-bottom: clamp(28px, 5vh, 56px);
-  }
+  padding-top: clamp(24px, 4vh, 36px);
+  border-top: 2px solid rgb(255 255 255 / 0.12);
+  scroll-margin-top: 88px;
 }
 
 @media (min-width: 900px) {

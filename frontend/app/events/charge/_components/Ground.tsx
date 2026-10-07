@@ -1,23 +1,26 @@
-import { CONTACTS, GROUND, RULES } from "../_data/content";
+import { CONTACTS, GROUND, RULES, WORKBENCH } from "../_data/content";
 import { floorProps } from "../_lib/tokens";
-import { Leaderboard, type Board } from "./Leaderboard";
-import { Ticket, type RegistrationWindow } from "./Ticket";
+import { Part } from "./Part";
+import { Workbench } from "./Workbench";
 import c from "../charge.module.css";
 import s from "./ground.module.css";
 
-/** Floor 3: the ground floor. House rules and points of contact first, then the live leaderboard, then registration. */
-export function Ground({
-  boards,
-  registration,
-  preEvent,
-}: {
-  boards: Board[];
-  registration: RegistrationWindow;
-  preEvent: boolean;
-}) {
+/** Floor 3: the ground floor. The workbench puzzle, then house rules and points of contact. */
+export function Ground() {
   return (
-    <section {...floorProps("ground", "leaderboard-title")} className={`${c.floor} ${s.ground}`}>
-      <div className={`${c.wrap} ${s.strip}`}>
+    <section {...floorProps("ground", "workbench-title")} className={`${c.floor} ${s.ground}`}>
+      <div id="workbench" className={`${c.wrap} ${s.workbench}`}>
+        <div className={s.head}>
+          <p className={s.kicker}>{WORKBENCH.kicker}</p>
+          <h2 id="workbench-title" className={s.title} data-title="">
+            {WORKBENCH.title}
+          </h2>
+          <p className={s.lede}>{WORKBENCH.lede}</p>
+        </div>
+        <Workbench />
+      </div>
+
+      <div id="contacts" className={`${c.wrap} ${s.strip}`}>
         <div className={s.rules}>
           <h2 className={s.stripTitle}>{GROUND.rulesTitle}</h2>
           <ul className={s.ruleList}>
@@ -40,19 +43,8 @@ export function Ground({
           </ul>
         </div>
       </div>
-      <div className={c.wrap}>
-        <Leaderboard boards={boards} preEvent={preEvent} />
-      </div>
 
-      <div id="register" className={`${c.wrap} ${s.ticketBlock}`} aria-labelledby="register-title" role="region">
-        <div className={s.ticketHead}>
-          <h2 id="register-title" className={s.title} data-title="">
-            {GROUND.title}
-          </h2>
-          <p className={s.lede}>{GROUND.lede}</p>
-        </div>
-        <Ticket variant="inline" registration={registration} />
-      </div>
+      <Part id="transistor" className={s.partTransistor} />
     </section>
   );
 }

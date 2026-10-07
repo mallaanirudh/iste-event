@@ -112,33 +112,40 @@
   }
 }
 
-/* The nav Register button shares the hero CTA's gold, and turns cocoa over the gold floor. */
-.nav .register {
-  --btn-bg: var(--nav-btn-bg, var(--filament));
-  --btn-fg: var(--nav-btn-fg, var(--cocoa));
+/* The sound toggle: a pixel speaker in the nav's button colours (cocoa over the gold floor). */
+.sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--nav-btn-bg, var(--filament));
+  color: var(--nav-btn-fg, var(--cocoa));
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.35s, color 0.35s;
 }
 
-.register .registerShort {
-  display: inline;
+.speaker {
+  width: 20px;
+  height: 20px;
+  flex: none;
 }
 
-.register .registerLong {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  /* The nav Register button shares the hero CTA's gold, and turns cocoa over the gold floor. */
-.nav .register {
-  --btn-bg: var(--nav-btn-bg, var(--filament));
-  --btn-fg: var(--nav-btn-fg, var(--cocoa));
-}
-
-.register .registerShort {
-    display: none;
-  }
-
-  .register .registerLong {
-    display: inline;
+/* Phones show only the speaker; the label stays as the button's accessible name. */
+@media (max-width: 767px) {
+  .soundLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
 

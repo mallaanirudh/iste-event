@@ -1,0 +1,200 @@
+/* The workbench puzzle: stone tiles carrying redstone dust, a power block and a lamp. */
+
+.bench {
+  --tile: 44px;
+  --gap: 3px;
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+}
+
+@media (min-width: 420px) {
+  .bench {
+    --tile: 52px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bench {
+    --tile: 72px;
+    --gap: 4px;
+  }
+}
+
+.board {
+  display: grid;
+  gap: var(--gap);
+  padding: 12px 10px;
+  background: #4a3426;
+  border: 3px solid #1a110e;
+  box-shadow:
+    inset 3px 3px 0 #6b4c37,
+    inset -3px -3px 0 #2e1f16,
+    0 18px 40px rgb(0 0 0 / 0.35);
+}
+
+.row {
+  display: flex;
+  gap: var(--gap);
+  align-items: center;
+}
+
+.edge {
+  display: grid;
+  place-items: center;
+  width: calc(var(--tile) * 0.6);
+  height: var(--tile);
+}
+
+/* Stone, with a few darker pixels for texture. */
+.tile {
+  position: relative;
+  width: var(--tile);
+  height: var(--tile);
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background-color: #7f7f7f;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cg fill='%236b6b6b'%3E%3Crect x='2' y='3' width='2' height='1'/%3E%3Crect x='9' y='1' width='3' height='1'/%3E%3Crect x='12' y='9' width='2' height='1'/%3E%3Crect x='4' y='12' width='3' height='1'/%3E%3Crect x='1' y='8' width='1' height='2'/%3E%3C/g%3E%3Cg fill='%23989898'%3E%3Crect x='6' y='5' width='2' height='1'/%3E%3Crect x='13' y='4' width='1' height='2'/%3E%3Crect x='9' y='13' width='2' height='1'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  box-shadow:
+    inset 2px 2px 0 #a0a0a0,
+    inset -2px -2px 0 #555;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.tile:hover {
+  filter: brightness(1.12);
+}
+
+.tile:active {
+  filter: brightness(0.92);
+}
+
+.tile:focus-visible {
+  outline: 3px solid #ffd36e;
+  outline-offset: 1px;
+  z-index: 1;
+}
+
+.spin {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .spin {
+    transition: transform 0.18s cubic-bezier(0.3, 1.5, 0.5, 1);
+  }
+}
+
+.wire {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: #5a0f0c;
+  transition: fill 0.15s;
+}
+
+.tile[data-on] .wire {
+  fill: #ff2a1f;
+  filter: drop-shadow(0 0 3px rgb(255 60 40 / 0.9));
+}
+
+/* The redstone block feeding the board. */
+.source {
+  width: calc(var(--tile) * 0.6);
+  height: calc(var(--tile) * 0.6);
+  background:
+    linear-gradient(90deg, transparent 0 30%, #ff5a4e 30% 45%, transparent 45%) 0 0 / 100% 50% no-repeat,
+    #c8221a;
+  box-shadow:
+    inset 2px 2px 0 #ff6a5c,
+    inset -2px -2px 0 #7a0f0a,
+    0 0 14px rgb(255 50 30 / 0.6);
+}
+
+/* The redstone lamp: dark until the current reaches it. */
+.lamp {
+  width: calc(var(--tile) * 0.6);
+  height: calc(var(--tile) * 0.6);
+  background:
+    linear-gradient(#5a3a1c 0 0) 50% 0 / 2px 100% no-repeat,
+    linear-gradient(#5a3a1c 0 0) 0 50% / 100% 2px no-repeat,
+    #8a5a2b;
+  box-shadow:
+    inset 2px 2px 0 #a8743d,
+    inset -2px -2px 0 #4a2d14;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.3s;
+}
+
+.lamp[data-on] {
+  background:
+    linear-gradient(#c9773a 0 0) 50% 0 / 2px 100% no-repeat,
+    linear-gradient(#c9773a 0 0) 0 50% / 100% 2px no-repeat,
+    #ffd36e;
+  box-shadow:
+    inset 2px 2px 0 #fff6d8,
+    inset -2px -2px 0 #e0a030,
+    0 0 26px 6px rgb(255 211 110 / 0.75);
+}
+
+/* ---------- status row ---------- */
+
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+}
+
+.state,
+.moves {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.state {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #5a0f0c;
+  box-shadow: 1px 1px 0 rgb(0 0 0 / 0.4);
+}
+
+.bench[data-lit] .dot {
+  background: #ffd36e;
+  box-shadow: 0 0 10px #ffd36e;
+}
+
+.moves {
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+}
+
+.scramble {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 2px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.scramble:hover {
+  background: rgb(255 255 255 / 0.1);
+}

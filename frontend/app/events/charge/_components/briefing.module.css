@@ -575,3 +575,28 @@ button.slot:focus-visible {
     max-width: 300px;
   }
 }
+
+/* ---------- hidden parts ---------- */
+
+/* The capacitor waits by the top edge of the floor; the resistor near the bottom corner. */
+.partCapacitor {
+  top: 12px;
+  right: calc(var(--pillar) + 16px);
+}
+
+.partResistor {
+  bottom: 8px;
+  left: calc(var(--pillar) + 30%);
+}
+
+@media (min-width: 900px) {
+  .partCapacitor {
+    top: calc(var(--nav-h) + 8px);
+    right: calc(var(--pillar) + 8%);
+  }
+
+  .partResistor {
+    bottom: 3%;
+    left: calc(var(--pillar) + 38%);
+  }
+}
