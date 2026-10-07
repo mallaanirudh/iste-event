@@ -22,7 +22,7 @@ export default function Casebook({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(true);
   const [bump, setBump] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const overlay = useRef<HTMLDivElement>(null);
+  const beam = useRef<HTMLDivElement>(null);
 
   const showToast = useCallback((msg: string) => {
     setToast({ msg, on: true });
@@ -41,7 +41,8 @@ export default function Casebook({ children }: { children: ReactNode }) {
     return () => removeEventListener("keydown", onKey);
   }, [dark]);
 
-  // Beam follows the mouse, or the finger while touching and scrolling. One write per frame.
+  // Beam follows the mouse, or the finger while touching and scrolling. It only ever moves
+  // with a transform (one write per frame), so the browser never has to repaint the darkness.
   useEffect(() => {
     let raf = 0, x = 0, y = 0;
     const place = (px: number, py: number) => {
@@ -49,8 +50,7 @@ export default function Casebook({ children }: { children: ReactNode }) {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         raf = 0;
-        overlay.current?.style.setProperty("--x", `${x}px`);
-        overlay.current?.style.setProperty("--y", `${y}px`);
+        if (beam.current) beam.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
       });
     };
     const onPointer = (e: PointerEvent) => place(e.clientX, e.clientY);
@@ -78,7 +78,9 @@ export default function Casebook({ children }: { children: ReactNode }) {
         </button>
       )}
       {children}
-      <div ref={overlay} className={`torch${dark ? " on" : ""}`} aria-hidden="true" />
+      <div className={`torch${dark ? " on" : ""}`} aria-hidden="true">
+        <div ref={beam} className="beam" />
+      </div>
       <div className="casebar">
         {dark ? (
           <p className="hint-chip">

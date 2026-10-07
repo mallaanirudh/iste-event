@@ -15,7 +15,6 @@
   color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55;
   background-color: #7a4fb5;
   background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .22  0 0 0 0 .1  0 0 0 .16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
     radial-gradient(circle at 20px 20px, rgba(255,214,90,.16) 0 3px, transparent 4px) 0 0 / 80px 80px,
     radial-gradient(circle at 60px 60px, rgba(226,69,122,.18) 0 3px, transparent 4px) 0 0 / 80px 80px,
     radial-gradient(ellipse at 50% -10%, rgba(227,212,247,.45), transparent 60%),
@@ -59,11 +58,8 @@
 }
 .root :global(.slab) { position: relative; z-index: 2; height: 30px; margin: 0 -14px; border-radius: 4px;
   background: linear-gradient(180deg, var(--choc-3), var(--choc-2) 55%, var(--cocoa)); box-shadow: inset 0 2px 0 rgba(255,220,180,.18); }
-.root :global(.slab svg) { position: absolute; left: 0; top: 26px; width: 100%; height: 44px; fill: var(--choc-2); overflow: visible; }
-.root :global(.slab .drip) { transform-box: fill-box; transform-origin: top; animation: drip 6s ease-in-out infinite; }
-.root :global(.slab .drip:nth-of-type(2n)) { animation-delay: -2s; animation-duration: 7.5s; }
-.root :global(.slab .drip:nth-of-type(3n)) { animation-delay: -4s; animation-duration: 5.2s; }
-@keyframes drip { 0%, 100% { transform: scaleY(.55); } 50% { transform: scaleY(1.15); } }
+.root :global(.slab svg) { position: absolute; left: 0; top: 26px; width: 100%; height: 44px; fill: var(--choc-2); overflow: visible; transform-origin: top; animation: drip 6s ease-in-out infinite; will-change: transform; }
+@keyframes drip { 0%, 100% { transform: scaleY(.7); } 50% { transform: scaleY(1.1); } }
 .root :global(.plaque) { position: absolute; top: 18px; left: 18px; z-index: 3; display: flex; align-items: center; gap: 10px; }
 .root :global(.plaque .num) {
   display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
@@ -102,7 +98,7 @@
 .root :global(.sign) { position: relative; padding: 16px; border-radius: 18px; background: var(--plum); border: 5px solid var(--gold-2); box-shadow: 0 10px 0 rgba(20,6,30,.45), 0 0 60px rgba(245,200,52,.25); }
 .root :global(.sign img) { display: block; width: 100%; height: auto; border-radius: 6px; }
 .root :global(.bulb) { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--gold-3); box-shadow: 0 0 6px 2px rgba(255,214,90,.75); animation: chase 1.4s steps(1) infinite; }
-@keyframes chase { 0%, 49% { background: var(--gold-3); box-shadow: 0 0 6px 2px rgba(255,214,90,.75); } 50%, 100% { background: #8a6a2a; box-shadow: none; } }
+@keyframes chase { 0%, 49% { opacity: 1; } 50%, 100% { opacity: .35; } }
 .root :global(.legs) { display: flex; justify-content: space-between; width: 70%; margin: 0 auto; height: 46px; }
 .root :global(.legs i) { width: 10px; background: linear-gradient(90deg, var(--purple-2), var(--purple)); border: 2px solid var(--choc); }
 .root :global(.hero-copy) { position: relative; z-index: 3; margin: 26px auto 0; max-width: 680px; text-align: center; }
@@ -156,16 +152,13 @@
 .root :global(.board .map-label) { font-family: var(--display); font-size: 15px; fill: #c8322b; paint-order: stroke; stroke: #fff6c8; stroke-width: 4px; stroke-linejoin: round; }
 .root :global(.board .map-label:nth-of-type(3n)) { fill: var(--purple-2); }
 .root :global(.token) { transition: transform .8s cubic-bezier(.65,0,.35,1); }
-.root :global(.mrx-ghost) { animation: ghost 1.8s ease-in-out infinite; }
-@keyframes ghost { 0%, 100% { opacity: .35; } 50% { opacity: .85; } }
+.root :global(.mrx-ghost) { opacity: .55; }
 .root :global(.log) { background: var(--cream); border: 4px solid var(--choc); border-radius: 8px; padding: 16px; }
 .root :global(.log h3) { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 26px; color: var(--choc); }
 .root :global(.log ol) { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .root :global(.log li) { display: grid; place-items: center; height: 46px; border-radius: 6px; border: 2px dashed var(--tan-2); font-family: var(--plate); font-weight: 700; font-size: 12px; text-align: center; line-height: 1.1; }
 .root :global(.log li.used) { border-style: solid; border-color: var(--choc); color: var(--cream); text-shadow: none; animation: ticketIn .4s cubic-bezier(.34,1.56,.64,1); }
 .root :global(.log li.reveal) { box-shadow: 0 0 0 3px var(--berry); }
-.root :global(.river-flow) { animation: flow 3s linear infinite; }
-@keyframes flow { to { stroke-dashoffset: -70; } }
 @keyframes ticketIn { from { scale: .4; opacity: 0; } to { scale: 1; opacity: 1; } }
 .root :global(.status) { margin: 12px 0 0; min-height: 3em; font-size: 15px; }
 .root :global(.legend) { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 12px; font-size: 13px; }
@@ -204,8 +197,7 @@
 .root :global(.belt-title small) { color: #5a3a6a; }
 .root :global(.belt) { position: relative; margin-top: 12px; padding: 14px 4px 34px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
 .root :global(.belt::after) { content: ""; position: absolute; left: 0; right: 0; bottom: 10px; height: 20px; min-width: 100%; border-radius: 10px; border: 3px solid var(--choc);
-  background: repeating-linear-gradient(90deg, var(--grey) 0 18px, #6f6a62 18px 22px); background-size: 22px 100%; animation: belt 1.6s linear infinite; }
-@keyframes belt { to { background-position: 22px 0; } }
+  background: repeating-linear-gradient(90deg, var(--grey) 0 18px, #6f6a62 18px 22px); }
 .root :global(.belt ol) { display: flex; gap: 14px; margin: 0; padding: 0; list-style: none; width: max-content; }
 .root :global(.crate) { scroll-snap-align: start; width: 170px; padding: 12px 14px; border: 4px solid var(--choc); border-radius: 10px; background: repeating-linear-gradient(135deg, #fff 0 10px, #fbd3e6 10px 20px); box-shadow: inset 0 0 0 3px rgba(255,255,255,.6); }
 .root :global(.crate time) { font-family: var(--plate); font-weight: 700; font-size: 20px; color: var(--purple); background: rgba(255,255,255,.85); padding: 0 4px; border-radius: 3px; }
@@ -266,11 +258,13 @@
   .root :global(.legs) { display: none; }
 }
 .root :global(.torch) {
-  position: fixed; inset: 0; z-index: 15; pointer-events: none;
-  background: rgba(18,6,28,.93);
-  -webkit-mask-image: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 0 95px, #000 180px);
-          mask-image: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 0 95px, #000 180px);
+  position: fixed; inset: 0; z-index: 15; pointer-events: none; overflow: hidden;
   opacity: 0; visibility: hidden; transition: opacity .45s, visibility .45s;
+}
+.root :global(.beam) {
+  position: absolute; left: 0; top: 0; width: 300vmax; height: 300vmax; margin: -150vmax 0 0 -150vmax;
+  background: radial-gradient(circle, transparent 0 95px, rgba(18,6,28,.93) 180px);
+  transform: translate3d(50vw, 45vh, 0); will-change: transform;
 }
 .root :global(.torch.on) { opacity: 1; visibility: visible; }
 .root :global(.clue) {
@@ -319,15 +313,19 @@
 .root :global(.switch) {
   position: absolute; z-index: 4; display: grid; justify-items: center; gap: 2px;
   width: 54px; padding: 4px; border: 0; background: transparent; cursor: pointer;
-  filter: drop-shadow(0 0 10px rgba(245,200,52,.55));
+}
+.root :global(.switch::before) { 
+  content: ""; position: absolute; inset: -14px; border-radius: 50%; z-index: -1; pointer-events: none;
+  background: radial-gradient(circle, rgba(245,200,52,.75), transparent 65%);
 }
 .root :global(.switch svg) { width: 40px; height: 60px; }
 .root :global(.switch .lever) { transform-box: view-box; transform-origin: 20px 30px; transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
 .root :global(.switch.up .lever) { transform: translateY(14px); }
 .root :global(.switch .switch-label) { font-family: var(--plate); font-weight: 700; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--choc); }
 .root :global(.switch:focus-visible) { outline: 3px solid var(--red); outline-offset: 3px; border-radius: 8px; }
-.root :global(.switch:not(.up)) { animation: switchGlow 2.4s ease-in-out infinite; }
-@keyframes switchGlow { 0%, 100% { filter: drop-shadow(0 0 6px rgba(245,200,52,.4)); } 50% { filter: drop-shadow(0 0 16px rgba(245,200,52,.95)); } }
+.root :global(.switch:not(.up)::before) { animation: halo 2.4s ease-in-out infinite; }
+.root :global(.switch.up::before) { opacity: 0; }
+@keyframes halo { 0%, 100% { opacity: .35; } 50% { opacity: 1; } }
 .root :global(.skip-light) {
   position: fixed; z-index: 30; left: 16px; top: 16px; padding: 10px 16px; border-radius: 8px;
   font-family: var(--plate); font-weight: 700; font-size: 14px; color: var(--choc);
@@ -340,13 +338,10 @@
   background: var(--choc); color: var(--cream); border: 3px solid var(--gold-2);
   font-family: var(--plate); font-weight: 700; font-size: 13px; letter-spacing: .04em; line-height: 1.3; box-shadow: 3px 4px 0 rgba(0,0,0,.3);
 }
-.root :global(.hint-chip .bulb-ico) { flex: none; animation: switchGlow 2.4s ease-in-out infinite; }
+.root :global(.hint-chip .bulb-ico) { flex: none; animation: halo 2.4s ease-in-out infinite; }
 .root :global(.hint-touch) { display: none; }
 @media (hover: none) and (pointer: coarse) {
-  .root :global(.torch) {
-    -webkit-mask-image: radial-gradient(circle at var(--x, 50%) var(--y, 45%), transparent 0 120px, #000 210px);
-            mask-image: radial-gradient(circle at var(--x, 50%) var(--y, 45%), transparent 0 120px, #000 210px);
-  }
+  .root :global(.beam) { background: radial-gradient(circle, transparent 0 120px, rgba(18,6,28,.93) 210px); }
   .root :global(.hint-mouse) { display: none; }
   .root :global(.hint-touch) { display: inline; }
   .root :global(.clue) { width: 46px; height: 52px; padding: 8px; }
@@ -356,6 +351,7 @@
   .root :global(.casebar) { flex-wrap: wrap; justify-content: center; width: calc(100vw - 32px); }
   .root :global(.hint-chip) { font-size: 12px; }
 }
+.root :global(.floor.asleep), .root :global(.floor.asleep *), .root :global(.floor.asleep + .slab svg) { animation-play-state: paused !important; }
 @media (prefers-reduced-motion: reduce) {
   .root :global(*), .root :global(*::before), .root :global(*::after) { animation: none !important; transition: none !important; }
 }

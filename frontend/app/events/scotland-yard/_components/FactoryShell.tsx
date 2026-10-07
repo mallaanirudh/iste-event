@@ -6,7 +6,7 @@ import Casebook from "./Casebook";
 
 /**
  * Wraps the floors: drives the glass-elevator floor indicator, reveals floors as
- * they arrive, and turns on gentle section snapping on large screens.
+ * they arrive, and pauses the animations of floors that are off screen.
  */
 export default function FactoryShell({ rootClass, children }: { rootClass: string; children: ReactNode }) {
   const [current, setCurrent] = useState<FloorId>("roof");
@@ -33,20 +33,21 @@ export default function FactoryShell({ rootClass, children }: { rootClass: strin
     }, { rootMargin: "-45% 0px -50% 0px" });
     sections.forEach((s) => track.observe(s));
 
+    // Floors off screen pause their looping animations, so only what you can see costs anything.
+    const awake = new IntersectionObserver((entries) => {
+      entries.forEach((e) => e.target.classList.toggle("asleep", !e.isIntersecting));
+    }, { rootMargin: "200px 0px" });
+    sections.forEach((s) => awake.observe(s));
+
     const html = document.documentElement;
-    const prev = { snap: html.style.scrollSnapType, behavior: html.style.scrollBehavior };
+    const prevBehavior = html.style.scrollBehavior;
     if (!reduce) html.style.scrollBehavior = "smooth";
-    const big = matchMedia("(min-width: 900px) and (min-height: 680px)");
-    const applySnap = () => { html.style.scrollSnapType = big.matches && !reduce ? "y proximity" : prev.snap; };
-    applySnap();
-    big.addEventListener("change", applySnap);
 
     return () => {
       reveal.disconnect();
       track.disconnect();
-      big.removeEventListener("change", applySnap);
-      html.style.scrollSnapType = prev.snap;
-      html.style.scrollBehavior = prev.behavior;
+      awake.disconnect();
+      html.style.scrollBehavior = prevBehavior;
       root.classList.remove("js");
     };
   }, []);
