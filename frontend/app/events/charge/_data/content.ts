@@ -122,6 +122,23 @@ export const RULES = [
   "If the platform malfunctions or a rule is unclear, contact an organiser.",
 ] as const;
 
+/** Floor 4: the golden ticket. A keepsake with the essentials; registration is on the Square One page. */
+export const VAULT = {
+  kicker: "The last floor",
+  title: "Your golden ticket",
+  lede: "Registration is on the Square One main page. This one is for the walk to the hall.",
+  band: "Golden ticket",
+  serial: "No. 2029",
+  presents: "ISTE Charge at Square One presents",
+  details: [
+    { label: "Date", value: "Wed 14 Oct" },
+    { label: "Doors", value: "6 PM" },
+    { label: "Venue", value: "LHC A Seminar Hall" },
+  ],
+  fine: "Admits one team of up to 3. B.Tech batch of 2029.",
+  admit: "Admit one team",
+} as const;
+
 /** Points of contact, as listed in the event brief. `tel` is the dialable form. */
 export const CONTACTS = [
   { name: "Pratheek", phone: "+91 82172 99491", tel: "+918217299491" },

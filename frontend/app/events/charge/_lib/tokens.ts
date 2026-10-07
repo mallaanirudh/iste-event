@@ -12,8 +12,8 @@ export const C = {
   inkSoft: "#5C4E47",
 } as const;
 
-/** The three floors of the tower, top to bottom. */
-export type FloorId = "top" | "briefing" | "ground";
+/** The four floors of the tower, top to bottom. */
+export type FloorId = "top" | "briefing" | "ground" | "vault";
 
 /** `btnBg`/`btnFg` colour the nav's buttons while that floor is under the nav. */
 export type FloorTheme = { bg: string; fg: string; btnBg: string; btnFg: string; label: string };
@@ -22,6 +22,7 @@ export const THEME: Record<FloorId, FloorTheme> = {
   top: { bg: C.night, fg: C.bone, btnBg: C.filament, btnFg: C.cocoa, label: "Roof" },
   briefing: { bg: C.filament, fg: C.cocoa, btnBg: C.cocoa, btnFg: C.bone, label: "Briefing room" },
   ground: { bg: C.plum, fg: C.bone, btnBg: C.filament, btnFg: C.cocoa, label: "Ground floor" },
+  vault: { bg: C.cocoa, fg: C.bone, btnBg: C.filament, btnFg: C.cocoa, label: "Vault" },
 };
 
 /**
