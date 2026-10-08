@@ -8,6 +8,10 @@ import {
 
 const event = getFestivalEvent("scotland-yard");
 
+if (!event) {
+  throw new Error('Festival event "scotland-yard" not found');
+}
+
 export const EVENT_NAME = "Scotland Yard";
 
 export const floors = [
@@ -62,6 +66,7 @@ const details = [
   "Collect ingredients and complete the ten stages of making and delivering your chocolate.",
   "Selected teams race against time in the final chocolate-themed challenge.",
 ];
+
 export const agenda = event.sessions.map((session, index) => ({
   time: formatSessionTime(session),
   title: session.label,
@@ -74,6 +79,7 @@ export const ticketTypes = {
   tube: { label: "Pipe", color: "#7b3fb8" },
   black: { label: "Glass elevator", color: "#2b1236" },
 } as const;
+
 export type Ticket = keyof typeof ticketTypes;
 
 /** A small board for the chase demo: stations, links and Mr. X's hidden route. */
@@ -113,4 +119,5 @@ export const clues = {
   scores: "Fudge smears on the scoreboard. Only on the top row.",
   gate: "Golden foil flakes by the gates. He left with a ticket of his own.",
 };
+
 export const TOTAL_CLUES = Object.keys(clues).length;

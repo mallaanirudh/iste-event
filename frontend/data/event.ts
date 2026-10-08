@@ -1,7 +1,9 @@
 export { REGISTRATION_URL } from './registration'
 
 import { getFestivalEvent } from './festival-schedule'
-export const EVENT_START_ISO = getFestivalEvent('clutch').sessions[0].startsAt
+
+const clutchEvent = getFestivalEvent('clutch')
+export const EVENT_START_ISO = clutchEvent?.sessions?.[0]?.startsAt ?? '2026-10-14T18:00:00+05:30'
 
 export const ORGANIZERS = [
   { name: 'Gamana Shenthar', phone: '+91 83174 31152', tel: '+918317431152' },
