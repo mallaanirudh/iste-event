@@ -6,7 +6,8 @@
   --ticket-w: min(84vw, 620px);
   justify-content: flex-start;
   overflow: clip;
-  min-height: max(100svh, calc(var(--thread) + 560px));
+  /* Tall enough that the camp on the ground always sits below the Register button. */
+  min-height: max(100svh, calc(var(--thread) + var(--ticket-w) * 0.5 + 400px));
   background-image: linear-gradient(#0d0a24, #1f1338 55%, #2b1d4a) !important;
 }
 
@@ -242,7 +243,7 @@
   left: 0;
   right: 0;
   /* The ticket is about half as tall as it is wide; leave room for its bob and swing. */
-  top: calc(var(--thread) + var(--ticket-w) * 0.54 + clamp(36px, 6vh, 64px));
+  top: calc(var(--thread) + var(--ticket-w) * 0.5 + clamp(28px, 5vh, 48px));
   display: flex;
   justify-content: center;
 }
@@ -251,4 +252,26 @@
   --btn-bg: var(--filament);
   --btn-fg: var(--cocoa);
   box-shadow: 0 10px 28px rgb(255 178 30 / 0.35);
+}
+
+/* ---------- the moon ---------- */
+
+/* Square, as in the game. Kept out of the scene SVG so phones (which crop its sides) still show it. */
+.moon {
+  position: absolute;
+  z-index: 1;
+  /* Just under the nav when the page is scrolled to the end, even when this floor is taller than the screen. */
+  top: max(calc(var(--nav-h) + clamp(20px, 5vh, 56px)), calc(100% - 100svh + var(--nav-h) + 32px));
+  right: calc(var(--pillar) + clamp(18px, 9vw, 160px));
+  width: clamp(44px, 6vw, 80px);
+  aspect-ratio: 1;
+  background:
+    linear-gradient(#c9cfdc 0 0) 22% 24% / 22% 22% no-repeat,
+    linear-gradient(#c9cfdc 0 0) 66% 64% / 16% 16% no-repeat,
+    linear-gradient(#d8dde8 0 0) 70% 20% / 12% 12% no-repeat,
+    #e8ecf5;
+  box-shadow:
+    0 0 0 clamp(8px, 1vw, 14px) rgb(232 236 245 / 0.12),
+    0 0 60px 10px rgb(232 236 245 / 0.18);
+  image-rendering: pixelated;
 }

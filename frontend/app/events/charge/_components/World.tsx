@@ -3,7 +3,9 @@
 import { useEffect, useId, useRef } from "react";
 import { EVENT, REGISTER_URL, WORLD } from "../_data/content";
 import { gsap, MQ, prefersReducedMotion, useGSAP } from "../_lib/gsap";
+import { HEADS, SpriteRects, type Palette } from "../_lib/sprite";
 import { floorProps } from "../_lib/tokens";
+import { BODY, LEFT_ARM, LEGS, RIGHT_ARM, TORSO } from "./BeaconScene";
 import c from "../charge.module.css";
 import s from "./world.module.css";
 
@@ -12,11 +14,9 @@ import s from "./world.module.css";
 const B = 32;
 
 /** Terrain heights in blocks, one per 32px column, for the near hills. */
-const NEAR = [5, 5, 6, 6, 6, 7, 7, 6, 6, 5, 5, 4, 4, 4, 5, 5, 4, 4, 4, 4, 5, 5, 4, 4, 4, 5, 5, 6, 6, 7, 7, 7, 6, 6, 6, 5, 5, 6, 6, 7, 7, 8, 8, 7, 7, 6];
+const NEAR = [5, 5, 6, 6, 6, 7, 7, 6, 6, 5, 5, 4, 4, 4, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 6, 7, 7, 7, 6, 6, 6, 5, 5, 6, 6, 7, 7, 8, 8, 7, 7, 6];
 /** Far hills, in blocks, drawn flat and hazy. */
 const FAR = [9, 9, 10, 10, 11, 11, 11, 10, 10, 9, 9, 9, 10, 11, 12, 12, 12, 11, 10, 10, 9, 9, 9, 10, 10, 11, 11, 12, 13, 13, 12, 12, 11, 10, 10, 10, 11, 11, 12, 12, 11, 10, 10, 9, 9, 9];
-/** The far hill the beacon stands on (clear of the hanging ticket on wide screens). */
-const BEACON = 35;
 /** Stars: [x, y, size]. Every third one twinkles. */
 const STARS: [number, number, number][] = [
   [60, 90, 4], [170, 40, 6], [300, 150, 4], [410, 70, 4], [520, 30, 6], [640, 120, 4], [760, 60, 4],
@@ -33,7 +33,7 @@ const TREES: [number, number][] = [
   [40, 5],
 ];
 /** Torches on the hills: columns. */
-const TORCHES = [9, 17, 26, 34];
+const TORCHES = [9, 16, 28, 34];
 
 /** A Minecraft beacon in three-quarter view: a glass block, a glowing core on obsidian, a beam. */
 function BeaconBlock({ x, y, size, beam = 0 }: { x: number; y: number; size: number; beam?: number }) {
@@ -65,8 +65,6 @@ function BeaconBlock({ x, y, size, beam = 0 }: { x: number; y: number; size: num
 
 function Overworld() {
   const ground = (h: number) => 900 - h * B;
-  const bx = BEACON * B;
-  const by = ground(FAR[BEACON]) - 36;
   return (
     <svg className={s.worldSvg} viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
       <defs>
@@ -105,11 +103,6 @@ function Overworld() {
           ))}
         </g>
 
-        {/* The moon, square as in the game. */}
-        <rect x="1150" y="70" width="104" height="104" fill="#e8ecf5" opacity="0.16" />
-        <rect x="1166" y="86" width="72" height="72" fill="#e8ecf5" />
-        <rect x="1180" y="100" width="16" height="16" fill="#c9cfdc" />
-        <rect x="1210" y="126" width="12" height="12" fill="#c9cfdc" />
 
         <g className={s.clouds}>
           {CLOUDS.map(([x, y, w]) => (
@@ -128,7 +121,6 @@ function Overworld() {
             <rect key={i} x={i * B} y={ground(h)} width={B} height={h * B} />
           ))}
         </g>
-        <BeaconBlock x={bx - 2} y={by} size={36} beam={by + 60} />
       </g>
 
       {/* Near hills: grass blocks over dirt, trees, and torches with a warm glow. */}
@@ -162,8 +154,56 @@ function Overworld() {
             </g>
           );
         })}
+        <Camp ground={ground(4)} />
       </g>
     </svg>
+  );
+}
+
+/* ---------- three players around a beacon, on the flat ground in the middle ---------- */
+
+/** Shirts for the three players: the keeper's orange, then teal and purple. */
+const SHIRTS: Palette[] = [
+  {},
+  { A: "#2FA7A0", a: "#24857F", d: "#1A605C" },
+  { A: "#8A4FB8", a: "#6E3C96", d: "#4F2A6E" },
+];
+
+/** A full player (16 x 30 pixels) with one of the team heads from the briefing. */
+function playerRows(head: readonly string[]) {
+  return [
+    ...head.map((h) => `....${h}....`),
+    ...TORSO.map((r, i) => (LEFT_ARM[i] ?? "....") + r + (RIGHT_ARM[i] ?? "....")),
+    ...LEGS.map((l) => `....${l}....`),
+  ];
+}
+
+const PLAYERS = HEADS.map((h, i) => ({
+  rows: playerRows(h.rows),
+  palette: { ...BODY, ...h.palette, ...SHIRTS[i] } as Palette,
+}));
+
+/** Pixels are 2 units, so a player is 32 x 60: one block wide, under two blocks tall. */
+const PX = 2;
+
+function Camp({ ground }: { ground: number }) {
+  const beaconX = 704;
+  const spots = [
+    { x: 600, p: 1 },
+    { x: 640, p: 0 },
+    { x: 776, p: 2 },
+  ];
+  return (
+    <g>
+      {/* A soft pool of beacon light on the grass. */}
+      <ellipse cx={beaconX + 16} cy={ground + 2} rx="150" ry="14" fill="#5ef2ff" opacity="0.12" />
+      <BeaconBlock x={beaconX} y={ground - 36} size={32} beam={ground + 40} />
+      {spots.map(({ x, p }) => (
+        <g key={x} transform={`translate(${x} ${ground - 30 * PX}) scale(${PX})`}>
+          <SpriteRects rows={PLAYERS[p].rows} palette={PLAYERS[p].palette} />
+        </g>
+      ))}
+    </g>
   );
 }
 
@@ -217,7 +257,7 @@ export function World() {
           gsap.fromTo(
             g,
             { y: 120 * Number(g.dataset.worldDepth) },
-            { y: 0, ease: "none", scrollTrigger: { trigger: ref.current, start: "top bottom", end: "bottom bottom", scrub: 0.5 } },
+            { y: 0, ease: "none", scrollTrigger: { trigger: ref.current, start: "top bottom", end: "max", scrub: 0.5 } },
           );
         });
       });
@@ -341,6 +381,7 @@ export function World() {
         {WORLD.band}
       </h2>
       <Overworld />
+      <span className={s.moon} aria-hidden="true" />
 
       <div className={s.hang}>
         <div ref={rig} className={s.rig}>

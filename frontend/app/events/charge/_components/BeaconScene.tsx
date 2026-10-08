@@ -84,7 +84,7 @@ function BeaconBlock() {
 
 /* ---------- the keeper: standing beside the pyramid, arms at its sides ---------- */
 
-const BODY: Palette = {
+export const BODY: Palette = {
   ...KIT,
   A: "#FFB21E",
   a: "#E0960F",
@@ -97,8 +97,8 @@ const BODY: Palette = {
   o: "#5C4E47",
 };
 
-const HEAD = ["HHHHHHHH", "HLgGGLgH", "HggGGggH", "HSSSSSSH", "SEPSSPES", "SSSssSSS", "SSsMMsSS", "SsSSSSsS"];
-const TORSO = [
+export const HEAD = ["HHHHHHHH", "HLgGGLgH", "HggGGggH", "HSSSSSSH", "SEPSSPES", "SSSssSSS", "SSsMMsSS", "SsSSSSsS"];
+export const TORSO = [
   "addddddA",
   "AAWAAWAA",
   "AAWAAWAA",
@@ -112,9 +112,9 @@ const TORSO = [
   "AaAAAAaA",
   "dddddddd",
 ];
-const LEFT_ARM = ["aAAd", "aAAd", "aAAd", "aAAd", "aAAd", "aAAd", "aAAd", "aAAd", "SSSs", "sSSs"];
-const RIGHT_ARM = ["dAAa", "dAAa", "dAAa", "dAAa", "dAAa", "dAAa", "dAAa", "dAAa", "sSSS", "sSSs"];
-const LEGS = ["TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "OOOOOOOO", "oooo.ooo"];
+export const LEFT_ARM = ["aAAd", "aAAd", "aAAd", "aAAd", "aAAd", "aAAd", "aAAd", "aAAd", "SSSs", "sSSs"];
+export const RIGHT_ARM = ["dAAa", "dAAa", "dAAa", "dAAa", "dAAa", "dAAa", "dAAa", "dAAa", "sSSS", "sSSs"];
+export const LEGS = ["TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "TTTttTTT", "OOOOOOOO", "oooo.ooo"];
 
 const KEEPER: string[] = [
   ...HEAD.map((h) => `....${h}....`),
