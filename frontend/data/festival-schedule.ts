@@ -1,6 +1,13 @@
 export type FestivalEventId =
-  "scotland-yard" | "concrete" | "clutch" | "charge" | "crypt" | "catalyst";
+  | "scotland-yard"
+  | "concrete"
+  | "clutch"
+  | "charge"
+  | "crypt"
+  | "catalyst";
+
 export type EventSession = { label: string; startsAt: string; endsAt: string };
+
 export type FestivalEvent = {
   id: FestivalEventId;
   chamberId: string;
@@ -23,23 +30,7 @@ export const festivalEvents: FestivalEvent[] = [
     description:
       "A campus-wide treasure hunt, chocolate-making challenges and a final race against the clock.",
     href: "/events/scotland-yard",
-    sessions: [
-      {
-        label: "Round 1 · Campus-wide treasure hunt",
-        startsAt: "2026-10-11T09:00:00+05:30",
-        endsAt: "2026-10-11T13:00:00+05:30",
-      },
-      {
-        label: "Round 2 · Chocolate-making challenge",
-        startsAt: "2026-10-11T15:00:00+05:30",
-        endsAt: "2026-10-11T17:00:00+05:30",
-      },
-      {
-        label: "Round 3 · The final challenge",
-        startsAt: "2026-10-11T18:00:00+05:30",
-        endsAt: "2026-10-11T19:00:00+05:30",
-      },
-    ],
+    sessions: [],
   },
   {
     id: "concrete",
@@ -49,13 +40,7 @@ export const festivalEvents: FestivalEvent[] = [
     description:
       "Earn virtual cash, choose your materials and build a floating structure to rescue Jack.",
     href: "/events/concrete",
-    sessions: [
-      {
-        label: "Square One · Concrete",
-        startsAt: "2026-10-12T18:30:00+05:30",
-        endsAt: "2026-10-12T20:30:00+05:30",
-      },
-    ],
+    sessions: [],
   },
   {
     id: "clutch",
@@ -65,13 +50,7 @@ export const festivalEvents: FestivalEvent[] = [
     description:
       "Design a car powered by magnetic attraction or repulsion, then compete in the Grand Prix.",
     href: "/events/clutch",
-    sessions: [
-      {
-        label: "Square One · Clutch",
-        startsAt: "2026-10-13T18:30:00+05:30",
-        endsAt: "2026-10-13T20:30:00+05:30",
-      },
-    ],
+    sessions: [],
   },
   {
     id: "charge",
@@ -80,18 +59,7 @@ export const festivalEvents: FestivalEvent[] = [
     sig: "Charge",
     description: "Bid for parts, build a working circuit and light the beacon.",
     href: "/events/charge",
-    sessions: [
-      {
-        label: "KSS & Round 1",
-        startsAt: "2026-10-14T18:00:00+05:30",
-        endsAt: "2026-10-14T20:00:00+05:30",
-      },
-      {
-        label: "Round 2 · Auction and build",
-        startsAt: "2026-10-14T21:00:00+05:30",
-        endsAt: "2026-10-14T23:00:00+05:30",
-      },
-    ],
+    sessions: [],
   },
   {
     id: "crypt",
@@ -101,13 +69,7 @@ export const festivalEvents: FestivalEvent[] = [
     description:
       "A Capture the Flag challenge with internet puzzles and mathematics. Trust your reasoning.",
     href: null,
-    sessions: [
-      {
-        label: "Square One · Crypt",
-        startsAt: "2026-10-15T18:30:00+05:30",
-        endsAt: "2026-10-15T20:30:00+05:30",
-      },
-    ],
+    sessions: [],
   },
   {
     id: "catalyst",
@@ -117,23 +79,17 @@ export const festivalEvents: FestivalEvent[] = [
     description:
       "Diagnose a simulated process emergency, stabilise the system and obtain the shutdown code.",
     href: "/events/catalyst",
-    sessions: [
-      {
-        label: "Square One · Catalyst",
-        startsAt: "2026-10-16T18:30:00+05:30",
-        endsAt: "2026-10-16T20:30:00+05:30",
-      },
-    ],
+    sessions: [],
   },
 ];
 
-export function getFestivalEvent(id: FestivalEventId): FestivalEvent {
-  return festivalEvents.find((event) => event.id === id)!;
+export function getFestivalEvent(id: FestivalEventId): FestivalEvent | undefined {
+  return festivalEvents.find((event) => event.id === id);
 }
 
 export const festivalSlots = festivalEvents
   .flatMap((event) =>
-    event.sessions.map((session) => ({
+    (event.sessions ?? []).map((session) => ({
       event,
       session,
       start: Date.parse(session.startsAt),
@@ -141,10 +97,15 @@ export const festivalSlots = festivalEvents
     })),
   )
   .sort((a, b) => a.start - b.start);
+
 export type FestivalSlot = (typeof festivalSlots)[number];
 
 /** Start-inclusive, end-exclusive: breaks and overnight gaps never count as live. */
 export function getFestivalSnapshot(now: number) {
+  if (!festivalSlots.length) {
+    return { current: [], next: null, phase: "before" as const };
+  }
+
   const current = festivalSlots.filter(
     (slot) => slot.start <= now && now < slot.end,
   );
@@ -156,11 +117,16 @@ export function getFestivalSnapshot(now: number) {
       : next
         ? "between"
         : "complete";
+
   return { current, next, phase };
 }
 
 export function getEventTiming(id: FestivalEventId, now: number) {
   const slots = festivalSlots.filter((slot) => slot.event.id === id);
+  if (!slots.length) {
+    return { current: null, next: null, status: "upcoming" as const };
+  }
+
   const current =
     slots.find((slot) => slot.start <= now && now < slot.end) ?? null;
   const next = slots.find((slot) => slot.start > now) ?? null;
@@ -171,30 +137,37 @@ export function getEventTiming(id: FestivalEventId, now: number) {
         ? "upcoming"
         : "intermission"
       : "complete";
+
   return { current, next, status };
 }
 
-export function formatEventDate(event: FestivalEvent) {
+export function formatEventDate(event?: { sessions?: { startsAt: string }[] }) {
+  if (!event?.sessions?.[0]?.startsAt) return "Date TBD";
+
   return new Intl.DateTimeFormat("en-IN", {
-    timeZone: FESTIVAL_TIME_ZONE,
-    weekday: "long",
-    day: "numeric",
     month: "long",
     year: "numeric",
   }).format(new Date(event.sessions[0].startsAt));
 }
-export function formatSessionTime(session: EventSession) {
+
+export function formatSessionTime(session?: EventSession) {
+  if (!session?.startsAt || !session?.endsAt) return "Time TBD";
+
   const formatter = new Intl.DateTimeFormat("en-IN", {
     timeZone: FESTIVAL_TIME_ZONE,
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
   });
+
   return `${formatter.format(new Date(session.startsAt)).toUpperCase()}–${formatter.format(new Date(session.endsAt)).toUpperCase()} IST`;
 }
-export function formatEventTime(event: FestivalEvent) {
+
+export function formatEventTime(event?: FestivalEvent) {
+  if (!event?.sessions?.length) return "Time TBD";
   return event.sessions.map(formatSessionTime).join(" · ");
 }
+
 export function countdownValues(milliseconds: number) {
   const seconds = Math.floor(Math.max(0, milliseconds) / 1000);
   return [

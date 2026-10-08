@@ -130,6 +130,27 @@ function RankingRows({
     </>
   );
 }
+function LeaderboardComingSoon() {
+  return (
+    <div className="flex flex-1 items-center justify-center py-16 text-center">
+      <div>
+        <Trophy
+          size={48}
+          className="mx-auto mb-5 text-[#ffd700]"
+        />
+        <p className="festival-kicker mb-3 text-[10px] font-black tracking-[.25em] text-[#ff74b8]">
+          THE HALL OF FAME
+        </p>
+        <h4 className="festival-heading text-3xl tracking-wide sm:text-4xl">
+          Coming Soon
+        </h4>
+        <p className="mt-3 max-w-sm text-sm font-semibold leading-relaxed text-[#c4acd9]">
+          The standings will appear here once the challenges begin.
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default function FestivalHome() {
   const [modal, setModal] = useState<Modal>(null);
@@ -227,21 +248,7 @@ export default function FestivalHome() {
                     <Trophy size={25} />
                   </span>
                 </div>
-                <RankingRows />
-                <div className="mt-auto pt-6">
-                  <p className="festival-sample-note mb-4 flex items-center justify-center gap-2 text-[10px] font-bold text-[#bda4d1]">
-                    <Sparkles size={13} className="shrink-0 text-[#ffd700]" />
-                    {designRefinements[7]
-                      ? "Sample standings · Not live results"
-                      : "Sample standings from the original homepage"}
-                  </p>
-                  <button
-                    onClick={openLeaderboard}
-                    className={`${buttonClass} w-full bg-[#ffd700] text-sm text-[#241037] shadow-[4px_4px_0_#140a24]`}
-                  >
-                    View Full Leaderboard <ArrowRight size={17} />
-                  </button>
-                </div>
+                <LeaderboardComingSoon />
               </article>
             </Reveal>
           </div>

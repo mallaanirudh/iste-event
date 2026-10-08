@@ -36,8 +36,8 @@ export const EVENT = {
 } as const;
 
 /** Doors open (the knowledge session) and the end of the night, in IST. */
-export const START_ISO = schedule.sessions[0].startsAt;
-export const END_ISO = schedule.sessions.at(-1)!.endsAt;
+export const START_ISO = "2026-10-14T18:00:00+05:30";
+export const END_ISO = "2026-10-14T23:00:00+05:30";
 
 export const HERO = {
   kicker: "ISTE Charge at Square One",
