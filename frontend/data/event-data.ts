@@ -1,5 +1,7 @@
 import { getFestivalEvent } from './festival-schedule'
-export const EVENT_DATE_ISO = getFestivalEvent('concrete').sessions[0].startsAt
+
+const concreteEvent = getFestivalEvent('concrete')
+export const EVENT_DATE_ISO = concreteEvent?.sessions?.[0]?.startsAt ?? '2026-10-14T18:00:00+05:30'
 
 export { REGISTRATION_URL } from './registration'
 

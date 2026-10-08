@@ -13,6 +13,7 @@ import {
   formatSessionTime,
   getFestivalEvent,
 } from "@/data/festival-schedule";
+
 const schedule = getFestivalEvent("charge");
 
 export const EVENT = {
@@ -110,7 +111,9 @@ export const FALLBACK_ROUNDS: FallbackRound[] = [
   {
     roundNumber: 1,
     name: "Screening",
-    time: formatSessionTime(schedule.sessions[0]),
+    time: schedule?.sessions?.[0]
+      ? formatSessionTime(schedule.sessions[0])
+      : "6:00 PM – 7:30 PM",
     mode: "Offline, in the hall",
     description:
       "Checks the basics you'll need for the build. The top teams go through to Round 2.",
@@ -118,7 +121,9 @@ export const FALLBACK_ROUNDS: FallbackRound[] = [
   {
     roundNumber: 2,
     name: "Auction and build",
-    time: formatSessionTime(schedule.sessions[1]),
+    time: schedule?.sessions?.[1]
+      ? formatSessionTime(schedule.sessions[1])
+      : "7:30 PM – 11:00 PM",
     mode: "Live auction, then the build",
     description:
       "Every team gets the same purse of virtual money. Bid for components, then build a working circuit from only what you won.",

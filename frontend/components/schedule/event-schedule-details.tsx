@@ -13,12 +13,22 @@ export function EventScheduleDetails({
   className?: string;
 }) {
   const event = getFestivalEvent(eventId);
+  const sessions = event?.sessions ?? [];
+
+  if (!sessions.length) {
+    return (
+      <div className={className}>
+        <p className="mt-1 text-sm text-neutral-400">Schedule to be announced</p>
+      </div>
+    );
+  }
+
   return (
     <div className={className}>
       <ul className="mt-1 space-y-1">
-        {event.sessions.map((session) => (
+        {sessions.map((session) => (
           <li key={session.startsAt}>
-            {event.sessions.length > 1 && <span>{session.label}: </span>}
+            {sessions.length > 1 && <span>{session.label}: </span>}
             <time dateTime={session.startsAt}>
               {formatSessionTime(session)}
             </time>
