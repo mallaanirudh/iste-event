@@ -232,3 +232,23 @@
   background: radial-gradient(closest-side, rgb(255 178 30 / 0.28), transparent);
   pointer-events: none;
 }
+
+/* ---------- register ---------- */
+
+/* Below the hanging ticket, in the gap above the hills; it stays still while the ticket swings. */
+.cta {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  /* The ticket is about half as tall as it is wide; leave room for its bob and swing. */
+  top: calc(var(--thread) + var(--ticket-w) * 0.54 + clamp(36px, 6vh, 64px));
+  display: flex;
+  justify-content: center;
+}
+
+.register {
+  --btn-bg: var(--filament);
+  --btn-fg: var(--cocoa);
+  box-shadow: 0 10px 28px rgb(255 178 30 / 0.35);
+}

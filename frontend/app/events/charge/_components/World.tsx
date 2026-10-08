@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
-import { EVENT, WORLD } from "../_data/content";
+import { EVENT, REGISTER_URL, WORLD } from "../_data/content";
 import { gsap, MQ, prefersReducedMotion, useGSAP } from "../_lib/gsap";
 import { floorProps } from "../_lib/tokens";
 import c from "../charge.module.css";
@@ -377,6 +377,17 @@ export function World() {
             </article>
           </div>
         </div>
+      </div>
+
+      <div className={s.cta}>
+        <a
+          className={`${c.btn} ${s.register}`}
+          href={REGISTER_URL}
+          data-cursor="Register"
+          {...(/^https?:/.test(REGISTER_URL) ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        >
+          {WORLD.register}
+        </a>
       </div>
     </section>
   );

@@ -38,7 +38,9 @@ export function ChargeRoot({ children }: { children: ReactNode }) {
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       const a = (e.target as HTMLElement | null)?.closest?.("a[href^='#']");
-      if (!a || !root.current?.contains(a)) return;
+      // composedPath() is fixed at dispatch, so links in the menu sheet still count after the
+      // sheet unmounts on the same tap (contains() would miss them and the browser would jump).
+      if (!a || !root.current || !e.composedPath().includes(root.current)) return;
       const id = a.getAttribute("href")!.slice(1);
       const target = id ? document.getElementById(id) : null;
       if (!target) return;
@@ -52,11 +54,20 @@ export function ChargeRoot({ children }: { children: ReactNode }) {
       const navH = document.querySelector("header")?.offsetHeight ?? 72;
       const floor = target.hasAttribute("data-bg");
       const offset = floor ? (window.matchMedia("(max-width: 899px)").matches ? -navH : 0) : -navH - 16;
+      // Floors stack (_lib/layers.ts): past the point where a floor's bottom meets the bottom of
+      // the screen, the next floor slides over it. Stop there at the latest, so the target is
+      // never under the incoming floor. Pinned floors keep their place in a .pin-spacer.
+      const host = target.closest<HTMLElement>("[data-bg]");
+      const box = host?.parentElement?.classList.contains("pin-spacer") ? host.parentElement : host;
+      const r = box?.getBoundingClientRect();
+      // A floor shorter than the screen holds from its top, so its top is the latest stop.
+      const latest = r ? Math.max(r.top, r.bottom - window.innerHeight) + window.scrollY : Infinity;
+      const natural = target.getBoundingClientRect().top + window.scrollY + offset;
+      const y = id === "top" ? 0 : Math.max(0, Math.min(natural, latest));
       if (lenis) {
-        lenis.scrollTo(id === "top" ? 0 : target, { offset: id === "top" ? 0 : offset, duration: 1.2, onComplete: focusTarget });
+        lenis.scrollTo(y, { duration: 1.2, onComplete: focusTarget });
       } else {
         const reduce = window.matchMedia(MQ.reduce).matches;
-        const y = id === "top" ? 0 : target.getBoundingClientRect().top + window.scrollY + offset;
         window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
         focusTarget();
       }

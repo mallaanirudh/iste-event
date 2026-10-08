@@ -141,7 +141,8 @@
  * only need a short lead-in after their slab. Anchor jumps stop below the fixed nav instead.
  */
 @media (max-width: 899px) {
-  .floor:not(#top) {
+  /* [id] rather than #top: CSS Modules rename id selectors, attribute selectors are left alone. */
+  .floor:not([id="top"]) {
     padding-top: 40px;
     scroll-margin-top: var(--nav-h);
   }
