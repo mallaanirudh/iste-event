@@ -31,7 +31,7 @@ export const EVENT = {
   teamSize: "Up to 3 per team",
   teamMax: 3,
   expected: "About 150 builders",
-  registerHref: REGISTRATION_URL,
+  registerHref: "https://Feisteval-2026.vercel.app",
   homeHref: "/",
 } as const;
 

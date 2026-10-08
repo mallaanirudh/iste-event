@@ -160,7 +160,7 @@ export function FestivalHero() {
               Explore six chambers of mystery, engineering, and discovery.
             </p>
             <a
-              href="#chambers"
+              href="https://Feisteval-2026.vercel.app"
               className="festival-button festival-ticket-button inline-flex min-h-12 items-center justify-center gap-3 px-7 py-3 text-sm font-extrabold"
             >
               Enter Carnival <ArrowUpRight size={18} aria-hidden="true" />

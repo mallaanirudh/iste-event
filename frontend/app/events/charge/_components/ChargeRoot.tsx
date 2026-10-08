@@ -111,7 +111,7 @@ export function ChargeRoot({ children }: { children: ReactNode }) {
   return (
     <LenisContext.Provider value={lenis}>
       <div ref={root} className={s.root} data-charge-root="">
-        <a className={s.skip} href="#register">
+        <a className={s.skip} href="https://Feisteval-2026.vercel.app">
           Skip to registration
         </a>
         {children}

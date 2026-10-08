@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const NAV_LINKS = [
   { label: "The Factory", href: "#hero" },
   { label: "Chambers", href: "#events" },
-  { label: "Secure Entry", href: "#register" },
+  { label: "Secure Entry", href: "https://Feisteval-2026.vercel.app" },
   { label: "Inventor Tally", href: "#leaderboard" },
 ];
 
@@ -104,15 +104,15 @@ function Filigree() {
 function BrassPipeMenuIcon({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) {
   return (
     <button onClick={onClick} className="relative w-8 h-6 flex flex-col justify-between z-[60] focus:outline-none md:hidden">
-      <motion.div 
+      <motion.div
         animate={isOpen ? { rotate: 45, y: 10 } : { rotate: 0, y: 0 }}
         className="w-full h-1.5 bg-gradient-to-b from-[#F5D77A] via-[#E5A93B] to-[#C68A27] border-[1px] border-[#1D120C] rounded-sm shadow-[1px_1px_0px_#1D120C]"
       />
-      <motion.div 
+      <motion.div
         animate={isOpen ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
         className="w-full h-1.5 bg-gradient-to-b from-[#F5D77A] via-[#E5A93B] to-[#C68A27] border-[1px] border-[#1D120C] rounded-sm shadow-[1px_1px_0px_#1D120C]"
       />
-      <motion.div 
+      <motion.div
         animate={isOpen ? { rotate: -45, y: -10 } : { rotate: 0, y: 0 }}
         className="w-full h-1.5 bg-gradient-to-b from-[#F5D77A] via-[#E5A93B] to-[#C68A27] border-[1px] border-[#1D120C] rounded-sm shadow-[1px_1px_0px_#1D120C]"
       />
@@ -194,7 +194,7 @@ export default function Navbar() {
               onMouseLeave={() => setHoveredIdx(null)}
             >
               {link.label}
-              
+
               {/* Tooltip-style hover dots */}
               <div
                 className="absolute left-1/2 -bottom-2 -translate-x-1/2 transition-opacity duration-150"

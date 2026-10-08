@@ -96,9 +96,9 @@ export function Roof() {
       <div className={s.sky} aria-hidden="true">
         <svg className={s.skySvg} viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" shapeRendering="crispEdges">
           <g className={s.stars}>
-          {STARS.map(([x, y, size], i) => (
-            <rect key={i} className={i % 3 === 0 ? s.twinkle : undefined} x={x} y={y} width={size} height={size} fill="#FFF6D8" style={{ animationDelay: `${(i % 5) * -0.7}s` }} />
-          ))}
+            {STARS.map(([x, y, size], i) => (
+              <rect key={i} className={i % 3 === 0 ? s.twinkle : undefined} x={x} y={y} width={size} height={size} fill="#FFF6D8" style={{ animationDelay: `${(i % 5) * -0.7}s` }} />
+            ))}
           </g>
           <g className={s.cloud} fill="#F3EADB">
             <rect x="180" y="380" width="160" height="16" />
@@ -141,7 +141,7 @@ export function Roof() {
           <div className={s.ctas}>
             <a
               ref={primary}
-              href={EVENT.registerHref}
+              href="https://Feisteval-2026.vercel.app"
               className={`${c.btn} ${s.primary}`}
               target="_blank"
               rel="noopener noreferrer"

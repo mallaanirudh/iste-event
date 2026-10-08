@@ -160,7 +160,7 @@ type World = ReturnType<typeof buildWorld>;
 
 const bulletinCell = (w: World, i: number) =>
   w.M.path[
-    Math.round(((i + 1) * (w.M.path.length - 1)) / (BULLETINS.length + 1))
+  Math.round(((i + 1) * (w.M.path.length - 1)) / (BULLETINS.length + 1))
   ];
 
 function hit(segs: number[][], x: number, y: number) {
@@ -196,7 +196,7 @@ export default function Maze() {
   const rec = useRef<HTMLSpanElement>(null);
   const secs = useRef(0);
   const au = useRef<ReturnType<typeof createAudio> | null>(null);
-  const closeRef = useRef<() => void>(() => {});
+  const closeRef = useRef<() => void>(() => { });
   const st = useRef({
     fx: C / 2,
     fy: C / 2,
@@ -372,7 +372,7 @@ export default function Maze() {
             g.grace = 3;
             const p = respawn.reduce((a, b) =>
               Math.hypot(a.x - g.fx, a.y - g.fy) >
-              Math.hypot(b.x - g.fx, b.y - g.fy)
+                Math.hypot(b.x - g.fx, b.y - g.fy)
                 ? a
                 : b,
             );
@@ -519,15 +519,15 @@ export default function Maze() {
       items={
         plain
           ? [
-              { label: "Back to maze", onSelect: () => setPlain(false) },
-              { label: "Briefing", href: "#catalyst-briefing" },
-            ]
+            { label: "Back to maze", onSelect: () => setPlain(false) },
+            { label: "Briefing", href: "#catalyst-briefing" },
+          ]
           : [
-              {
-                label: "Event details",
-                onSelect: () => showDetails("catalyst-briefing"),
-              },
-            ]
+            {
+              label: "Event details",
+              onSelect: () => showDetails("catalyst-briefing"),
+            },
+          ]
       }
       action={{ label: "Register", href: REGISTRATION_URL, external: true }}
       onMenuChange={setMenuOpen}
@@ -571,7 +571,7 @@ export default function Maze() {
               emergency, stabilise the plant and find the shutdown code.
             </p>
             <a
-              href={REGISTRATION_URL}
+              href="https://Feisteval-2026.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.pgCta}
@@ -692,8 +692,8 @@ export default function Maze() {
   const barText =
     open?.kind === "bulletin"
       ? `Incident log · ${pad(
-          BULLETINS.findIndex((x) => x.id === open.id) + 1,
-        )}`
+        BULLETINS.findIndex((x) => x.id === open.id) + 1,
+      )}`
       : open?.kind === "dead"
         ? "Warning · route invalid"
         : golden
@@ -792,9 +792,8 @@ export default function Maze() {
             {world.webs.map((w, i) => (
               <g
                 key={i}
-                transform={`translate(${w.x} ${w.y}) scale(${w.sx * w.k} ${
-                  w.sy * w.k
-                })`}
+                transform={`translate(${w.x} ${w.y}) scale(${w.sx * w.k} ${w.sy * w.k
+                  })`}
               >
                 <path d={WEB_RAYS} className={styles.web} />
                 <path d={WEB_RINGS} className={styles.webr} />
@@ -965,9 +964,8 @@ export default function Maze() {
                     ? "Golden ticket"
                     : "The locker")
               }
-              className={`${styles.card} ${
-                open.kind === "dead" ? styles.bad : ""
-              } ${golden ? styles.gold : ""}`}
+              className={`${styles.card} ${open.kind === "dead" ? styles.bad : ""
+                } ${golden ? styles.gold : ""}`}
               style={
                 {
                   "--ox": `${origin.x}px`,
