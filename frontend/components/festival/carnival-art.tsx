@@ -10,7 +10,7 @@ export function CarnivalArt({ silhouette = false }: { silhouette?: boolean }) {
       viewBox="0 0 640 480"
       fill="none"
       aria-hidden="true"
-      className="h-auto w-full overflow-visible"
+      className="block h-auto w-full max-w-full overflow-hidden"
     >
       <defs>
         <radialGradient id={`${id}-halo`}>
@@ -136,9 +136,9 @@ export function CarnivalArt({ silhouette = false }: { silhouette?: boolean }) {
         {!silhouette && (
           <>
             <rect
-              x="385"
+              x="370"
               y="266"
-              width="123"
+              width="152"
               height="30"
               rx="5"
               fill="#211036"
@@ -153,7 +153,9 @@ export function CarnivalArt({ silhouette = false }: { silhouette?: boolean }) {
               stroke="none"
               fontFamily="var(--font-bangers), sans-serif"
               fontSize="20"
-              letterSpacing="2"
+              letterSpacing="1"
+              textLength="128"
+              lengthAdjust="spacingAndGlyphs"
             >
               IDEAS &amp; WONDER
             </text>

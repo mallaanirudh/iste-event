@@ -1,5 +1,6 @@
 import { ArrowUp, ArrowUpRight, Camera, Globe2, Ticket } from "lucide-react";
 import { CarnivalArt } from "./carnival-art";
+import { REGISTRATION_URL } from "@/data/registration";
 
 function LinkedinIcon() {
   return (
@@ -16,13 +17,7 @@ function LinkedinIcon() {
   );
 }
 
-export function FestivalFooter({
-  onRegister,
-  onDirectory,
-}: {
-  onRegister: () => void;
-  onDirectory: () => void;
-}) {
+export function FestivalFooter({ onDirectory }: { onDirectory: () => void }) {
   return (
     <footer className="festival-footer-refined">
       <div className="festival-footer-skyline" aria-hidden="true">
@@ -33,15 +28,15 @@ export function FestivalFooter({
           Bring your curiosity.{" "}
           <span className="text-[#ffd700]">Stay for the carnival.</span>
         </h2>
-        <button
-          type="button"
-          onClick={onRegister}
-          aria-haspopup="dialog"
+        <a
+          href={REGISTRATION_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="festival-button inline-flex min-h-12 items-center justify-center gap-3 rounded-sm border-2 border-[#160b26] bg-[#ffd700] px-6 py-3 text-sm font-extrabold text-[#241037] shadow-[4px_4px_0_#140a24]"
         >
           <Ticket size={18} aria-hidden="true" /> Your Golden Ticket{" "}
           <ArrowUpRight size={17} aria-hidden="true" />
-        </button>
+        </a>
         <div className="festival-footer-socials" aria-label="ISTE links">
           <a
             href="https://www.instagram.com/iste_nitk/"

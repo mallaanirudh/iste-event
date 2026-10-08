@@ -93,7 +93,7 @@
     scroll-behavior: smooth;
   }
   .clutch-event :where(section, footer)[id] {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: 105px;
   }
 }
 

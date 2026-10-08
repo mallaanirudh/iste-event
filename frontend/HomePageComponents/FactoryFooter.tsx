@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 function Silhouette() {
   return (
     <div className="w-full text-[#1D120C] bg-[#FDF8EE] -mb-[1px]">

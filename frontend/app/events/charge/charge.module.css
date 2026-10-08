@@ -21,7 +21,7 @@
   --side: clamp(22px, 5vw, 88px);
   --pillar: 8px;
   --slab: 28px;
-  --nav-h: 64px;
+  --nav-h: 76px;
   --hair: color-mix(in oklab, var(--fg) 22%, transparent);
 
   --bg: #1a110e;
@@ -47,9 +47,14 @@
   .root {
     --pillar: 24px;
     --slab: 36px;
-    --nav-h: 72px;
     /* Content always starts clear of the copper pipe and its glow (pipe ends at pillar + 24px). */
     --side: max(clamp(22px, 5vw, 88px), calc(var(--pillar) + 48px));
+  }
+}
+
+@media (min-width: 901px) {
+  .root {
+    --nav-h: 85px;
   }
 }
 

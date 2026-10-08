@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Menu, Ticket, X } from "lucide-react";
+import { REGISTRATION_URL } from "@/data/registration";
 
 const sections = [
   { id: "home", label: "Home" },
@@ -118,8 +119,13 @@ export function FestivalNavbar({
             >
               Leaderboard
             </button>
-            <a className="festival-navbar-ticket" href="#chambers">
-              <Ticket size={16} aria-hidden="true" /> Enter Carnival
+            <a
+              className="festival-navbar-ticket"
+              href={REGISTRATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Ticket size={16} aria-hidden="true" /> Register
               <ArrowUpRight size={14} aria-hidden="true" />
             </a>
           </div>
@@ -184,10 +190,12 @@ export function FestivalNavbar({
           </button>
           <a
             className="festival-mobile-ticket"
-            href="#chambers"
+            href={REGISTRATION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={closeMenu}
           >
-            Enter Carnival <ArrowUpRight size={21} aria-hidden="true" />
+            Register <ArrowUpRight size={21} aria-hidden="true" />
           </a>
         </nav>
         <p className="festival-mobile-menu-footer">

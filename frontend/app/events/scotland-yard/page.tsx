@@ -14,6 +14,8 @@ import SceneEffects from "./_components/SceneEffects";
 import SvgDefs from "./_components/SvgDefs";
 import Thames from "./_components/Thames";
 import TorchToggle from "./_components/TorchToggle";
+import { EventNavbar } from "@/components/navigation/event-navbar";
+import { REGISTRATION_URL } from "@/data/registration";
 
 export const metadata: Metadata = {
   title: "ISTE · Scotland Yard",
@@ -38,6 +40,19 @@ export default function ScotlandYardPage() {
       <div className="progress-string" aria-hidden="true" />
       <BackgroundScene />
       <SvgDefs />
+      <EventNavbar
+        event="scotland-yard"
+        label="Scotland Yard"
+        topHref="#sy-root"
+        homeHref="/#chamber-scotland-yard"
+        items={[
+          { label: "The case", href: "#h-case" },
+          { label: "Cipher", href: "#cipher" },
+          { label: "Agenda", href: "#agenda" },
+          { label: "Case file", href: "#details" },
+        ]}
+        action={{ label: "Register", href: REGISTRATION_URL, external: true }}
+      />
 
       <ClueProvider>
         <Masthead />
@@ -52,10 +67,20 @@ export default function ScotlandYardPage() {
         <CaseFile />
         <footer>
           <div className="fp-row" aria-hidden="true">
-            <svg><use href="#fp" /></svg><svg><use href="#fp" /></svg><svg><use href="#fp" /></svg>
+            <svg>
+              <use href="#fp" />
+            </svg>
+            <svg>
+              <use href="#fp" />
+            </svg>
+            <svg>
+              <use href="#fp" />
+            </svg>
           </div>
           ISTE · Scotland Yard: The Ultimate Mystery Challenge
-          <p className="credit">Website designed and made by <span>Ishaan Roy</span></p>
+          <p className="credit">
+            Website designed and made by <span>Ishaan Roy</span>
+          </p>
         </footer>
         <TorchToggle />
       </ClueProvider>

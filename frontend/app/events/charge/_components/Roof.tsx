@@ -143,9 +143,9 @@ export function Roof() {
               ref={primary}
               href={EVENT.registerHref}
               className={`${c.btn} ${s.primary}`}
-              data-register-open=""
+              target="_blank"
+              rel="noopener noreferrer"
               data-cursor="Register"
-              aria-haspopup="dialog"
             >
               {HERO.primary}
             </a>

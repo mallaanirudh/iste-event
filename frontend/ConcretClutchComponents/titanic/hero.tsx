@@ -2,6 +2,8 @@ import { Anchor, Coins, Ship, Waves } from "lucide-react";
 import { PlankSign } from "./plank-sign";
 import { Countdown } from "./countdown";
 import { WaxSealButton } from "./section-heading";
+import { REGISTRATION_URL } from "@/data/registration";
+import { EventScheduleDetails } from "@/components/schedule/event-schedule-details";
 
 const QUICK_INFO = [
   { icon: Ship, label: "3 Action-Packed Rounds" },
@@ -39,11 +41,15 @@ export function Hero() {
       </ul>
 
       <div className="mt-10">
+        <EventScheduleDetails
+          eventId="concrete"
+          className="mb-5 text-center font-mono text-sm font-bold leading-relaxed text-ink"
+        />
         <Countdown />
       </div>
 
       <div className="mt-10">
-        <WaxSealButton href="#register">
+        <WaxSealButton href={REGISTRATION_URL} external>
           Register Team (Captain Only)
         </WaxSealButton>
       </div>

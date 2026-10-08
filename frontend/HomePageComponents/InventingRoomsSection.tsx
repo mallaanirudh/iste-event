@@ -86,7 +86,7 @@ function CornerRivet({
   );
 }
 
-const MainValve = React.forwardRef<HTMLDivElement, {}>((props, ref) => (
+const MainValve = React.forwardRef<HTMLDivElement>((props, ref) => (
   <div ref={ref} className="relative w-32 h-32 mx-auto z-20 mt-8 mb-8 flex items-center justify-center">
     <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-[6px_6px_0px_#1D120C]">
       {/* Outer rim */}
@@ -117,7 +117,7 @@ const MainValve = React.forwardRef<HTMLDivElement, {}>((props, ref) => (
 ));
 MainValve.displayName = "MainValve";
 
-const TerminusGrate = React.forwardRef<HTMLDivElement, {}>((props, ref) => (
+const TerminusGrate = React.forwardRef<HTMLDivElement>((props, ref) => (
   <div ref={ref} className="relative w-48 h-20 mx-auto z-20 mt-16 flex items-center justify-center">
     <svg viewBox="0 0 200 60" className="w-full h-full drop-shadow-[6px_6px_0px_#1D120C]">
       <rect x="10" y="10" width="180" height="40" rx="4" fill="#1D120C" />
@@ -139,7 +139,7 @@ TerminusGrate.displayName = "TerminusGrate";
    CHAMBER CARD COMPONENT
    ════════════════════════════════════════════════════ */
 
-function ChamberCard({ event, index }: { event: (typeof EVENTS)[0]; index: number }) {
+function ChamberCard({ event }: { event: (typeof EVENTS)[0]; index: number }) {
   return (
     <motion.div
       whileHover={{ x: -4, y: -4, boxShadow: "10px 10px 0px #1D120C" }}
@@ -215,8 +215,6 @@ export default function InventingRoomsSection() {
       const startX = valveRect.left - containerRect.left + valveRect.width / 2;
       const startY = valveRect.bottom - containerRect.top - 10; // slightly inside the valve
       
-      const centerX = containerRect.width / 2;
-      
       // On mobile, force the pipe to simply drop straight down the middle.
       const mobileX = startX;
       let currentX = startX;
@@ -225,7 +223,7 @@ export default function InventingRoomsSection() {
       let d = `M ${startX} ${startY} `;
       const newJunctions: { x: number; y: number }[] = [];
 
-      cardsRefs.current.forEach((card, i) => {
+      cardsRefs.current.forEach((card) => {
         if (!card) return;
         const rect = card.getBoundingClientRect();
         const cardY = rect.top - containerRect.top + rect.height / 2;

@@ -7,8 +7,16 @@ The ten refinements recorded in root `UI_CHANGE_LOG.md` are currently enabled: `
 ## Content and configuration
 
 - `chamber-data.ts` preserves all six original chamber titles, descriptions, themes, and ordering from `HomePageComponents/InventingRoomsSection.tsx` at pulled commit `7b793b2`. The dashboard previews Scotland Yard and uses Charge's existing event name, tagline, and start time. The five leaderboard examples come from the original homepage's fallback data and remain clearly labeled; they are not published results.
-- Set `NEXT_PUBLIC_FEISTEVAL_TALLY_FORM_ID` to the festival's real Tally form ID and rebuild to enable the Golden Ticket registration link. This setting is separate from `NEXT_PUBLIC_TALLY_FORM_ID`, which is already used by individual event pages. Until configured, the Golden Ticket panel shows an honest registration-pending message.
+- `data/registration.ts` owns the shared registration website, `https://feisteval-2026.vercel.app`. Homepage Golden Tickets and active event registration actions open it in a new tab. No Tally form ID is required for these links.
 - The existing server-only API integration remains in `lib/api/`; connecting the new dashboard to live data requires actual backend configuration and event IDs. Never put database or Tally API credentials in public environment variables.
+
+## Schedule and current/upcoming events
+
+`data/festival-schedule.ts` is the source for all published dates and timing windows from the supplied October 2026 brief. Scotland Yard is 11 October (9 AM–1 PM, 3–5 PM and 6–7 PM). Concrete, Clutch, Crypt and Catalyst use the shared 6:30–8:30 PM Square One slot on 12, 13, 15 and 16 October respectively. Charge uses the more specific 14 October slots (6–8 PM and 9–11 PM); this overrides the brief's common slot unless the organizer clarifies otherwise.
+
+`festival-events.tsx` replaces the old fixed Scotland Yard/Charge preview cards with clock-based current and next sessions. Session starts are inclusive and ends exclusive, breaks are not live, and the final ongoing event remains live even when no next event exists. The upcoming card advances to the next round or next event and shows a completed state after 16 October at 8:30 PM. Explicit +05:30 timestamps and `Asia/Kolkata` formatting keep the schedule in IST regardless of the visitor's timezone. The clock refreshes each second while visible and immediately on returning to a tab. No event status is written to the backend.
+
+The complete calendar and chamber dates are rendered as page content. Event pages reuse the same date/timing source. Run `npm run test:schedule` on Node 24+ for timing-boundary tests. These automatic states reflect the published timetable; they do not replace organizer-confirmed backend results.
 
 ## Interaction and layout
 

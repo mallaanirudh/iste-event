@@ -23,6 +23,34 @@ For example, setting `8: false` restores the earlier ranking rows while retainin
 
 An exact pre-change working-tree baseline is stored outside the repository at `C:/Windows/Temp/iste-ui-before-ten-2026-10-08`. It includes the festival components, homepage font setup and repository notes. This is a local recovery copy, not a repository artifact; the numbered switches are the primary way to revert individual refinements. Future source edits should retain their scope and update this record.
 
+## Artwork and event navigation follow-up
+
+The carnival tent sign now uses an explicit text length with padding inside a wider plate. Hero and chamber illustrations are contained within their SVG boxes. The ten numbered homepage refinements remain independently reversible.
+
+Charge, Clutch, Concrete, Scotland Yard and Catalyst use `components/navigation/event-navbar.tsx`: a consistent fixed header, centered desktop links, compact scroll state, theme-specific colors, active section links, a primary action and a native mobile-menu dialog. Charge retains its registration dialog, contacts, floor colors and Lenis controls. Scotland Yard links to existing case facts. Catalyst retains its intro, maze controls and ordinary registration page; navigation pauses gameplay, and pointer/canvas coordinates account for the header height. Anchored sections leave room below the fixed header.
+
+## Shared registration website
+
+The organizer-provided `https://feisteval-2026.vercel.app` is stored in `frontend/data/registration.ts`. Homepage desktop/mobile registration and Golden Tickets, all five event headers, event hero registration buttons, and Charge/Catalyst/Clutch/Concrete registration panels now link there in a new tab. Active Tally embeds, placeholder links and registration-pending panels are replaced. Event rules, artwork, backend reads and Catalyst game controls remain in place. Build/TypeScript, scoped lint, six-route document/anchor checks and registration link checks passed; 19 external registration links were verified in rendered HTML. Registration submission on the external website was not tested.
+
+## Larger central hero
+
+The FeISTEval heading and central carnival illustration are enlarged to fill the entrance. Desktop title sizing now responds to both width and viewport height and caps at 11rem; artwork caps at 460px. Phone/tablet sizes grow within the available content width. Introductory text is slightly larger on desktop. Yellow ISTE lettering, gate motion, registration links and programme-strip flow remain in place.
+
+## Published dates and automatic event cards
+
+Added the complete 11–16 October 2026 programme from the latest supplied text. All chamber cards, event pages and the calendar use a shared IST schedule. The homepage current card is live only inside a published session; the upcoming card selects the next session, including later rounds of the same event. Breaks, overnight gaps and festival completion have explicit states. Concrete moves to 12 October at 6:30 PM; Clutch's countdown starts at 6:30 PM rather than midnight. Charge uses its detailed 6–8 PM / 9–11 PM slots instead of the conflicting shared 6:30–8:30 PM slot, pending organizer clarification. Gameplay, registration URLs, chamber ordering and connector masks remain in place.
+
+Validation: seven schedule-boundary tests, production build/TypeScript, lint for all schedule changes, six-route/document/anchor checks, 43 linked assets, rendered date/timing checks on all five event pages, registration-link checks and original chamber/sample-score comparisons passed. The temporary plan was removed. Browser visual checks remain unavailable in this session.
+
 ## Validation
 
+For the artwork/navigation follow-up, production build and TypeScript passed, lint passed for every modified component, all six routes and 43 linked assets passed HTTP/document/anchor checks, and all five shared event headers/menu actions were confirmed in server-rendered HTML. The six original chambers and example scores remain unchanged. The temporary plan was removed. Browser visual and interaction checks remain unavailable.
+
 Production build including TypeScript, scoped festival/homepage lint, six page-route HTTP/document/anchor checks, 42 linked asset checks, original chamber/order/theme/description and sample-score comparisons passed. The single-number rollback check passed. The preview browser is unavailable in this session, so visual appearance, interaction timing and measured scroll performance remain unverified. The temporary implementation plan was removed. These checks describe local validation before staging publication.
+
+## Staging verification follow-up
+
+Added the shared registration button above the journey-start marker reached by Enter Carnival. Full frontend lint now passes with zero errors and warnings after correcting the remaining legacy countdown, ref prop types, unused declarations and locker sound calculation. Root npm scripts now delegate to the real frontend and backend rather than the unused root Next scaffold.
+
+Validation: root `npm run build` compiles both applications including TypeScript; `npm run lint` and all seven `npm test` schedule tests pass. All six page routes, 43 linked assets, published dates/timings, 20 registration links and the new journey CTA passed rendered HTTP checks. Live database operations and external registration submissions were not tested. Browser visual checks remain unavailable. Temporary implementation plans and excluded attachments are removed before publication.

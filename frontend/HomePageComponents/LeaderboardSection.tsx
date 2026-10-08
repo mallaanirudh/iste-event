@@ -133,7 +133,7 @@ export default function LeaderboardSection() {
         if (!res.ok) throw new Error("API not found or failed");
         const json = await res.json();
         setData(json);
-      } catch (err) {
+      } catch {
         console.warn("Using fallback mock data for leaderboard.");
         setError(true);
         setData(MOCK_DATA);

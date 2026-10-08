@@ -2,25 +2,39 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import TallyEmbed, { isValidTallyFormId } from "@/components/TallyEmbed";
+import { ArrowUpRight } from "lucide-react";
+import { REGISTRATION_URL } from "@/data/registration";
 import { EVENT } from "../_data/content";
 import { gsap, MQ, useGSAP } from "../_lib/gsap";
 import s from "./ticket.module.css";
 
-export type RegistrationWindow = { state: "open" | "upcoming" | "closed"; label: string } | null;
+export type RegistrationWindow = {
+  state: "open" | "upcoming" | "closed";
+  label: string;
+} | null;
 
-/** What shows in the form panel until a Tally form ID is configured. The stub already carries the date and venue. */
-function Fallback({ closed }: { closed: boolean }) {
+/** Event details remain on the ticket; registration takes place on the shared website. */
+function RegistrationLink() {
   return (
     <div className={s.soon}>
-      <p className={s.soonTitle}>{closed ? "Registration has closed." : "The registration form will appear here shortly."}</p>
-      <p className={s.soonText}>For any questions, please call a point of contact listed on this page.</p>
+      <p className={s.soonTitle}>Your FeISTEval ticket</p>
+      <p className={s.soonText}>
+        Enter your team details on the FeISTEval registration website.
+      </p>
+      <a
+        href={REGISTRATION_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={s.registrationLink}
+      >
+        Open Registration <ArrowUpRight size={18} aria-hidden="true" />
+      </a>
     </div>
   );
 }
 
 /**
- * The golden ticket: a gold stub and a white form panel holding the Tally embed.
+ * The golden ticket: a gold stub and a panel linking to shared registration.
  * `inline` lives on the ground floor; `dialog` is the compact version in the register dialog.
  */
 export function Ticket({
@@ -34,8 +48,6 @@ export function Ticket({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const closed = registration?.state === "closed";
-  // Without a form the fallback states "closed" itself, so the date line would repeat it.
-  const hasForm = isValidTallyFormId(process.env.NEXT_PUBLIC_TALLY_FORM_ID?.trim());
 
   useGSAP(
     () => {
@@ -61,7 +73,10 @@ export function Ticket({
   );
 
   return (
-    <div ref={ref} className={`${s.ticket} ${variant === "dialog" ? s.dialogTicket : s.inlineTicket}`}>
+    <div
+      ref={ref}
+      className={`${s.ticket} ${variant === "dialog" ? s.dialogTicket : s.inlineTicket}`}
+    >
       <div className={s.stub}>
         <span className={s.shine} data-shine="" aria-hidden="true" />
         <div className={s.stubText}>
@@ -91,18 +106,12 @@ export function Ticket({
       </div>
 
       <div className={s.form} data-no-cursor="">
-        {registration && !(closed && !hasForm) ? (
-          <p className={`${s.window} ${closed ? s.windowClosed : ""}`}>{registration.label}</p>
+        {registration ? (
+          <p className={`${s.window} ${closed ? s.windowClosed : ""}`}>
+            {registration.label}
+          </p>
         ) : null}
-        {showForm ? (
-          <TallyEmbed
-            formId={process.env.NEXT_PUBLIC_TALLY_FORM_ID}
-            title="Register for Power the Beacon"
-            minHeight={variant === "dialog" ? 440 : 480}
-            className={s.tally}
-            fallback={<Fallback closed={closed} />}
-          />
-        ) : null}
+        {showForm ? <RegistrationLink /> : null}
       </div>
     </div>
   );

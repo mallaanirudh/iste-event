@@ -6,7 +6,7 @@ export function ChamberScene({ chamber }: { chamber: Chamber }) {
   return (
     <svg
       viewBox="0 0 320 180"
-      className="festival-chamber-art h-32 w-full"
+      className="festival-chamber-art block h-32 w-full max-w-full overflow-hidden"
       fill="none"
       aria-hidden="true"
       style={{ color: chamber.color }}

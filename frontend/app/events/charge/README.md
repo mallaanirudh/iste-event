@@ -9,7 +9,7 @@ leaderboards come from the backend.
 | --- | --- | --- |
 | `API_BASE_URL` | Server only | Backend origin, e.g. `https://api.example.org`. The client adds `/api/v1`. Unset or unreachable means the page shows its fallback rounds and an "offline" scoreboard. |
 | `CHARGE_EVENT_ID` | Server only, optional | Backend event UUID. Use it if the name lookup below ever picks the wrong event. |
-| `NEXT_PUBLIC_TALLY_FORM_ID` | Inlined at build time | Tally form ID for the registration ticket. Rebuild after changing it. Without it the ticket shows a "form will appear here shortly" panel. |
+| `data/registration.ts` | Frontend source | Shared FeISTEval registration website. The hero, navbar and ticket link directly to it; a Tally form ID is not required. |
 | `SITE_URL` | Build/server, optional | Public origin of the deployed site, e.g. `https://squareone.example.org`. Makes link-preview (`og:image`) URLs absolute. Vercel detects it automatically. |
 
 All four are listed in `frontend/.env.example`.

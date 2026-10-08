@@ -5,7 +5,12 @@ import {
   MapPin,
 } from "lucide-react";
 import { Countdown } from "@/ConcretClutchComponents/countdown";
-import { TALLY_FORM_URL } from "@/data/event";
+import { REGISTRATION_URL } from "@/data/registration";
+import {
+  formatEventDate,
+  formatEventTime,
+  getFestivalEvent,
+} from "@/data/festival-schedule";
 
 const STATS = [
   { value: "30", label: "TEAMS TARGET", color: "text-crimson" },
@@ -35,12 +40,15 @@ export function Hero() {
           <span className="inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border-2 border-white/20 bg-asphalt-2/80 px-4 py-2 font-mono text-xs tracking-wider text-white">
             <span className="inline-flex items-center gap-2">
               <CalendarDays className="size-4 text-comic" aria-hidden="true" />
-              TUESDAY, 13TH OCTOBER
+              {formatEventDate(getFestivalEvent("clutch"))}
             </span>
             <span className="hidden text-muted-foreground sm:inline">|</span>
             <span className="inline-flex items-center gap-2">
               <MapPin className="size-4 text-crimson" aria-hidden="true" />
               LHC A (2 ROOMS)
+            </span>
+            <span className="basis-full text-comic">
+              {formatEventTime(getFestivalEvent("clutch"))}
             </span>
           </span>
         </div>
@@ -90,7 +98,7 @@ export function Hero() {
         <div className="grid items-end gap-8 lg:grid-cols-[1.2fr_1fr]">
           <Countdown />
           <a
-            href={TALLY_FORM_URL}
+            href={REGISTRATION_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="group skew-badge comic-shadow flex min-w-0 items-center justify-center border-[3px] border-black bg-crimson px-4 py-5 text-center transition-transform hover:-translate-y-1 active:translate-y-0 sm:px-6"

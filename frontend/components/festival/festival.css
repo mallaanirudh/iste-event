@@ -368,6 +368,7 @@ html:has(.festival-mobile-menu[open]) {
 .festival-entrance-copy {
   position: relative;
   z-index: 2;
+  max-width: 100%;
 }
 .festival-entrance-label {
   margin-bottom: 20px;
@@ -378,7 +379,7 @@ html:has(.festival-mobile-menu[open]) {
 }
 .festival-entrance .festival-title {
   margin-bottom: 18px;
-  font-size: clamp(3.2rem, 12vw, 6rem);
+  font-size: clamp(3.2rem, 14vw, 7.25rem);
   line-height: 1.12;
   white-space: nowrap;
 }
@@ -407,7 +408,7 @@ html:has(.festival-mobile-menu[open]) {
 .festival-entrance-art {
   position: relative;
   z-index: 1;
-  width: min(100%, 320px);
+  width: min(100%, 420px);
   margin-top: 10px;
 }
 .festival-entrance-gate {
@@ -687,16 +688,17 @@ html:has(.festival) {
   }
   .festival-entrance .festival-title {
     margin-bottom: 14px;
-    font-size: clamp(4.5rem, min(8.5vw, 13svh), 8.2rem);
+    font-size: clamp(5.5rem, min(11.5vw, 16svh), 11rem);
   }
   .festival-entrance-intro {
-    font-size: 17px;
+    max-width: 520px;
+    font-size: 18px;
   }
   .festival-entrance-gate {
     display: block;
   }
   .festival-entrance-art {
-    width: clamp(200px, 33svh, 320px);
+    width: min(100%, clamp(280px, min(40vw, 42svh), 460px));
     margin-top: 4px;
   }
   .festival-ticket-button {

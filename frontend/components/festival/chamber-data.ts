@@ -1,7 +1,4 @@
-import {
-  EVENT as chargeEvent,
-  START_ISO,
-} from "@/app/events/charge/_data/content";
+import { EVENT as chargeEvent } from "@/app/events/charge/_data/content";
 
 export type Chamber = {
   id: string;
@@ -57,7 +54,7 @@ export const chambers: Chamber[] = [
     color: "#b69cff",
     artwork: "maze",
     href: "/events/catalyst",
-    eventName: "LABLOCK",
+    eventName: "LABLOCK: Escape the Lab",
   },
   {
     id: "crypt-sq1",
@@ -70,7 +67,7 @@ export const chambers: Chamber[] = [
     color: "#00e5ff",
     artwork: "terminal",
     href: null,
-    eventName: "Crypt Sq1",
+    eventName: "Trust No Link",
   },
   {
     id: "clutch-sq1",
@@ -99,15 +96,6 @@ export const chambers: Chamber[] = [
     eventName: "Float It for Jack",
   },
 ];
-
-export const featuredChamber = chambers[0];
-export const festivalSchedule = {
-  nextEventName: chargeEvent.name,
-  nextEventStartsAt: START_ISO,
-  nextEventDate: `${chargeEvent.dateLabel} · 6 PM IST`,
-  nextEventDescription: chargeEvent.tagline,
-  nextEventHref: "/events/charge",
-};
 
 // These are the original homepage's fallback examples, not published results.
 export const leaderboard = [

@@ -9,6 +9,9 @@ import { chambers, type Chamber } from "./chamber-data";
 import { ChamberArt } from "./chamber-art";
 import { Reveal } from "./festival-motion";
 import { designRefinements } from "./design-refinements";
+import { festivalEvents } from "@/data/festival-schedule";
+import { REGISTRATION_URL } from "@/data/registration";
+import { EventScheduleDetails } from "@/components/schedule/event-schedule-details";
 
 type Geometry = {
   path: string;
@@ -151,6 +154,15 @@ export function ChamberJourney({
             computing, racing, and nautical engineering. Every chamber has a
             different world to explore.
           </p>
+          <a
+            href={REGISTRATION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="festival-button mt-6 inline-flex min-h-11 max-w-full items-center justify-center gap-2 border-2 border-[#140a24] bg-[#ffd700] px-6 py-3 text-sm font-extrabold text-[#241037] shadow-[3px_3px_0_#140a24]"
+          >
+            Register for FeISTEval
+            <ArrowUpRight size={18} aria-hidden="true" />
+          </a>
         </div>
       </Reveal>
       <div ref={networkRef} className="festival-network relative pt-36">
@@ -286,6 +298,14 @@ export function ChamberJourney({
                       <p className="festival-chamber-discipline mb-2 text-[10px] font-bold text-[#c4acd9]">
                         {chamber.discipline}
                       </p>
+                      <EventScheduleDetails
+                        eventId={
+                          festivalEvents.find(
+                            (event) => event.chamberId === chamber.id,
+                          )!.id
+                        }
+                        className="mb-4 text-xs font-semibold leading-relaxed text-[#e9cb80]"
+                      />
                       <p className="festival-description mt-3 text-sm font-medium leading-relaxed text-[#d5c0e4]">
                         {chamber.description}
                       </p>

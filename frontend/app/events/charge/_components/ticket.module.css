@@ -19,11 +19,15 @@
   color: var(--cocoa);
   border-bottom: 3px dashed rgb(26 17 14 / 0.35);
   -webkit-mask:
-    radial-gradient(circle at 0 100%, #0000 13px, #000 13.5px) left / 51% 100% no-repeat,
-    radial-gradient(circle at 100% 100%, #0000 13px, #000 13.5px) right / 51% 100% no-repeat;
+    radial-gradient(circle at 0 100%, #0000 13px, #000 13.5px) left / 51% 100%
+      no-repeat,
+    radial-gradient(circle at 100% 100%, #0000 13px, #000 13.5px) right / 51%
+      100% no-repeat;
   mask:
-    radial-gradient(circle at 0 100%, #0000 13px, #000 13.5px) left / 51% 100% no-repeat,
-    radial-gradient(circle at 100% 100%, #0000 13px, #000 13.5px) right / 51% 100% no-repeat;
+    radial-gradient(circle at 0 100%, #0000 13px, #000 13.5px) left / 51% 100%
+      no-repeat,
+    radial-gradient(circle at 100% 100%, #0000 13px, #000 13.5px) right / 51%
+      100% no-repeat;
 }
 
 @media (min-width: 900px) {
@@ -40,11 +44,15 @@
     border-bottom: 0;
     border-right: 3px dashed rgb(26 17 14 / 0.35);
     -webkit-mask:
-      radial-gradient(circle at 100% 0, #0000 14px, #000 14.5px) top / 100% 51% no-repeat,
-      radial-gradient(circle at 100% 100%, #0000 14px, #000 14.5px) bottom / 100% 51% no-repeat;
+      radial-gradient(circle at 100% 0, #0000 14px, #000 14.5px) top / 100% 51%
+        no-repeat,
+      radial-gradient(circle at 100% 100%, #0000 14px, #000 14.5px) bottom /
+        100% 51% no-repeat;
     mask:
-      radial-gradient(circle at 100% 0, #0000 14px, #000 14.5px) top / 100% 51% no-repeat,
-      radial-gradient(circle at 100% 100%, #0000 14px, #000 14.5px) bottom / 100% 51% no-repeat;
+      radial-gradient(circle at 100% 0, #0000 14px, #000 14.5px) top / 100% 51%
+        no-repeat,
+      radial-gradient(circle at 100% 100%, #0000 14px, #000 14.5px) bottom /
+        100% 51% no-repeat;
   }
 }
 
@@ -54,7 +62,12 @@
   bottom: -20%;
   left: 0;
   width: 30%;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.55),
+    transparent
+  );
   transform: translateX(-120%) skewX(-18deg);
   pointer-events: none;
 }
@@ -185,8 +198,22 @@
   color: var(--hammer);
 }
 
-.tally {
-  width: 100%;
+.registrationLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  gap: 10px;
+  min-height: 44px;
+  margin-top: 22px;
+  padding: 12px 18px;
+  border: 2px solid var(--cocoa);
+  border-radius: 4px;
+  background: var(--enig);
+  color: var(--cocoa);
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .soon {

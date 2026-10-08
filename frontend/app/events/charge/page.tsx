@@ -13,7 +13,6 @@ import { Footer } from "./_components/Footer";
 import { Ground } from "./_components/Ground";
 import { type Board } from "./_components/Leaderboard";
 import { Nav } from "./_components/Nav";
-import { RegisterDialog } from "./_components/RegisterDialog";
 import { Roof } from "./_components/Roof";
 import type { RegistrationWindow } from "./_components/Ticket";
 import { Slab, Tower } from "./_components/Tower";
@@ -140,7 +139,6 @@ export default async function ChargePage() {
         <Slab foundation />
       </Tower>
       <Footer />
-      <RegisterDialog registration={registration} />
     </ChargeRoot>
   );
 }

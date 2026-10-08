@@ -172,10 +172,10 @@ export default function Intro({
   };
 
   useEffect(() => {
-    place(window.innerWidth * 0.14, window.innerHeight * 0.72);
+    place((root.current?.clientWidth ?? window.innerWidth) * 0.14, (root.current?.clientHeight ?? window.innerHeight) * 0.72);
     const resize = () => place(
-      Math.max(16, Math.min(G.current.x, window.innerWidth - 16)),
-      Math.max(16, Math.min(G.current.y, window.innerHeight - 16)),
+      Math.max(16, Math.min(G.current.x, (root.current?.clientWidth ?? window.innerWidth) - 16)),
+      Math.max(16, Math.min(G.current.y, (root.current?.clientHeight ?? window.innerHeight) - 16)),
     );
     window.addEventListener("resize", resize);
     return () => {
@@ -189,7 +189,7 @@ export default function Intro({
 
   // When the briefing board closes, the arrow goes back to the door instead of jumping to the button.
   useEffect(() => {
-    if (!paused) place(window.innerWidth * 0.14, window.innerHeight * 0.72);
+    if (!paused) place((root.current?.clientWidth ?? window.innerWidth) * 0.14, (root.current?.clientHeight ?? window.innerHeight) * 0.72);
   }, [paused]);
 
   // ---- the pour: tank drains, flask fills with drops that land in it ----
@@ -243,8 +243,9 @@ export default function Intro({
 
   // ---- actions ----
   const move = (e: React.PointerEvent) => {
-    G.current.x = e.clientX;
-    G.current.y = e.clientY;
+    const bounds = root.current?.getBoundingClientRect();
+    G.current.x = e.clientX - (bounds?.left ?? 0);
+    G.current.y = e.clientY - (bounds?.top ?? 0);
     if (!mv.current)
       mv.current = requestAnimationFrame(() => {
         mv.current = 0;

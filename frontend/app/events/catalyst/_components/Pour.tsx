@@ -20,7 +20,7 @@ type Ring = { x: number; t: number };
 export default function Pour({ logo, catcher, bulb = { x: 0.36, y: 0.5 }, floor = 0.86, active, catching, flow, rate = 110, onCatch, debug }: Props) {
   const cv = useRef<HTMLCanvasElement>(null);
   const live = useRef({ active, catching, flow, onCatch });
-  live.current = { active, catching, flow, onCatch };
+  useEffect(() => { live.current = { active, catching, flow, onCatch }; }, [active, catching, flow, onCatch]);
 
   useEffect(() => {
     const c = cv.current, ctx = c?.getContext("2d");
@@ -29,7 +29,7 @@ export default function Pour({ logo, catcher, bulb = { x: 0.36, y: 0.5 }, floor 
     let w = 0, h = 0;
     const fit = () => {
       const dpr = Math.min(2, window.devicePixelRatio || 1);
-      w = window.innerWidth; h = window.innerHeight;
+      w = c.clientWidth; h = c.clientHeight;
       c.width = w * dpr; c.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
@@ -65,9 +65,10 @@ export default function Pour({ logo, catcher, bulb = { x: 0.36, y: 0.5 }, floor 
       }
       wasIdle = false;
 
+      const bounds = c.getBoundingClientRect();
       const lr = logo.current?.getBoundingClientRect();
-      const sx = lr ? lr.left + lr.width * bulb.x : w / 2;
-      const sy = lr ? lr.top + lr.height * bulb.y : h / 3;
+      const sx = lr ? lr.left - bounds.left + lr.width * bulb.x : w / 2;
+      const sy = lr ? lr.top - bounds.top + lr.height * bulb.y : h / 3;
       const fy = h * floor;
       const cr = L.catching ? catcher.current?.getBoundingClientRect() : undefined;
 
@@ -108,7 +109,7 @@ export default function Pour({ logo, catcher, bulb = { x: 0.36, y: 0.5 }, floor 
         d.vy += G * dt; d.x += d.vx * dt; d.y += d.vy * dt;
 
         // Landed in the flask's mouth.
-        if (cr && !d.s && d.y > cr.top + cr.height * 0.1 && d.y < cr.top + cr.height * 0.7 && d.x > cr.left + cr.width * 0.2 && d.x < cr.right - cr.width * 0.2) {
+        if (cr && !d.s && d.y > cr.top - bounds.top + cr.height * 0.1 && d.y < cr.top - bounds.top + cr.height * 0.7 && d.x > cr.left - bounds.left + cr.width * 0.2 && d.x < cr.right - bounds.left - cr.width * 0.2) {
           drops.splice(i, 1);
           L.onCatch();
           continue;

@@ -6,7 +6,7 @@ Reviewed and updated on 8 October 2026. These notes describe the current impleme
 
 - `frontend/` is the actual Next.js App Router app: Next 16.3.8, React 19.2.8, TypeScript, Tailwind 4, GSAP, Framer Motion, and Lenis. Its `@/*` alias resolves inside `frontend/`.
 - `backend/` is a Fastify 5 TypeScript ESM API using PostgreSQL through Drizzle ORM. `index.ts` registers the route plugins. Imports use `.js` extensions for compiled Node output.
-- The root also has a separate package manifest, two Next configs, lockfiles, and public assets, but no root `app/` directory. Run the actual applications from their respective directories.
+- The root also has legacy Next configs, lockfiles, dependencies, and public assets, but no root `app/` directory. Root npm scripts delegate to the actual applications: build compiles both, lint checks the frontend, test runs schedule tests, and dev/start serve the frontend.
 - `frontend/AGENTS.md` requires consulting the installed Next documentation at `frontend/node_modules/next/dist/docs/` before frontend code changes.
 - User workflow requirement: implementation-plan files are temporary and must all be deleted after changes and before any push. The plan for this homepage was removed after validation. Push only when the user requests it.
 - Dependencies were installed in both application directories. The frontend now declares its previously missing shared UI dependencies and uses the matching Next 16 ESLint configuration.
@@ -33,6 +33,20 @@ The backend listens on port 3000 unconditionally in `index.ts`; the validated `P
 | `/events/scotland-yard` | `app/events/scotland-yard/` | Illustrated mystery building, hidden clues, Caesar cipher wheel, torch mode, static agenda |
 | `/events/clutch` | `app/events/clutch/`, `ConcretClutchComponents/` | Magnetic Grand Prix racing page |
 | `/events/concrete` | `app/events/concrete/`, `ConcretClutchComponents/titanic/` | Titanic: Float It for Jack; existing nautical kit, three rounds, mini-game wheel, registration-pending state, manifest leaderboard, original sketch asset |
+
+### Published festival schedule
+
+The latest user-supplied text brief supersedes the old placeholder dates. `frontend/data/festival-schedule.ts` stores Scotland Yard's three 11 October rounds, Concrete on 12 October, Clutch on 13 October, Charge on 14 October, Crypt on 15 October and Catalyst on 16 October. Square One uses 6:30–8:30 PM except Charge's specific 6–8 PM and 9–11 PM windows. This Charge precedence is an explicit working assumption pending the user's timing clarification. No per-round absolute times were invented for the other SIGs.
+
+`components/festival/festival-events.tsx` derives the current and next session each second from a visible-tab clock. Breaks/overnight gaps are not live, exact end times advance the selection, and completion appears only after the final session ends. `festival-calendar.tsx` and `components/schedule/event-schedule-details.tsx` render all dates/times in IST, including Crypt's preview. Scotland Yard's provisional agenda is replaced with the supplied rounds. Concrete's previous 24 October/morning date and Clutch's midnight countdown are corrected. Charge, Concrete and Clutch distinguish an active session from its completion; Catalyst's board/plain page show the shared timing. Seven tests in `frontend/tests/festival-schedule.test.mjs` cover boundaries, gaps, next-day selection, completion, UTC equivalence and non-negative countdowns.
+
+### Registration website
+
+All active homepage tickets and five event registration actions use the organizer-supplied `https://feisteval-2026.vercel.app`, defined once in `frontend/data/registration.ts`. Links open in a new tab. Charge and Catalyst ticket panels retain their themed artwork and link to that website instead of loading a Tally iframe; Concrete's form is enabled and Clutch's placeholder links are replaced. Charge's old registration dialog is no longer mounted. Existing event rules and schedules are retained; registration submission and storage belong to the external website. Legacy unused Tally components remain outside the active page flows.
+
+### Shared event navigation
+
+`components/navigation/event-navbar.tsx` and its scoped CSS module provide the same fixed-header structure and native mobile dialog on all five event routes. Each route supplies its real section links, return-to-chamber URL, theme colors and primary action. Charge retains floor color inheritance, Lenis pause/resume, contacts and its native registration dialog. Catalyst renders navigation in every phase, pauses gameplay while its menu is open, and sizes the game/canvas beneath the header. Scotland Yard's action opens case facts; no new registration endpoint is implied. The homepage keeps its existing numbered navbar refinement.
 
 ### Homepage components
 

@@ -1,6 +1,6 @@
 import { ArrowUpRight, CheckSquare, Crown, UserRound } from 'lucide-react'
 import { SectionHeading } from '@/ConcretClutchComponents/section-heading'
-import { TALLY_FORM_URL } from '@/data/event'
+import { REGISTRATION_URL } from '@/data/registration'
 
 const GROUPS = [
   {
@@ -57,13 +57,13 @@ export function Registration() {
             {'ALL FIELDS COMPULSORY // USE YOUR COLLEGE .EDU EMAIL'}
           </p>
           <a
-            href={TALLY_FORM_URL}
+            href={REGISTRATION_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="skew-badge comic-shadow-sm inline-flex border-2 border-black bg-crimson px-5 py-3 transition-transform hover:-translate-y-0.5"
           >
             <span className="unskew flex items-center gap-2 font-display text-sm text-white">
-              OPEN TALLY FORM <ArrowUpRight className="size-4" aria-hidden="true" />
+              OPEN REGISTRATION <ArrowUpRight className="size-4" aria-hidden="true" />
             </span>
           </a>
         </div>

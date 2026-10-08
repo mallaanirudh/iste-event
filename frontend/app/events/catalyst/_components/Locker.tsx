@@ -31,7 +31,7 @@ export default function Locker({ code, onOpen }: { code: string; onOpen: () => v
     if (state === "good") return;
     setDir((p) => p.map((v, j) => (j === i ? by : v)));
     setDig((p) => p.map((v, j) => (j === i ? (v + by + 10) % 10 : v)));
-    sfx(380 + Math.random() * 80, 40);
+    sfx(380 + ((i * 17 + ((dig[i] + by + 10) % 10) * 7) % 80), 40);
   };
 
   const onKey = (i: number, e: React.KeyboardEvent) => {

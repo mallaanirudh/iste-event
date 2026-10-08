@@ -40,15 +40,6 @@
   letter-spacing: 0.08em;
 }
 @media (max-width: 479px) {
-  .concrete-voyage nav > div {
-    width: 100%;
-    column-gap: 16px;
-    row-gap: 0;
-  }
-  .concrete-voyage nav > div > span {
-    width: 100%;
-    padding-block: 8px;
-  }
   .concrete-voyage .wood-grain {
     padding-inline: 20px;
   }
@@ -153,8 +144,8 @@
   outline: 3px solid var(--ocean);
   outline-offset: 5px;
 }
-.concrete-voyage :where(section, footer)[id] {
-  scroll-margin-top: 24px;
+.concrete-voyage :where(main, section, footer, h2, div)[id] {
+  scroll-margin-top: 105px;
 }
 html:has(.concrete-voyage) {
   scroll-behavior: smooth;

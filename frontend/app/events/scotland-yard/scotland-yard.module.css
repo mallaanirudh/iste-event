@@ -48,6 +48,7 @@
 .root :global(.sr-only) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .root :global(a) { color: inherit; }
 .root :global(svg) { display: block; }
+.root :global([id]) { scroll-margin-top: 105px; }
 .root :global(header.masthead) {
     text-align: center;
     padding: 48px 16px 8px;
@@ -340,7 +341,7 @@
 .root :global(.tag:focus-visible) { outline: 3px solid var(--gold); outline-offset: -6px; }
 .root :global(section.casefile) {
     max-width: 920px; margin: 80px auto 0; padding: 0 16px;
-    scroll-margin-top: 24px;
+    scroll-margin-top: 105px;
   }
 .root :global(.folder) { position: relative; padding-top: 34px; }
 .root :global(.folder .tab) {
@@ -387,7 +388,7 @@
     content: ""; position: absolute; left: 80px; top: 18px; width: 14px; height: 14px; border-radius: 50%;
     background: var(--rust); box-shadow: 0 0 0 3px var(--manila);
   }
-.root :global(.time) { font-family: var(--type); font-size: 15px; text-align: right; padding-top: 2px; }
+.root :global(.time) { min-width: 0; overflow-wrap: anywhere; font-family: var(--type); font-size: 13px; line-height: 1.5; text-align: right; padding-top: 2px; }
 .root :global(.what b) { display: block; font-family: var(--serif-sc); font-weight: 400; font-size: 19px; letter-spacing: .05em; }
 .root :global(.what span) { font-size: 15px; color: var(--ink-soft); }
 .root :global(.fine) { font-family: var(--type); font-size: 12px; margin: 22px 0 0; opacity: .75; }
@@ -677,11 +678,12 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .root :global(ol.timeline li) {
-    grid-template-columns: 46px minmax(0, 1fr);
-    gap: 22px;
+    display: block;
+    padding-left: 24px;
   }
-  .root :global(ol.timeline::before) { left: 56px; }
-  .root :global(ol.timeline li::before) { left: 50px; }
+  .root :global(ol.timeline .time) { display: block; padding-bottom: 6px; text-align: left; }
+  .root :global(ol.timeline::before) { left: 5px; }
+  .root :global(ol.timeline li::before) { left: -1px; }
   .root :global(.torch-btn) {
     bottom: calc(96px + env(safe-area-inset-bottom));
   }

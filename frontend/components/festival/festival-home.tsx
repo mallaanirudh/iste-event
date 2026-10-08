@@ -2,13 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { REGISTRATION_URL } from "@/data/registration";
 import {
   ArrowDown,
   ArrowRight,
   ArrowUpRight,
-  CalendarDays,
   Camera as Instagram,
-  Clock3,
   Globe2,
   Search,
   Sparkles,
@@ -21,17 +20,15 @@ import { CarnivalArt } from "./carnival-art";
 import { ChamberJourney } from "./chamber-journey";
 import { Reveal } from "./festival-motion";
 import { FestivalNavbar } from "./festival-navbar";
+import { FestivalEventCards } from "./festival-events";
+import { FestivalCalendar } from "./festival-calendar";
 import { FestivalHero } from "./festival-hero";
 import { designRefinements, enabledRefinementIds } from "./design-refinements";
 import { FestivalScoreboard } from "./festival-scoreboard";
 import { FestivalFooter } from "./festival-footer";
-import {
-  chambers,
-  featuredChamber,
-  festivalSchedule,
-  leaderboard,
-  type Chamber,
-} from "./chamber-data";
+import { festivalEvents } from "@/data/festival-schedule";
+import { EventScheduleDetails } from "@/components/schedule/event-schedule-details";
+import { chambers, leaderboard, type Chamber } from "./chamber-data";
 import "./festival.css";
 import "./festival-refinements.css";
 
@@ -39,7 +36,7 @@ const buttonClass =
   "festival-button inline-flex min-h-12 items-center justify-center gap-3 rounded-sm border-2 border-[#160b26] px-6 py-3 font-black transition duration-200 active:translate-x-1 active:translate-y-1 active:scale-[.98]";
 const cardClass =
   "festival-card festival-noticeboard relative rounded-sm border-2 bg-[#28163e] p-6 sm:p-8";
-type Modal = "leaderboard" | "join" | "events" | "chamber" | null;
+type Modal = "leaderboard" | "events" | "chamber" | null;
 
 function Linkedin({ size }: { size: number }) {
   return (
@@ -53,56 +50,6 @@ function Linkedin({ size }: { size: number }) {
       <circle cx="4.5" cy="4.5" r="2" />
       <path d="M3 8h3v13H3Zm6 0h3v1.8C13 8.3 14.3 8 16 8c3.5 0 5 2.1 5 5.5V21h-3v-7c0-2-.6-3-2.3-3-1.8 0-3.7 1-3.7 3v7H9Z" />
     </svg>
-  );
-}
-
-function Countdown() {
-  const [remaining, setRemaining] = useState<number | null>(null);
-  useEffect(() => {
-    const update = () =>
-      setRemaining(
-        Math.max(
-          0,
-          Date.parse(festivalSchedule.nextEventStartsAt) - Date.now(),
-        ),
-      );
-    const timer = window.setInterval(update, 1000);
-    return () => window.clearInterval(timer);
-  }, []);
-  const seconds = remaining === null ? null : Math.floor(remaining / 1000);
-  const values =
-    seconds === null
-      ? [null, null, null, null]
-      : [
-          Math.floor(seconds / 86400),
-          Math.floor(seconds / 3600) % 24,
-          Math.floor(seconds / 60) % 60,
-          seconds % 60,
-        ];
-  return (
-    <>
-      <div
-        className="mt-5 grid max-w-sm grid-cols-4 gap-2"
-        role="timer"
-        aria-label={`Time until ${festivalSchedule.nextEventName}`}
-      >
-        {values.map((value, index) => (
-          <div key={index} className="text-center">
-            <div className="festival-countdown-cell festival-heading rounded-lg border-2 border-[#00e5ff]/40 bg-[#1c0d30] py-2 text-3xl tracking-[.08em] text-[#00e5ff] sm:text-4xl">
-              {value === null ? "--" : String(value).padStart(2, "0")}
-            </div>
-            <div className="mt-2 text-[9px] font-black tracking-[.16em] text-[#c4acd9]">
-              {["DAYS", "HOURS", "MINS", "SECS"][index]}
-            </div>
-          </div>
-        ))}
-      </div>
-      {remaining === 0 && (
-        <p className="mt-3 text-sm text-[#00e5ff]">
-          The scheduled start time has arrived. Stay tuned for event updates.
-        </p>
-      )}
-    </>
   );
 }
 
@@ -189,11 +136,6 @@ export default function FestivalHome() {
   const [selectedChamber, setSelectedChamber] = useState<Chamber>(chambers[3]);
   const [query, setQuery] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const formId = process.env.NEXT_PUBLIC_FEISTEVAL_TALLY_FORM_ID;
-  const registrationUrl =
-    formId && /^[a-zA-Z0-9]+$/.test(formId)
-      ? `https://tally.so/r/${formId}`
-      : null;
   useEffect(() => {
     const dialog = dialogRef.current;
     if (modal && dialog && !dialog.open) dialog.showModal();
@@ -258,88 +200,7 @@ export default function FestivalHome() {
             </div>
           </Reveal>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:grid-rows-[auto_auto]">
-            <Reveal className="h-full md:col-start-1 md:row-start-1">
-              <article className={`${cardClass} h-full border-[#b68a40]`}>
-                <Search
-                  className="pointer-events-none absolute -right-3 top-10 h-32 w-32 -rotate-12 text-[#ff007f]/10"
-                  strokeWidth={1}
-                  aria-hidden="true"
-                />
-                <div className="mb-5 flex items-center justify-between gap-3">
-                  <span className="festival-card-label flex items-center gap-2 text-[10px] font-black tracking-[.16em] text-[#ff79bc]">
-                    <span className="h-2 w-2 rounded-full bg-[#ff74b8]" />{" "}
-                    {designRefinements[7]
-                      ? "Featured chamber"
-                      : "FEATURED CHAMBER"}
-                  </span>
-                  {!designRefinements[7] && (
-                    <span className="border border-[#b68a40]/40 px-2 py-1 text-[9px] font-bold text-[#c4acd9]">
-                      MYSTERY
-                    </span>
-                  )}
-                </div>
-                <div className="relative">
-                  {!designRefinements[7] && (
-                    <p className="mb-1 text-[10px] font-black tracking-widest text-[#c4acd9]">
-                      INVESTIGATION & TEAMWORK
-                    </p>
-                  )}
-                  <h3 className="festival-heading text-[2rem] tracking-wide sm:text-4xl">
-                    {featuredChamber.title}
-                  </h3>
-                  <p className="festival-description mt-3 max-w-[350px] text-sm font-semibold leading-relaxed text-[#cfb9e0]">
-                    {featuredChamber.description}
-                  </p>
-                  <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-                    <span className="inline-flex items-center gap-2 text-xs font-bold text-[#c4acd9]">
-                      <Search size={15} className="text-[#ff74b8]" /> Follow the
-                      clues
-                    </span>
-                    <Link
-                      href="/events/scotland-yard"
-                      prefetch={false}
-                      className={`${buttonClass} festival-featured-button bg-[#ff007f] px-4 py-2 text-xs text-white shadow-[3px_3px_0_#140a24]`}
-                    >
-                      Inspect Chamber <ArrowUpRight size={16} />
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            </Reveal>
-            <Reveal
-              delay={100}
-              className="h-full md:col-start-1 md:row-start-2"
-            >
-              <article className={`${cardClass} h-full border-[#b68a40]`}>
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="festival-card-label inline-flex items-center gap-2 text-[10px] font-black tracking-[.16em] text-[#00e5ff]">
-                    <Clock3 size={14} />{" "}
-                    {designRefinements[7] ? "Upcoming event" : "UPCOMING EVENT"}
-                  </span>
-                  <span className="festival-card-label border border-[#b68a40]/40 px-2 py-1 text-[9px] font-bold text-[#c4acd9]">
-                    {designRefinements[7] ? "SIG: Charge" : "SIG: CHARGE"}
-                  </span>
-                </div>
-                <h3 className="festival-heading text-[1.9rem] tracking-wide sm:text-4xl">
-                  {festivalSchedule.nextEventName}
-                </h3>
-                <p className="festival-description mt-2 text-sm font-semibold text-[#cfb9e0]">
-                  {festivalSchedule.nextEventDescription}
-                </p>
-                <Countdown />
-                <p className="festival-event-date mt-5 flex items-center gap-2 text-[10px] font-extrabold tracking-wider text-[#cfb9e0]">
-                  <CalendarDays size={14} className="shrink-0 text-[#00e5ff]" />{" "}
-                  {festivalSchedule.nextEventDate}
-                </p>
-                <Link
-                  href={festivalSchedule.nextEventHref}
-                  prefetch={false}
-                  className="festival-text-button mt-4 inline-flex min-h-10 items-center gap-2 text-xs font-extrabold text-[#00e5ff]"
-                >
-                  Event details <ArrowUpRight size={15} />
-                </Link>
-              </article>
-            </Reveal>
+            <FestivalEventCards onPreview={openChamber} />
             <Reveal
               delay={150}
               className="h-full md:col-start-2 md:row-span-2 md:row-start-1"
@@ -386,14 +247,12 @@ export default function FestivalHome() {
           </div>
         </section>
 
+        <FestivalCalendar />
         <ChamberJourney onPreview={openChamber} />
       </main>
 
       {designRefinements[10] ? (
-        <FestivalFooter
-          onRegister={() => setModal("join")}
-          onDirectory={() => setModal("events")}
-        />
+        <FestivalFooter onDirectory={() => setModal("events")} />
       ) : (
         <footer className="relative overflow-hidden border-t border-[#b69cff]/15 bg-[#28163e]/60">
           <div
@@ -418,12 +277,14 @@ export default function FestivalHome() {
               <span className="text-[#ffd700]">STAY FOR THE CARNIVAL.</span>
             </h2>
             <div className="mt-6 flex flex-wrap items-center justify-center gap-5">
-              <button
-                onClick={() => setModal("join")}
+              <a
+                href={REGISTRATION_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`${buttonClass} bg-[#ffd700] text-sm text-[#241037] shadow-[4px_4px_0_#140a24]`}
               >
                 <Ticket size={18} /> Your Golden Ticket
-              </button>
+              </a>
               <button
                 onClick={() => setModal("events")}
                 className="inline-flex min-h-12 cursor-pointer items-center gap-2 text-sm font-extrabold text-[#d9c8e9] hover:text-[#ffd700]"
@@ -504,11 +365,9 @@ export default function FestivalHome() {
             >
               {modal === "leaderboard"
                 ? "The Full Leaderboard"
-                : modal === "join"
-                  ? "Your Golden Ticket"
-                  : modal === "chamber"
-                    ? selectedChamber.title
-                    : "The Event Lineup"}
+                : modal === "chamber"
+                  ? selectedChamber.title
+                  : "The Event Lineup"}
             </h2>
           </div>
           <button
@@ -540,51 +399,16 @@ export default function FestivalHome() {
             <RankingRows full query={query} />
           </>
         )}
-        {modal === "join" && (
-          <>
-            <div className="mb-5 rounded-xl border-2 border-[#ff007f]/40 bg-[#ff007f]/5 p-4 text-sm leading-relaxed text-[#d9c8e9]">
-              <p className="font-black text-[#ff83bf]">
-                Six chambers. One FeISTEval.
-              </p>
-              <p className="mt-2">
-                An invitation to inventors, dreamers, and adventurers. Explore
-                every chamber and find the challenge that interests you.
-              </p>
-              <p className="mt-3 text-xs text-[#c4acd9]">
-                Individual events have their own rules, eligibility, and
-                registration. Check the event page before signing up.
-              </p>
-            </div>
-            {registrationUrl ? (
-              <a
-                href={registrationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${buttonClass} w-full bg-[#ffd700] text-[#241037] shadow-[4px_4px_0_#ff007f]`}
-              >
-                Open Registration <ArrowUpRight size={18} />
-              </a>
-            ) : (
-              <div className="rounded-xl border border-[#ffd700]/25 p-4">
-                <p className="font-black text-[#ffd700]">
-                  Registration opens soon
-                </p>
-                <p className="mt-2 text-sm text-[#c4acd9]">
-                  Follow ISTE for the announcement. Until then, take a look at
-                  our event lineup.
-                </p>
-                <button
-                  onClick={() => setModal("events")}
-                  className="mt-4 inline-flex items-center gap-2 font-black text-[#00e5ff]"
-                >
-                  Explore events <ArrowRight size={17} />
-                </button>
-              </div>
-            )}
-          </>
-        )}
         {modal === "chamber" && (
           <>
+            <EventScheduleDetails
+              eventId={
+                festivalEvents.find(
+                  (event) => event.chamberId === selectedChamber.id,
+                )!.id
+              }
+              className="mb-5 text-sm font-semibold leading-relaxed text-[#e9cb80]"
+            />
             <p className="text-base font-semibold leading-relaxed text-[#d9c8e9]">
               {selectedChamber.description}
             </p>
@@ -605,17 +429,16 @@ export default function FestivalHome() {
               )}
             </div>
             <p className="mb-6 text-sm text-[#c4acd9]">
-              This chamber&apos;s event page and registration details will be
-              announced by ISTE. You can explore the other chambers in the
-              meantime.
+              Register through the shared FeISTEval form and check this
+              chamber&apos;s scheduled date and time above.
             </p>
             <a
-              href="https://iste.nitk.ac.in/"
+              href={REGISTRATION_URL}
               target="_blank"
               rel="noopener noreferrer"
               className={`${buttonClass} w-full bg-[#ffd700] text-[#241037] shadow-[4px_4px_0_#ff007f]`}
             >
-              Back to the chambers <ArrowRight size={17} />
+              Open Registration <ArrowUpRight size={17} />
             </a>
           </>
         )}
