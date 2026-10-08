@@ -28,7 +28,7 @@ All motion respects `prefers-reduced-motion`.
 | Variable | Where it is read | Notes |
 | --- | --- | --- |
 | `API_BASE_URL` | Server only | Backend origin, e.g. `https://api.example.org`. The client adds `/api/v1`. Unset or unreachable means the page shows its fallback rounds from `_data/content.ts`. |
-| `NEXT_PUBLIC_REGISTER_URL` | Inlined at build time, optional | Registration form for the Register button under the golden ticket. External links open in a new tab. Unset means the button opens the Square One main page (`/`). |
+| `NEXT_PUBLIC_REGISTER_URL` | Inlined at build time, optional | Registration form for the Register button under the golden ticket. External links open in a new tab. Unset means the button opens FeISTEval 2026 team registration (`https://feisteval-2026.vercel.app`). |
 | `CHARGE_EVENT_ID` | Server only, optional | Backend event UUID. Use it if the name lookup below ever picks the wrong event. |
 | `SITE_URL` | Build/server, optional | Public origin of the deployed site, e.g. `https://squareone.example.org`. Makes link-preview (`og:image`) URLs absolute. Vercel detects it automatically. |
 

@@ -130,10 +130,11 @@ export const WORLD = {
 } as const;
 
 /**
- * Where the Register button under the ticket goes. Set NEXT_PUBLIC_REGISTER_URL to the
- * registration form; until then it opens the Square One main page, where registration lives.
+ * Where the Register button under the ticket goes: FeISTEval 2026 team registration (one
+ * registration covers the whole team for every event). NEXT_PUBLIC_REGISTER_URL overrides it.
  */
-export const REGISTER_URL = process.env.NEXT_PUBLIC_REGISTER_URL?.trim() || "/";
+export const REGISTER_URL =
+  process.env.NEXT_PUBLIC_REGISTER_URL?.trim() || "https://feisteval-2026.vercel.app";
 
 /** Points of contact, as listed in the event brief. `tel` is the dialable form. */
 export const CONTACTS = [
