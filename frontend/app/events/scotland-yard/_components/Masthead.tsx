@@ -1,5 +1,7 @@
-import { css } from "./css";
+import type { CSSProperties } from "react";
 import { EventScheduleDetails } from "@/components/schedule/event-schedule-details";
+
+const css = (styles: Record<string, string>) => styles as CSSProperties;
 
 export default function Masthead() {
   return (

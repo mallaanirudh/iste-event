@@ -1,7 +1,7 @@
-import { Analytics } from "@vercel/analytics/next";
-import type { Metadata, Viewport } from "next";
-import { Dela_Gothic_One, JetBrains_Mono } from "next/font/google";
-import "./clutch.css";
+import { Analytics } from '@vercel/analytics/next'
+import type { Metadata, Viewport } from 'next'
+import { Dela_Gothic_One, JetBrains_Mono } from 'next/font/google'
+import './clutch.css'
 
 const dela = Dela_Gothic_One({
   weight: "400",

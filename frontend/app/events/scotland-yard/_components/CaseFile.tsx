@@ -1,5 +1,5 @@
 import { agenda, eventFacts } from "../content";
-import { css } from "./css";
+import type { CSSProperties } from "react";
 
 /** Agenda styled as a manila case file. */
 export default function CaseFile() {
@@ -27,7 +27,7 @@ export default function CaseFile() {
 
           <ol className="timeline">
             {agenda.map((item, i) => (
-              <li key={item.time} style={css({ "--i": i })}>
+              <li key={item.time} style={{ "--i": i } as CSSProperties}>
                 <span className="time">{item.time}</span>
                 <span className="what">
                   <b>{item.title}</b>
