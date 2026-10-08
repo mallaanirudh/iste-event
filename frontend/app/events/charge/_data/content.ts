@@ -15,7 +15,7 @@ export const EVENT = {
   date: "2026-10-14",
   dateLabel: "Wednesday, 14 October 2026",
   dateShort: "Wed 14 October",
-  timeLabel: "6 PM to 11 PM",
+  timeLabel: "6 PM to 10:30 PM",
   venue: "LHC A Seminar Hall",
   campus: "NITK Surathkal",
   eligibility: "B.Tech batch of 2029",
@@ -37,7 +37,7 @@ export const HERO = {
  */
 export const HERO_FACTS = [
   { icon: "calendar", label: "Date", value: "Wed 14 Oct 2026", phone: true },
-  { icon: "clock", label: "Time", value: "6 PM to 11 PM", phone: true },
+  { icon: "clock", label: "Time", value: "6 PM to 10:30 PM", phone: true },
   { icon: "compass", label: "Venue", value: "LHC A Seminar Hall", phone: true },
   { icon: "book", label: "Who", value: "B.Tech batch of 2029", phone: false },
   { icon: "head", label: "Team", value: "Up to 3", phone: false },
