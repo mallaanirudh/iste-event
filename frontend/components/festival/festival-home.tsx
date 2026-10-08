@@ -9,8 +9,6 @@ import {
   ArrowUpRight,
   Camera as Instagram,
   Globe2,
-  Search,
-  Sparkles,
   Star,
   Ticket,
   Trophy,
@@ -24,18 +22,19 @@ import { FestivalEventCards } from "./festival-events";
 import { FestivalCalendar } from "./festival-calendar";
 import { FestivalHero } from "./festival-hero";
 import { designRefinements, enabledRefinementIds } from "./design-refinements";
-import { FestivalScoreboard } from "./festival-scoreboard";
 import { FestivalFooter } from "./festival-footer";
 import { festivalEvents } from "@/data/festival-schedule";
 import { EventScheduleDetails } from "@/components/schedule/event-schedule-details";
-import { chambers, leaderboard, type Chamber } from "./chamber-data";
+import { chambers, type Chamber } from "./chamber-data";
 import "./festival.css";
 import "./festival-refinements.css";
 
 const buttonClass =
   "festival-button inline-flex min-h-12 items-center justify-center gap-3 rounded-sm border-2 border-[#160b26] px-6 py-3 font-black transition duration-200 active:translate-x-1 active:translate-y-1 active:scale-[.98]";
+
 const cardClass =
   "festival-card festival-noticeboard relative rounded-sm border-2 bg-[#28163e] p-6 sm:p-8";
+
 type Modal = "leaderboard" | "events" | "chamber" | null;
 
 function Linkedin({ size }: { size: number }) {
@@ -53,83 +52,6 @@ function Linkedin({ size }: { size: number }) {
   );
 }
 
-function RankingRows({
-  full = false,
-  query = "",
-}: {
-  full?: boolean;
-  query?: string;
-}) {
-  const entries = (full ? leaderboard : leaderboard.slice(0, 5))
-    .map((team, index) => ({ ...team, rank: index + 1 }))
-    .filter((team) =>
-      `${team.name} ${team.domain}`
-        .toLowerCase()
-        .includes(query.trim().toLowerCase()),
-    );
-  if (designRefinements[8]) {
-    return <FestivalScoreboard entries={entries} full={full} />;
-  }
-  return (
-    <>
-      <div className="flex items-center justify-between px-4 pb-3 text-[10px] font-black tracking-[.18em] text-[#c4acd9]">
-        <span>RANK / TEAM</span>
-        <span>POINTS</span>
-      </div>
-      <ol
-        className="space-y-2"
-        aria-label={full ? "Full sample leaderboard" : "Top five sample teams"}
-      >
-        {entries.map((team) => (
-          <li
-            key={team.name}
-            className={`flex min-h-[70px] items-center gap-3 border-b border-[#b68a40]/20 px-3 sm:px-4 ${team.rank % 2 ? "bg-[#42225b]/40" : "bg-[#211035]/65"}`}
-          >
-            <span className="flex w-6 shrink-0 items-center justify-center text-sm font-black text-[#c4acd9]">
-              {team.rank <= 3 ? (
-                <Star
-                  aria-label={`Rank ${team.rank}`}
-                  size={23}
-                  fill={["#ffd700", "#d6def0", "#dfa078"][team.rank - 1]}
-                  stroke={["#ffd700", "#d6def0", "#dfa078"][team.rank - 1]}
-                />
-              ) : (
-                String(team.rank).padStart(2, "0")
-              )}
-            </span>
-            <span
-              aria-hidden="true"
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-sm border text-xs font-black"
-              style={{
-                borderColor: `${team.color}70`,
-                backgroundColor: `${team.color}15`,
-                color: team.color,
-              }}
-            >
-              {team.initials}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-extrabold text-[#fff5df]">
-                {team.name}
-              </p>
-              <p className="mt-0.5 truncate text-[10px] text-[#c4acd9]">
-                {team.domain}
-              </p>
-            </div>
-            <span className="font-black tabular-nums text-[#ffd700]">
-              {team.points.toLocaleString("en-US")}
-            </span>
-          </li>
-        ))}
-      </ol>
-      {entries.length === 0 && (
-        <p className="rounded-xl bg-white/5 px-4 py-8 text-center text-[#c4acd9]">
-          No teams found. Try another name or chamber.
-        </p>
-      )}
-    </>
-  );
-}
 function LeaderboardComingSoon() {
   return (
     <div className="flex flex-1 items-center justify-center py-16 text-center">
@@ -138,12 +60,15 @@ function LeaderboardComingSoon() {
           size={48}
           className="mx-auto mb-5 text-[#ffd700]"
         />
+
         <p className="festival-kicker mb-3 text-[10px] font-black tracking-[.25em] text-[#ff74b8]">
           THE HALL OF FAME
         </p>
+
         <h4 className="festival-heading text-3xl tracking-wide sm:text-4xl">
           Coming Soon
         </h4>
+
         <p className="mt-3 max-w-sm text-sm font-semibold leading-relaxed text-[#c4acd9]">
           The standings will appear here once the challenges begin.
         </p>
@@ -154,18 +79,28 @@ function LeaderboardComingSoon() {
 
 export default function FestivalHome() {
   const [modal, setModal] = useState<Modal>(null);
-  const [selectedChamber, setSelectedChamber] = useState<Chamber>(chambers[3]);
-  const [query, setQuery] = useState("");
+  const [selectedChamber, setSelectedChamber] = useState<Chamber>(
+    chambers[3],
+  );
+
   const dialogRef = useRef<HTMLDialogElement>(null);
+
   useEffect(() => {
     const dialog = dialogRef.current;
-    if (modal && dialog && !dialog.open) dialog.showModal();
-    if (!modal && dialog?.open) dialog.close();
+
+    if (modal && dialog && !dialog.open) {
+      dialog.showModal();
+    }
+
+    if (!modal && dialog?.open) {
+      dialog.close();
+    }
   }, [modal]);
+
   function openLeaderboard() {
-    setQuery("");
     setModal("leaderboard");
   }
+
   function openChamber(chamber: Chamber) {
     setSelectedChamber(chamber);
     setModal("chamber");
@@ -182,10 +117,12 @@ export default function FestivalHome() {
       >
         Skip to content
       </a>
+
       <div
         className="festival-stars pointer-events-none absolute inset-0 -z-10"
         aria-hidden="true"
       />
+
       <FestivalNavbar onLeaderboard={openLeaderboard} />
 
       <main id="main-content">
@@ -204,24 +141,34 @@ export default function FestivalHome() {
                     ? "01 / The main attraction"
                     : "01 / THE MAIN ATTRACTION"}
                 </p>
+
                 <h2
                   id="arena-heading"
                   className="festival-heading text-4xl tracking-wide sm:text-5xl"
                 >
-                  {designRefinements[7] ? "The festival " : "THE FESTIVAL "}
+                  {designRefinements[7]
+                    ? "The festival "
+                    : "THE FESTIVAL "}
+
                   <span className="text-[#ffd700]">
-                    {designRefinements[7] ? "noticeboard." : "NOTICEBOARD."}
+                    {designRefinements[7]
+                      ? "noticeboard."
+                      : "NOTICEBOARD."}
                   </span>
                 </h2>
               </div>
+
               <p className="max-w-[290px] text-sm font-semibold leading-relaxed text-[#c4acd9]">
                 Pick your challenge. Make your move.
-                <br />A little friendly rivalry never hurt.
+                <br />
+                A little friendly rivalry never hurt.
               </p>
             </div>
           </Reveal>
+
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:grid-rows-[auto_auto]">
             <FestivalEventCards onPreview={openChamber} />
+
             <Reveal
               delay={150}
               className="h-full md:col-start-2 md:row-span-2 md:row-start-1"
@@ -237,17 +184,21 @@ export default function FestivalHome() {
                         ? "The hall of fame"
                         : "THE HALL OF FAME"}
                     </p>
+
                     <h3 className="festival-heading text-4xl tracking-wide">
                       Grand Inventor Tally
                     </h3>
+
                     <p className="mt-2 text-xs font-semibold text-[#c4acd9]">
                       Teams from across the chambers.
                     </p>
                   </div>
+
                   <span className="grid h-12 w-12 shrink-0 place-items-center border border-[#b68a40] bg-[#1e0b2d] text-[#ffd700]">
                     <Trophy size={25} />
                   </span>
                 </div>
+
                 <LeaderboardComingSoon />
               </article>
             </Reveal>
@@ -268,21 +219,27 @@ export default function FestivalHome() {
           >
             <CarnivalArt silhouette />
           </div>
+
           <div
             className="pointer-events-none absolute -bottom-6 -right-36 hidden w-[470px] -scale-x-100 opacity-60 lg:block"
             aria-hidden="true"
           >
             <CarnivalArt silhouette />
           </div>
+
           <div className="relative z-10 mx-auto max-w-[1200px] px-5 pb-6 pt-14 text-center sm:px-8">
             <p className="text-[10px] font-black tracking-[.25em] text-[#ff74b8]">
               THE LIGHTS ARE ON. THE POSSIBILITIES ARE LIMITLESS.
             </p>
+
             <h2 className="festival-heading mt-3 text-4xl tracking-wide sm:text-5xl">
               BRING YOUR CURIOSITY.
               <br />
-              <span className="text-[#ffd700]">STAY FOR THE CARNIVAL.</span>
+              <span className="text-[#ffd700]">
+                STAY FOR THE CARNIVAL.
+              </span>
             </h2>
+
             <div className="mt-6 flex flex-wrap items-center justify-center gap-5">
               <a
                 href={REGISTRATION_URL}
@@ -292,6 +249,7 @@ export default function FestivalHome() {
               >
                 <Ticket size={18} /> Your Golden Ticket
               </a>
+
               <button
                 onClick={() => setModal("events")}
                 className="inline-flex min-h-12 cursor-pointer items-center gap-2 text-sm font-extrabold text-[#d9c8e9] hover:text-[#ffd700]"
@@ -299,6 +257,7 @@ export default function FestivalHome() {
                 Chamber directory <ArrowRight size={17} />
               </button>
             </div>
+
             <div className="mt-7 flex flex-wrap items-center justify-center gap-5">
               <a
                 href="https://www.instagram.com/iste_nitk/"
@@ -306,31 +265,39 @@ export default function FestivalHome() {
                 rel="noopener noreferrer"
                 className="festival-social inline-flex min-h-12 items-center gap-2 border border-[#b68a40] bg-[#211032] px-4 py-2 text-xs font-bold text-[#ff83bf] shadow-[3px_3px_0_#140a24] hover:-translate-y-1"
               >
-                <Instagram size={18} /> Instagram <ArrowUpRight size={13} />
+                <Instagram size={18} /> Instagram{" "}
+                <ArrowUpRight size={13} />
               </a>
+
               <a
                 href="https://www.linkedin.com/company/istenitk/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="festival-social inline-flex min-h-12 items-center gap-2 border border-[#b68a40] bg-[#211032] px-4 py-2 text-xs font-bold text-[#00e5ff] shadow-[3px_3px_0_#140a24] hover:-translate-y-1"
               >
-                <Linkedin size={18} /> LinkedIn <ArrowUpRight size={13} />
+                <Linkedin size={18} /> LinkedIn{" "}
+                <ArrowUpRight size={13} />
               </a>
+
               <a
                 href="#chambers"
                 onClick={() => setModal(null)}
                 className="festival-social inline-flex min-h-12 items-center gap-2 border border-[#b68a40] bg-[#211032] px-4 py-2 text-xs font-bold text-[#ffd700] shadow-[3px_3px_0_#140a24] hover:-translate-y-1"
               >
-                <Globe2 size={18} /> ISTE NITK <ArrowUpRight size={13} />
+                <Globe2 size={18} /> ISTE NITK{" "}
+                <ArrowUpRight size={13} />
               </a>
             </div>
+
             <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-[#c4acd9]/15 pt-6 text-[10px] font-bold text-[#c4acd9] sm:flex-row">
               <p>© 2026 ISTE. Let the festivities begin.</p>
+
               <p className="flex items-center gap-2">
                 MADE OF CURIOSITY{" "}
                 <Star size={10} fill="#ffd700" stroke="#ffd700" /> NITK
                 SURATHKAL
               </p>
+
               <a
                 href="#home"
                 className="inline-flex items-center gap-2 text-[#ffd700]"
@@ -351,13 +318,15 @@ export default function FestivalHome() {
         onClick={(event) => {
           if (event.target === event.currentTarget) {
             const bounds = event.currentTarget.getBoundingClientRect();
+
             if (
               event.clientX < bounds.left ||
               event.clientX > bounds.right ||
               event.clientY < bounds.top ||
               event.clientY > bounds.bottom
-            )
+            ) {
               setModal(null);
+            }
           }
         }}
       >
@@ -366,6 +335,7 @@ export default function FestivalHome() {
             <p className="mb-2 text-[10px] font-black tracking-[.2em] text-[#ff74b8]">
               WELCOME TO THE BIG TOP
             </p>
+
             <h2
               id="festival-dialog-title"
               className="festival-heading text-3xl tracking-wide sm:text-4xl"
@@ -377,6 +347,7 @@ export default function FestivalHome() {
                   : "The Event Lineup"}
             </h2>
           </div>
+
           <button
             autoFocus
             type="button"
@@ -387,25 +358,9 @@ export default function FestivalHome() {
             <X size={20} />
           </button>
         </div>
-        {modal === "leaderboard" && (
-          <>
-            <p className="mb-5 text-sm text-[#c4acd9]">
-              The original homepage&apos;s sample standings. Search by team or
-              chamber.
-            </p>
-            <label className="mb-6 flex items-center gap-3 rounded-xl border-2 border-[#b69cff]/40 bg-[#1b0c2c] px-4 py-3">
-              <Search size={18} className="shrink-0 text-[#b69cff]" />
-              <span className="sr-only">Search teams or chambers</span>
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Find your team…"
-                className="min-w-0 flex-1 bg-transparent text-base text-white outline-none placeholder:text-[#bda4d1]"
-              />
-            </label>
-            <RankingRows full query={query} />
-          </>
-        )}
+
+        {modal === "leaderboard" && <LeaderboardComingSoon />}
+
         {modal === "chamber" && (
           <>
             <EventScheduleDetails
@@ -416,9 +371,11 @@ export default function FestivalHome() {
               }
               className="mb-5 text-sm font-semibold leading-relaxed text-[#e9cb80]"
             />
+
             <p className="text-base font-semibold leading-relaxed text-[#d9c8e9]">
               {selectedChamber.description}
             </p>
+
             <div className="my-6 flex flex-wrap gap-2">
               {[selectedChamber.theme, selectedChamber.discipline].map(
                 (skill) => (
@@ -435,10 +392,12 @@ export default function FestivalHome() {
                 ),
               )}
             </div>
+
             <p className="mb-6 text-sm text-[#c4acd9]">
               Register through the shared FeISTEval form and check this
               chamber&apos;s scheduled date and time above.
             </p>
+
             <a
               href={REGISTRATION_URL}
               target="_blank"
@@ -449,11 +408,13 @@ export default function FestivalHome() {
             </a>
           </>
         )}
+
         {modal === "events" && (
           <>
             <p className="mb-5 text-sm text-[#c4acd9]">
               Step into an event and discover the challenge.
             </p>
+
             <div className="space-y-3">
               {chambers.map((chamber) =>
                 chamber.href ? (
@@ -468,11 +429,16 @@ export default function FestivalHome() {
                       <span className="block text-[10px] font-bold text-[#c4acd9]">
                         {chamber.title}
                       </span>
+
                       <span className="mt-1 block font-extrabold">
                         {chamber.eventName}
                       </span>
                     </span>
-                    <ArrowUpRight size={20} className="text-[#ffd700]" />
+
+                    <ArrowUpRight
+                      size={20}
+                      className="text-[#ffd700]"
+                    />
                   </Link>
                 ) : (
                   <button
@@ -484,11 +450,16 @@ export default function FestivalHome() {
                       <span className="block text-[10px] font-bold text-[#c4acd9]">
                         {chamber.title}
                       </span>
+
                       <span className="mt-1 block font-extrabold">
                         {chamber.eventName}
                       </span>
                     </span>
-                    <ArrowUpRight size={20} className="text-[#ffd700]" />
+
+                    <ArrowUpRight
+                      size={20}
+                      className="text-[#ffd700]"
+                    />
                   </button>
                 ),
               )}
