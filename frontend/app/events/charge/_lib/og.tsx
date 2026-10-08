@@ -176,7 +176,7 @@ export async function renderOgImage() {
             <span>Beacon</span>
           </div>
           <div style={{ display: "flex", marginTop: 34, fontSize: 34, color: C.bone }}>
-            WED 14 OCTOBER 2026, 6 TO 11 PM
+            WED 14 OCTOBER 2026, 6 TO 10:30 PM
           </div>
           <div style={{ display: "flex", marginTop: 8, fontSize: 34, color: "#CFC3D9" }}>
             {`${EVENT.venue}, ${EVENT.campus}`.toUpperCase()}

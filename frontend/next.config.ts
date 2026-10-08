@@ -16,8 +16,8 @@ const API_BASE_URL = (process.env.API_BASE_URL || "http://localhost:3000").repla
 const nextConfig: NextConfig = {
   async headers() {
     return [
-      { source: "/events/square1_charge", headers: chargeSecurityHeaders },
-      { source: "/events/square1_charge/:path*", headers: chargeSecurityHeaders },
+      { source: "/events/charge", headers: chargeSecurityHeaders },
+      { source: "/events/charge/:path*", headers: chargeSecurityHeaders },
     ];
   },
   async rewrites() {

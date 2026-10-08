@@ -2,48 +2,33 @@
  * Copy for the Charge SQ1 page, taken from the "POWER THE BEACON" event brief.
  * Edit text here — components only read from this file.
  *
- * Rounds and leaderboards come from the backend. The `FALLBACK_ROUNDS` below are
+ * This page is information only: registration and the leaderboards live on the
+ * Square One main page. Rounds come from the backend; the `FALLBACK_ROUNDS` below are
  * only shown when the backend is unreachable or has no rounds for this event yet.
  */
-
-import { REGISTRATION_URL } from "@/data/registration";
-import {
-  formatEventDate,
-  formatEventTime,
-  formatSessionTime,
-  getFestivalEvent,
-} from "@/data/festival-schedule";
-
-const schedule = getFestivalEvent("charge");
 
 export const EVENT = {
   sig: "Charge",
   name: "Power the Beacon",
   megaEvent: "Square One",
-  tagline:
-    "Bid for parts. Build the circuit. Light the beacon before the clock runs out.",
+  tagline: "Bid for parts. Build the circuit. Light the beacon before the clock runs out.",
   date: "2026-10-14",
-  dateLabel: formatEventDate(schedule),
+  dateLabel: "Wednesday, 14 October 2026",
   dateShort: "Wed 14 October",
-  timeLabel: formatEventTime(schedule),
+  timeLabel: "6 PM to 10:30 PM",
   venue: "LHC A Seminar Hall",
   campus: "NITK Surathkal",
   eligibility: "B.Tech batch of 2029",
   teamSize: "Up to 3 per team",
   teamMax: 3,
   expected: "About 150 builders",
-  registerHref: "https://Feisteval-2026.vercel.app",
-  homeHref: "/",
 } as const;
 
-/** Doors open (the knowledge session) and the end of the night, in IST. */
-export const START_ISO = "2026-10-14T18:00:00+05:30";
-export const END_ISO = "2026-10-14T23:00:00+05:30";
 
 export const HERO = {
   kicker: "ISTE Charge at Square One",
-  primary: "Register your team",
-  secondary: "See the rounds",
+  primary: "See the rounds",
+  secondary: "Points of contact",
 } as const;
 
 /**
@@ -52,7 +37,7 @@ export const HERO = {
  */
 export const HERO_FACTS = [
   { icon: "calendar", label: "Date", value: "Wed 14 Oct 2026", phone: true },
-  { icon: "clock", label: "Time", value: EVENT.timeLabel, phone: true },
+  { icon: "clock", label: "Time", value: "6 PM to 10:30 PM", phone: true },
   { icon: "compass", label: "Venue", value: "LHC A Seminar Hall", phone: true },
   { icon: "book", label: "Who", value: "B.Tech batch of 2029", phone: false },
   { icon: "head", label: "Team", value: "Up to 3", phone: false },
@@ -60,11 +45,7 @@ export const HERO_FACTS = [
 
 export const BRIEFING = {
   title: "Teams of up to 3",
-  /** Shown in the registration dialog, not on floor 2. */
-  signupNote:
-    "Bring up to two teammates to the hall. One person signs up the whole team.",
   circuitLabel: "How the evening runs",
-  registerNote: "Register your team before 14 October.",
   craftingLabel: "Crafting",
   inventoryLabel: "Inventory",
   recipeLabel: "Recipe: your team plus both rounds makes a winner",
@@ -73,78 +54,91 @@ export const BRIEFING = {
 /** Tooltip copy for the crafting grid. Round slots take their names from the rounds data. */
 export const CRAFT = {
   teammates: [
-    { name: "Teammate 1", lines: ["One person signs up the whole team"] },
-    { name: "Teammate 2", lines: ["Teams of up to 3"] },
-    { name: "Teammate 3", lines: ["B.Tech batch of 2029"] },
+    { name: "Teammate 1", lines: ["Teams of up to 3"] },
+    { name: "Teammate 2", lines: ["B.Tech batch of 2029"] },
+    { name: "Teammate 3", lines: ["A third teammate is optional"] },
   ],
-  winner: {
-    name: "Winner",
-    lines: ["Light the beacon", "Results after 11 PM"],
-  },
+  winner: { name: "Winner", lines: ["Light the beacon", "Results at the end of the night"] },
 } as const;
 
-export type Step = { time: string; title: string; detail: string };
+/*
+ * The evening, from the event brief: "KSS and Round 1: 2 hrs (6PM-8PM)", then Round 2 from
+ * 9 PM (Samarth, 7 Oct: it ends at 10:30 PM), then result declaration (no time given).
+ * Anirudh asked to keep the round details short, so each round gets a one-line teaser.
+ */
+export const KSS = "Knowledge session";
 
-/** The evening, in order. Rounds 1 and 2 take their names and descriptions from the backend when it has them. */
-export const KNOWLEDGE_SESSION: Step = {
-  time: "6 PM",
-  title: "Knowledge session",
-  detail:
-    "A quick walk through the components you'll be bidding on and how they work.",
-};
+/** Sent to registered teams before the night (Samarth, 7 Oct). */
+export const CHEATSHEET = {
+  time: "Before the event",
+  title: "Cheatsheet",
+  detail: "We will send you a cheatsheet ahead of the night. Go through it before you come.",
+} as const;
 
-export const RESULTS: Step = {
-  time: "After 11 PM",
+export const RESULTS = {
+  time: "End of the night",
   title: "Results",
-  detail: "Scores go up on the leaderboard and the winners are announced.",
-};
+  detail: "The winners are declared.",
+} as const;
 
 export type FallbackRound = {
   roundNumber: number;
   name: string;
-  description: string;
+  /** A one-line teaser. It always wins over the backend description, to keep the page brief. */
+  teaser: string;
   time: string;
-  mode: string;
 };
 
 export const FALLBACK_ROUNDS: FallbackRound[] = [
   {
     roundNumber: 1,
     name: "Screening",
-    time: schedule?.sessions?.[0]
-      ? formatSessionTime(schedule.sessions[0])
-      : "6:00 PM – 7:30 PM",
-    mode: "Offline, in the hall",
-    description:
-      "Checks the basics you'll need for the build. The top teams go through to Round 2.",
+    time: "6 PM to 8 PM",
+    teaser: "Learn the parts in the knowledge session, then clear the screening.",
   },
   {
     roundNumber: 2,
-    name: "Auction and build",
-    time: schedule?.sessions?.[1]
-      ? formatSessionTime(schedule.sessions[1])
-      : "7:30 PM – 11:00 PM",
-    mode: "Live auction, then the build",
-    description:
-      "Every team gets the same purse of virtual money. Bid for components, then build a working circuit from only what you won.",
+    name: "Auction and hackathon",
+    time: "9 PM to 10:30 PM",
+    teaser: "Bid for parts, then build with what you win. The rest stays a surprise.",
   },
 ];
 
 export const GROUND = {
-  title: "Registration",
-  lede: "One registration per team, up to 3 members.",
+  kicker: "The night of the beacon",
+  title: "See you at the beacon",
+  facts: [
+    { label: "Date", value: "Wednesday 14 October" },
+    { label: "Doors open", value: "6 PM" },
+    { label: "Venue", value: "LHC A Seminar Hall" },
+  ],
   rulesTitle: "House rules",
   contactsTitle: "Points of contact",
 } as const;
 
+/** The general rules from the event brief. */
 export const RULES = [
-  "Sharing or copying answers with other teams leads to disqualification.",
-  "In Round 2 you build only with the components your team won at auction.",
+  "Sharing or copying answers with or from other teams leads to disqualification.",
   "If the platform malfunctions or a rule is unclear, contact an organiser.",
 ] as const;
+
+/** Floor 4: the golden ticket hanging in the overworld. Deliberately nothing else on it. */
+export const WORLD = {
+  band: "Golden ticket",
+  admit: "Admit up to 3 members",
+  register: "Register your team",
+} as const;
+
+/**
+ * Where the Register button under the ticket goes: FeISTEval 2026 team registration (one
+ * registration covers the whole team for every event). NEXT_PUBLIC_REGISTER_URL overrides it.
+ */
+export const REGISTER_URL =
+  process.env.NEXT_PUBLIC_REGISTER_URL?.trim() || "https://feisteval-2026.vercel.app";
 
 /** Points of contact, as listed in the event brief. `tel` is the dialable form. */
 export const CONTACTS = [
   { name: "Pratheek", phone: "+91 82172 99491", tel: "+918217299491" },
   { name: "Sanjeetha", phone: "+91 88615 78766", tel: "+918861578766" },
 ] as const;
+

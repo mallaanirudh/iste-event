@@ -1,0 +1,327 @@
+/* Floor 4: the overworld at night at the foot of the tower, a golden ticket hanging on two threads. */
+
+.world {
+  /* How far the ticket hangs below the top of the floor (the threads come down from above). */
+  --thread: clamp(150px, 30vh, 300px);
+  --ticket-w: min(84vw, 620px);
+  justify-content: flex-start;
+  overflow: clip;
+  /* Tall enough that the camp on the ground always sits below the Register button. */
+  min-height: max(100svh, calc(var(--thread) + var(--ticket-w) * 0.5 + 400px));
+  background-image: linear-gradient(#0d0a24, #1f1338 55%, #2b1d4a) !important;
+}
+
+/* ---------- the world ---------- */
+
+.worldSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .clouds {
+    animation: drift 70s linear infinite;
+  }
+
+  .beam {
+    animation: beamShimmer 2.6s ease-in-out infinite alternate;
+  }
+
+  .twinkle {
+    animation: twinkle 3.2s steps(2, jump-none) infinite;
+  }
+
+  .torchGlow {
+    animation: flicker 1.8s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes flicker {
+  from {
+    opacity: 0.75;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-220px);
+  }
+  to {
+    transform: translateX(220px);
+  }
+}
+
+@keyframes beamShimmer {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- the rig ---------- */
+
+.hang {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.rig {
+  position: relative;
+  width: var(--ticket-w);
+  transform-origin: 50% 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Two fine gold threads from above; they fade in from the top so they seem to come from nowhere. */
+.threads {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--thread);
+  overflow: visible;
+  pointer-events: none;
+}
+
+.thread {
+  stroke: #f3d98a;
+  stroke-width: 1.5;
+  stroke-opacity: 0.85;
+}
+
+.ticketWrap {
+  position: relative;
+  margin-top: var(--thread);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+}
+
+/* ---------- the golden ticket ---------- */
+
+.ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 26%;
+  overflow: hidden;
+  border-radius: 12px;
+  color: var(--cocoa);
+  background:
+    repeating-linear-gradient(135deg, rgb(122 62 20 / 0.07) 0 1px, transparent 1px 7px),
+    linear-gradient(135deg, #f6d673, #e9b949 40%, #d39b33 75%, #f0c75c);
+  box-shadow:
+    0 2px 0 #fff0b8 inset,
+    0 26px 50px rgb(0 0 0 / 0.5),
+    0 8px 16px rgb(0 0 0 / 0.3);
+  -webkit-mask:
+    radial-gradient(circle at 74% 0, #0000 14px, #000 14.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 74% 100%, #0000 14px, #000 14.5px) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle at 74% 0, #0000 14px, #000 14.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 74% 100%, #0000 14px, #000 14.5px) bottom / 100% 51% no-repeat;
+  user-select: none;
+}
+
+.ticket::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border: 2px solid rgb(26 17 14 / 0.5);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* The small punched holes the threads pass through. */
+.eyelet {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  width: 8px;
+  height: 8px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: #1f1338;
+  box-shadow: 0 0 0 2px rgb(122 62 20 / 0.6);
+}
+
+.eyeletL {
+  left: 13%;
+}
+
+.eyeletR {
+  left: 87%;
+}
+
+.main {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  padding: clamp(22px, 4vw, 40px) clamp(18px, 4vw, 40px);
+}
+
+.band {
+  margin: 0;
+  font-size: clamp(11px, 1.6vw, 14px);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #7a3e14;
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: clamp(34px, 7.4vw, 76px);
+  line-height: 0.88;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 rgb(255 240 184 / 0.6);
+}
+
+.admit {
+  margin: 4px 0 0;
+  padding-top: 10px;
+  border-top: 2px solid rgb(26 17 14 / 0.3);
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: clamp(18px, 3vw, 28px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.stub {
+  display: grid;
+  place-items: center;
+  border-left: 3px dashed rgb(26 17 14 / 0.4);
+  background: rgb(122 62 20 / 0.12);
+}
+
+.beaconIcon {
+  width: clamp(34px, 7vw, 60px);
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgb(94 242 255 / 0.55));
+}
+
+/* A warm halo behind the ticket, as if a torch were below it. */
+.glow {
+  position: absolute;
+  inset: -30% -15%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgb(255 178 30 / 0.28), transparent);
+  pointer-events: none;
+}
+
+/* ---------- register ---------- */
+
+/* Below the hanging ticket, in the gap above the hills; it stays still while the ticket swings. */
+.cta {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  /* The ticket is about half as tall as it is wide; leave room for its bob and swing. */
+  top: calc(var(--thread) + var(--ticket-w) * 0.5 + clamp(28px, 5vh, 48px));
+  display: flex;
+  justify-content: center;
+}
+
+.register {
+  --btn-bg: var(--filament);
+  --btn-fg: var(--cocoa);
+  box-shadow: 0 10px 28px rgb(255 178 30 / 0.35);
+}
+
+/* ---------- the moon ---------- */
+
+/* Square, as in the game. Kept out of the scene SVG so phones (which crop its sides) still show it. */
+.moon {
+  position: absolute;
+  z-index: 1;
+  /* Just under the nav when the page is scrolled to the end, even when this floor is taller than the screen. */
+  top: max(calc(var(--nav-h) + clamp(20px, 5vh, 56px)), calc(100% - 100svh + var(--nav-h) + 32px));
+  right: calc(var(--pillar) + clamp(18px, 9vw, 160px));
+  width: clamp(44px, 6vw, 80px);
+  aspect-ratio: 1;
+}
+
+.moonHalo,
+.moonFace {
+  position: absolute;
+  inset: 0;
+}
+
+.moonHalo {
+  box-shadow:
+    0 0 0 clamp(8px, 1vw, 14px) rgb(232 236 245 / 0.12),
+    0 0 60px 10px rgb(232 236 245 / 0.18);
+}
+
+.moonFace {
+  background:
+    linear-gradient(#c9cfdc 0 0) 22% 24% / 22% 22% no-repeat,
+    linear-gradient(#c9cfdc 0 0) 66% 64% / 16% 16% no-repeat,
+    linear-gradient(#d8dde8 0 0) 70% 20% / 12% 12% no-repeat,
+    #e8ecf5;
+  image-rendering: pixelated;
+}
+
+/* Two blocky clouds in front of the moon. They hide it until the floor scrolls in (World.tsx
+   drifts them apart); without motion they rest off to the sides and the moon is clear. */
+.moonCloud {
+  --c: #3a3266;
+  position: absolute;
+  background:
+    linear-gradient(var(--c) 0 0) 50% 0 / 70% 50% no-repeat,
+    linear-gradient(var(--c) 0 0) 0 100% / 100% 50% no-repeat;
+  filter: drop-shadow(0 4px 0 rgb(13 10 36 / 0.35));
+}
+
+.moonCloudA {
+  top: -8%;
+  left: -60%;
+  width: 200%;
+  height: 64%;
+}
+
+.moonCloudB {
+  --c: #322b5a;
+  top: 44%;
+  left: -50%;
+  width: 190%;
+  height: 66%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moonCloudA {
+    transform: translateX(-80%);
+    opacity: 0.25;
+  }
+
+  .moonCloudB {
+    transform: translateX(80%);
+    opacity: 0.25;
+  }
+}

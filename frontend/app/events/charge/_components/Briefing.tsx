@@ -1,22 +1,7 @@
 "use client";
 
-import {
-  useEffect,
-  useId,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
-import {
-  BRIEFING,
-  CRAFT,
-  EVENT,
-  KNOWLEDGE_SESSION,
-  RESULTS,
-} from "../_data/content";
-import { getEventTiming, formatSessionTime } from "@/data/festival-schedule";
-import { useScheduleClock } from "@/components/schedule/use-schedule-clock";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { BRIEFING, CHEATSHEET, CRAFT, EVENT, KSS, RESULTS } from "../_data/content";
 import { gsap, MQ, prefersReducedMotion, useGSAP } from "../_lib/gsap";
 import { HEADS, ItemIcon, Sprite, type IconName } from "../_lib/sprite";
 import { floorProps } from "../_lib/tokens";
@@ -29,104 +14,8 @@ export type RoundView = {
   name: string;
   description: string;
   time: string | null;
-  mode: string | null;
   maxPoints: number | null;
 };
-
-/* ---------- countdown (odometer reels) ---------- */
-
-function Reel({ value }: { value: number }) {
-  const digits = String(value).padStart(2, "0").split("").map(Number);
-  const ref = useRef<HTMLSpanElement>(null);
-  useLayoutEffect(() => {
-    const nextDigits = String(value).padStart(2, "0").split("").map(Number);
-    ref.current
-      ?.querySelectorAll<HTMLElement>("[data-reel]")
-      .forEach((reel, i) => {
-        const y = -10 * nextDigits[i];
-        if (prefersReducedMotion()) gsap.set(reel, { yPercent: y });
-        else
-          gsap.to(reel, {
-            yPercent: y,
-            duration: 0.8,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-      });
-  }, [value]);
-  return (
-    <span ref={ref} className={s.reelGroup} aria-hidden="true">
-      {digits.map((_, i) => (
-        <span key={i} className={s.window}>
-          <span className={s.reel} data-reel="">
-            {Array.from({ length: 10 }, (_, n) => (
-              <span key={n}>{n}</span>
-            ))}
-          </span>
-        </span>
-      ))}
-    </span>
-  );
-}
-
-function Countdown() {
-  const now = useScheduleClock();
-  const timing = now === null ? null : getEventTiming("charge", now);
-  if (timing?.status === "complete")
-    return (
-      <p className={s.countDone}>
-        The scheduled sessions have finished. Check the leaderboard for results.
-      </p>
-    );
-  if (timing?.current)
-    return (
-      <p className={s.countDone}>
-        Happening now · {timing.current.session.label}
-      </p>
-    );
-  if (timing?.status === "intermission" && timing.next)
-    return (
-      <p className={s.countDone}>
-        Break between rounds · Next session:{" "}
-        {formatSessionTime(timing.next.session)}
-      </p>
-    );
-
-  // Before mount, a same-size placeholder so nothing shifts.
-  const mins =
-    now === null || !timing?.next
-      ? 0
-      : Math.max(0, Math.floor((timing.next.start - now) / 60_000));
-  const d = Math.min(99, Math.floor(mins / 1440));
-  const h = Math.floor((mins % 1440) / 60);
-  const m = mins % 60;
-  return (
-    <p className={s.countRow}>
-      {now === null ? (
-        <>
-          <span className={s.placeholder}>00</span>
-          <span className={s.unit}>d</span>
-          <span className={s.placeholder}>00</span>
-          <span className={s.unit}>h</span>
-          <span className={s.placeholder}>00</span>
-          <span className={s.unit}>m</span>
-        </>
-      ) : (
-        <>
-          <Reel value={d} />
-          <span className={s.unit}>d</span>
-          <Reel value={h} />
-          <span className={s.unit}>h</span>
-          <Reel value={m} />
-          <span className={s.unit}>m</span>
-          <span className={c.vh}>
-            {d} days, {h} hours and {m} minutes until doors open
-          </span>
-        </>
-      )}
-    </p>
-  );
-}
 
 /* ---------- the crafting table GUI ---------- */
 
@@ -157,17 +46,9 @@ const ARROW_ROWS = [
 function Arrow() {
   return (
     <span className={s.arrow} aria-hidden="true">
-      <Sprite
-        rows={ARROW_ROWS}
-        palette={{ A: "#8B8B8B" }}
-        className={s.arrowBase}
-      />
+      <Sprite rows={ARROW_ROWS} palette={{ A: "#8B8B8B" }} className={s.arrowBase} />
       <span className={s.arrowFill} data-arrow="">
-        <Sprite
-          rows={ARROW_ROWS}
-          palette={{ A: "#FFFFFF" }}
-          className={s.arrowBase}
-        />
+        <Sprite rows={ARROW_ROWS} palette={{ A: "#FFFFFF" }} className={s.arrowBase} />
       </span>
     </span>
   );
@@ -178,13 +59,7 @@ function icon(name: IconName) {
 }
 
 function head(i: number) {
-  return (
-    <Sprite
-      rows={HEADS[i].rows}
-      palette={HEADS[i].palette}
-      className={s.itemArt}
-    />
-  );
+  return <Sprite rows={HEADS[i].rows} palette={HEADS[i].palette} className={s.itemArt} />;
 }
 
 function Slot({
@@ -211,21 +86,13 @@ function Slot({
     el.removeAttribute("data-flip");
     el.style.translate = "";
     const vw = document.documentElement.clientWidth;
-    if (el.getBoundingClientRect().right > vw - 8)
-      el.setAttribute("data-flip", "");
+    if (el.getBoundingClientRect().right > vw - 8) el.setAttribute("data-flip", "");
     const r = el.getBoundingClientRect();
-    const shift =
-      r.left < 8 ? 8 - r.left : r.right > vw - 8 ? vw - 8 - r.right : 0;
+    const shift = r.left < 8 ? 8 - r.left : r.right > vw - 8 ? vw - 8 - r.right : 0;
     if (shift) el.style.translate = `${shift}px 0`;
   }, [active]);
 
-  if (!item)
-    return (
-      <span
-        className={`${s.slot} ${result ? s.result : ""}`}
-        aria-hidden="true"
-      />
-    );
+  if (!item) return <span className={`${s.slot} ${result ? s.result : ""}`} aria-hidden="true" />;
 
   return (
     <span className={s.slotWrap}>
@@ -242,11 +109,7 @@ function Slot({
         onBlur={() => onHide(item.id)}
         onClick={() => onShow(item.id)}
       >
-        <span
-          className={s.item}
-          data-item={result ? undefined : ""}
-          data-result={result ? "" : undefined}
-        >
+        <span className={s.item} data-item={result ? undefined : ""} data-result={result ? "" : undefined}>
           {item.art}
           {item.count ? <span className={s.count}>{item.count}</span> : null}
         </span>
@@ -259,18 +122,8 @@ function Slot({
           </span>
         ) : null}
       </button>
-      <span
-        ref={tip}
-        id={tipId}
-        role="tooltip"
-        className={s.tooltip}
-        hidden={!active}
-      >
-        <span
-          className={`${s.tipName} ${item.tone === "gold" ? s.tipGold : ""}`}
-        >
-          {item.name}
-        </span>
+      <span ref={tip} id={tipId} role="tooltip" className={s.tooltip} hidden={!active}>
+        <span className={`${s.tipName} ${item.tone === "gold" ? s.tipGold : ""}`}>{item.name}</span>
         {item.lines.map((l) => (
           <span key={l} className={s.tipLine}>
             {l}
@@ -281,13 +134,7 @@ function Slot({
   );
 }
 
-type Step = {
-  key: string;
-  time: string;
-  title: string;
-  detail: string;
-  meta: string | null;
-};
+type Step = { key: string; time: string; title: string; detail: string; meta: string | null };
 
 export function Briefing({ rounds }: { rounds: RoundView[] }) {
   const ref = useRef<HTMLElement>(null);
@@ -296,17 +143,13 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
 
   const r1 = rounds.find((r) => r.roundNumber === 1) ?? rounds[0];
   const r2 = rounds.find((r) => r.roundNumber === 2) ?? rounds[1];
-  const roundItem = (
-    r: RoundView | undefined,
-    id: string,
-    art: ReactNode,
-  ): Item | null =>
+  const roundItem = (r: RoundView | undefined, id: string, art: ReactNode): Item | null =>
     r
       ? {
           id,
           name: `Round ${r.roundNumber}: ${r.name}`,
           lines: [
-            [r.time, r.mode?.toLowerCase()].filter(Boolean).join(", "),
+            r.time ?? "",
             r.maxPoints ? `Up to ${r.maxPoints} points` : "",
           ].filter(Boolean),
           art,
@@ -314,12 +157,7 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
       : null;
 
   const grid: (Item | null)[] = [
-    ...CRAFT.teammates.map((t, i) => ({
-      id: `mate-${i}`,
-      name: t.name,
-      lines: [...t.lines],
-      art: head(i),
-    })),
+    ...CRAFT.teammates.map((t, i) => ({ id: `mate-${i}`, name: t.name, lines: [...t.lines], art: head(i) })),
     roundItem(r1, "round-1", icon("bookQuill")),
     roundItem(r2, "round-2", icon("ingot")),
     null,
@@ -339,42 +177,22 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
   // `wide` cells repeat the hero hotbar, so phones (under 640px) skip them.
   const inventory: { item: Item; caption: ReactNode; wide?: boolean }[] = [
     {
-      item: {
-        id: "inv-date",
-        name: "Date",
-        lines: [EVENT.dateLabel],
-        art: icon("calendar"),
-      },
+      item: { id: "inv-date", name: "Date", lines: [EVENT.dateLabel], art: icon("calendar") },
       caption: "Wed 14 October",
       wide: true,
     },
     {
-      item: {
-        id: "inv-time",
-        name: "Time",
-        lines: [`${EVENT.timeLabel}, IST`],
-        art: icon("clock"),
-      },
+      item: { id: "inv-time", name: "Time", lines: [`${EVENT.timeLabel}, IST`], art: icon("clock") },
       caption: EVENT.timeLabel,
       wide: true,
     },
     {
-      item: {
-        id: "inv-venue",
-        name: "Venue",
-        lines: [EVENT.venue, EVENT.campus],
-        art: icon("compass"),
-      },
+      item: { id: "inv-venue", name: "Venue", lines: [EVENT.venue, EVENT.campus], art: icon("compass") },
       caption: EVENT.venue,
       wide: true,
     },
     {
-      item: {
-        id: "inv-who",
-        name: "Who can join",
-        lines: [EVENT.eligibility],
-        art: icon("book"),
-      },
+      item: { id: "inv-who", name: "Who can join", lines: [EVENT.eligibility], art: icon("book") },
       caption: EVENT.eligibility,
     },
     {
@@ -394,7 +212,7 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
         lines: ["6 PM, Wednesday 14 October", "Knowledge session first"],
         art: icon("lamp"),
       },
-      caption: <Countdown />,
+      caption: "Doors open 6 PM",
     },
   ];
 
@@ -419,30 +237,15 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
   }, [active]);
 
   const steps: Step[] = [
-    {
-      key: "kss",
-      time: KNOWLEDGE_SESSION.time,
-      title: KNOWLEDGE_SESSION.title,
-      detail: KNOWLEDGE_SESSION.detail,
-      meta: null,
-    },
+    { key: "cheatsheet", time: CHEATSHEET.time, title: CHEATSHEET.title, detail: CHEATSHEET.detail, meta: null },
     ...rounds.map((r) => ({
       key: r.key,
       time: r.time ?? "",
-      title: `Round ${r.roundNumber}: ${r.name}`,
+      title: r.roundNumber === 1 ? `${KSS} and Round 1: ${r.name}` : `Round ${r.roundNumber}: ${r.name}`,
       detail: r.description,
-      meta:
-        [r.mode, r.maxPoints ? `Up to ${r.maxPoints} points` : null]
-          .filter(Boolean)
-          .join(". ") || null,
-    })),
-    {
-      key: "results",
-      time: RESULTS.time,
-      title: RESULTS.title,
-      detail: RESULTS.detail,
       meta: null,
-    },
+    })),
+    { key: "results", time: RESULTS.time, title: RESULTS.title, detail: RESULTS.detail, meta: null },
   ];
 
   // Items drop into the grid one by one, the arrow fills, and the winner appears.
@@ -452,37 +255,18 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         gsap
-          .timeline({
-            scrollTrigger: { trigger: el, start: "top 75%", once: true },
-          })
-          .from(el.querySelectorAll("[data-item]"), {
-            y: -28,
-            opacity: 0,
-            duration: 0.3,
-            ease: "bounce.out",
-            stagger: 0.15,
-          })
+          .timeline({ scrollTrigger: { trigger: el, start: "top 75%", once: true } })
+          .from(el.querySelectorAll("[data-item]"), { y: -28, opacity: 0, duration: 0.3, ease: "bounce.out", stagger: 0.15 })
           .fromTo(
             el.querySelector("[data-arrow]"),
             { clipPath: "inset(0 100% 0 0)" },
             { clipPath: "inset(0 0% 0 0)", duration: 0.3, ease: "steps(8)" },
           )
-          .from(el.querySelector("[data-result]"), {
-            scale: 0.3,
-            opacity: 0,
-            duration: 0.3,
-            ease: "back.out(2.2)",
-          })
+          .from(el.querySelector("[data-result]"), { scale: 0.3, opacity: 0, duration: 0.3, ease: "back.out(2.2)" })
           .fromTo(
             el.querySelectorAll("[data-sparkle]"),
             { scale: 0, opacity: 1 },
-            {
-              scale: 1.2,
-              opacity: 0,
-              duration: 0.6,
-              ease: "power2.out",
-              stagger: 0.06,
-            },
+            { scale: 1.2, opacity: 0, duration: 0.6, ease: "power2.out", stagger: 0.06 },
             "<0.1",
           );
       });
@@ -492,53 +276,25 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
   );
 
   return (
-    <section
-      ref={ref}
-      {...floorProps("briefing", "briefing-title")}
-      className={`${c.floor} ${s.briefing}`}
-    >
+    <section ref={ref} {...floorProps("briefing", "briefing-title")} className={`${c.floor} ${s.briefing}`}>
       <div className={`${c.wrap} ${s.grid}`}>
         <div ref={gui} className={s.gui}>
           <p className={s.guiLabel}>{BRIEFING.craftingLabel}</p>
           <div className={s.craftRow}>
-            <div
-              className={s.craftGrid}
-              role="group"
-              aria-label={BRIEFING.recipeLabel}
-            >
+            <div className={s.craftGrid} role="group" aria-label={BRIEFING.recipeLabel}>
               {grid.map((item, i) => (
-                <Slot
-                  key={item?.id ?? `empty-${i}`}
-                  item={item}
-                  active={active === item?.id}
-                  onShow={show}
-                  onHide={hide}
-                />
+                <Slot key={item?.id ?? `empty-${i}`} item={item} active={active === item?.id} onShow={show} onHide={hide} />
               ))}
             </div>
             <Arrow />
-            <Slot
-              item={winner}
-              result
-              active={active === winner.id}
-              onShow={show}
-              onHide={hide}
-            />
+            <Slot item={winner} result active={active === winner.id} onShow={show} onHide={hide} />
           </div>
 
           <p className={s.guiLabel}>{BRIEFING.inventoryLabel}</p>
           <ul className={s.inventory}>
             {inventory.map(({ item, caption, wide }) => (
-              <li
-                key={item.id}
-                className={wide ? `${s.invCell} ${s.invCellWide}` : s.invCell}
-              >
-                <Slot
-                  item={item}
-                  active={active === item.id}
-                  onShow={show}
-                  onHide={hide}
-                />
+              <li key={item.id} className={wide ? `${s.invCell} ${s.invCellWide}` : s.invCell}>
+                <Slot item={item} active={active === item.id} onShow={show} onHide={hide} />
                 <span className={s.caption}>{caption}</span>
               </li>
             ))}
@@ -549,12 +305,7 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
           <div className={s.textHead}>
             <div className={s.heads} aria-hidden="true">
               {HEADS.map((h) => (
-                <Sprite
-                  key={h.name}
-                  rows={h.rows}
-                  palette={h.palette}
-                  className={s.head}
-                />
+                <Sprite key={h.name} rows={h.rows} palette={h.palette} className={s.head} />
               ))}
             </div>
             <h2 id="briefing-title" className={s.title} data-title="">
@@ -564,7 +315,7 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
           <h3 className={c.vh}>{BRIEFING.circuitLabel}</h3>
           <ol className={s.steps}>
             {steps.map((st) => (
-              <li key={st.key} className={s.step}>
+              <li key={st.key} className={s.step} data-reveal="">
                 <p className={s.time}>{st.time}</p>
                 <p className={s.stepTitle}>{st.title}</p>
                 <p className={s.detail}>{st.detail}</p>
@@ -574,6 +325,7 @@ export function Briefing({ rounds }: { rounds: RoundView[] }) {
           </ol>
         </div>
       </div>
+
     </section>
   );
 }
