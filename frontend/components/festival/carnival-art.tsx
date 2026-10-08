@@ -5,6 +5,7 @@ export function CarnivalArt({ silhouette = false }: { silhouette?: boolean }) {
   const pink = silhouette ? "#160b26" : "#ff007f";
   const blue = silhouette ? "#160b26" : "#00e5ff";
   const gold = silhouette ? "#160b26" : "#ffd700";
+
   return (
     <svg
       viewBox="0 0 640 480"
@@ -75,8 +76,9 @@ export function CarnivalArt({ silhouette = false }: { silhouette?: boolean }) {
           <circle cx="217" cy="216" r="117" stroke={pink} strokeWidth="3" />
           {Array.from({ length: 12 }, (_, i) => {
             const angle = (i * Math.PI) / 6;
-            const x = 217 + Math.cos(angle) * 132;
-            const y = 216 + Math.sin(angle) * 132;
+            // Round floats to 2 decimal places to match server/client rendering
+            const x = Number((217 + Math.cos(angle) * 132).toFixed(2));
+            const y = Number((216 + Math.sin(angle) * 132).toFixed(2));
             return (
               <g key={i}>
                 <path
@@ -92,8 +94,8 @@ export function CarnivalArt({ silhouette = false }: { silhouette?: boolean }) {
                   stroke="none"
                 />
                 <rect
-                  x={x - 16}
-                  y={y - 5}
+                  x={Number((x - 16).toFixed(2))}
+                  y={Number((y - 5).toFixed(2))}
                   width="32"
                   height="27"
                   rx="8"
@@ -102,7 +104,7 @@ export function CarnivalArt({ silhouette = false }: { silhouette?: boolean }) {
                 />
                 {!silhouette && (
                   <path
-                    d={`M${x - 9} ${y + 3}h18`}
+                    d={`M${Number((x - 9).toFixed(2))} ${Number((y + 3).toFixed(2))}h18`}
                     stroke="#ffecbc"
                     strokeWidth="3"
                   />
@@ -199,10 +201,11 @@ export function Bunting() {
       />
       {Array.from({ length: 27 }, (_, i) => {
         const x = i * 56 - 7;
-        const y =
+        const rawY =
           x < 720
             ? 8 + 64 * Math.sin((x / 720) * Math.PI)
             : 8 + 64 * Math.sin(((x - 720) / 720) * Math.PI);
+        const y = Number(rawY.toFixed(2));
         return (
           <path
             key={i}

@@ -8,6 +8,39 @@ import {
 
 const event = getFestivalEvent("scotland-yard");
 
+export const EVENT_NAME = "Scotland Yard";
+
+export const floors = [
+  { id: "roof", label: "R", name: "The Roof" },
+  { id: "briefing", label: "5", name: "Inventing Room" },
+  { id: "cipher", label: "4", name: "Wrapping Room" },
+  { id: "chase", label: "3", name: "Factory Map" },
+  { id: "rounds", label: "2", name: "Tasting Hall" },
+  { id: "scores", label: "1", name: "Scoreboard" },
+  { id: "gate", label: "G", name: "Factory Gates" },
+] as const;
+
+export type FloorId = (typeof floors)[number]["id"];
+
+export const briefing = {
+  title: "The Recipe Is Missing",
+  body:
+    "Last night the factory's secret recipe vanished from the Inventing Room. The Chocolatier has called in squads of sharp-eyed ticket holders. Read the case file, follow the sticky fingerprints, and chase the thief through the factory before the trail melts away.",
+  facts: [
+    { k: "Format", v: "Squads of ticket holders" },
+    { k: "Rounds", v: "Three, each one sweeter" },
+    { k: "Goal", v: "Catch Mr. X, save the recipe" },
+  ],
+};
+
+export const cipher = { plain: "MEET BY THE CHOCOLATE RIVER", key: 5 };
+
+export const fallbackRounds = [
+  { roundNumber: 1, name: "The Missing Recipe", description: "Crack the wrapper codes and piece together what was stolen.", maxPoints: null as number | null },
+  { roundNumber: 2, name: "The Chocolate Chase", description: "Track Mr. X through the factory with a limited bag of tickets.", maxPoints: null as number | null },
+  { roundNumber: 3, name: "The Final Unwrapping", description: "Question the suspects, match the evidence, unmask the thief.", maxPoints: null as number | null },
+];
+
 export const eventFacts = [
   { label: "Date", value: formatEventDate(event) },
   { label: "Timings", value: formatEventTime(event) },

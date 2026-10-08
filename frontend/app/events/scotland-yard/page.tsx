@@ -3,7 +3,7 @@ import { getEvents, getMegaEvent, getOverallLeaderboard, getRoundLeaderboard, ge
 import { isUuid } from "@/lib/api/client";
 import type { PublicEvent } from "@/lib/api/types";
 import styles from "./scotland-yard.module.css";
-//import { EVENT_NAME, fallbackRounds } from "./content";
+import { EVENT_NAME, fallbackRounds } from "./content";
 import Briefing from "./_components/Briefing";
 import ChaseBoard from "./_components/ChaseBoard";
 import CipherMachine from "./_components/CipherMachine";
@@ -11,10 +11,11 @@ import FactoryShell from "./_components/FactoryShell";
 import { Slab } from "./_components/Floor";
 import Gate, { type GateFact } from "./_components/Gate";
 import Roof from "./_components/Roof";
-import SceneEffects from "./_components/SceneEffects";
-import SvgDefs from "./_components/SvgDefs";
-import Thames from "./_components/Thames";
-import TorchToggle from "./_components/TorchToggle";
+import Rounds from "./_components/Rounds";
+import Scoreboard, { type Board } from "./_components/Scoreboard";
+import Symbols from "./_components/Symbols";
+import { EventNavbar } from "@/components/navigation/event-navbar";
+import { REGISTRATION_URL } from "@/data/registration";
 
 export const metadata: Metadata = {
   title: "Scotland Yard 2026 · ISTE",
@@ -59,37 +60,49 @@ export default async function ScotlandYardPage() {
   ];
 
   return (
-    <FactoryShell rootClass={styles.root}>
-      {/* Without JavaScript nothing can turn the lights on, so never show the dark overlay. */}
-      <noscript>
-        <style>{"#sy-root .torch, #sy-root .casebar, #sy-root .switch { display: none !important; }"}</style>
-      </noscript>
-      <div className="progress-string" aria-hidden="true" />
-      <BackgroundScene />
-      <SvgDefs />
+    <>
+      <EventNavbar
+        event="scotland-yard"
+        label="Scotland Yard"
+        topHref="#roof"
+        homeHref="/#chamber-scotland-yard"
+        items={[
+          { label: "The Case", href: "#briefing" },
+          { label: "Cipher", href: "#cipher" },
+          { label: "Factory Map", href: "#chase" },
+          { label: "Rounds", href: "#rounds" },
+          { label: "Standings", href: "#scores" },
+          { label: "Tickets", href: "#gate" },
+        ]}
+        action={{ label: "Register", href: REGISTRATION_URL, external: true }}
+      />
+      <FactoryShell rootClass={styles.root}>
+        {/* Without JavaScript nothing can turn the lights on, so never show the dark overlay. */}
+        <noscript>
+          <style>{"#sy-root .torch, #sy-root .casebar, #sy-root .switch { display: none !important; }"}</style>
+        </noscript>
+        <Symbols />
+        <div className="tower">
+          <div className="pipe l" aria-hidden="true" />
+          <div className="pipe r" aria-hidden="true" />
+          <div className="vent" style={{ left: 8, top: 340 }} aria-hidden="true"><span /><span /><span /></div>
+          <div className="vent" style={{ right: 4, top: 1900 }} aria-hidden="true"><span /><span /><span /></div>
 
-      <ClueProvider>
-        <Masthead />
-        <main className="building" aria-label="The Yard, floor by floor">
-          <Pipes />
           <Roof />
-          <Floors />
-          <Thames />
-          <Dock />
-        </main>
-        <CipherWheel />
-        <CaseFile />
-        <footer>
-          <div className="fp-row" aria-hidden="true">
-            <svg><use href="#fp" /></svg><svg><use href="#fp" /></svg><svg><use href="#fp" /></svg>
-          </div>
-          ISTE · Scotland Yard: The Ultimate Mystery Challenge
-          <p className="credit">Website designed and made by <span>Ishaan Roy</span></p>
-        </footer>
-        <TorchToggle />
-      </ClueProvider>
-
-      <SceneEffects />
-    </div>
+          <Slab />
+          <Briefing />
+          <Slab />
+          <CipherMachine />
+          <Slab />
+          <ChaseBoard />
+          <Slab />
+          <Rounds rounds={rounds?.length ? rounds : fallbackRounds} live={!!rounds?.length} />
+          <Slab />
+          <Scoreboard boards={boards} online={!!event} />
+          <Slab />
+          <Gate facts={facts} />
+        </div>
+      </FactoryShell>
+    </>
   );
 }
