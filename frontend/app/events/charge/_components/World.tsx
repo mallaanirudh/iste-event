@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef } from "react";
 import { EVENT, REGISTER_URL, WORLD } from "../_data/content";
-import { gsap, MQ, prefersReducedMotion, useGSAP } from "../_lib/gsap";
+import { gsap, MQ, prefersReducedMotion, ScrollTrigger, useGSAP } from "../_lib/gsap";
 import { HEADS, SpriteRects, type Palette } from "../_lib/sprite";
 import { floorProps } from "../_lib/tokens";
 import { BODY, LEFT_ARM, LEGS, RIGHT_ARM, TORSO } from "./BeaconScene";
@@ -43,8 +43,10 @@ function BeaconBlock({ x, y, size, beam = 0 }: { x: number; y: number; size: num
     <g>
       {beam ? (
         <g className={s.beam}>
-          <rect x={x + 6 * u} y={y + 3 * u - beam} width={4 * u} height={beam} fill="url(#ptb-night-beam)" />
-          <rect x={x + 7.3 * u} y={y + 3 * u - beam} width={1.4 * u} height={beam} fill="#f2feff" />
+          <g data-beacon-beam="">
+            <rect x={x + 6 * u} y={y + 3 * u - beam} width={4 * u} height={beam} fill="url(#ptb-night-beam)" />
+            <rect x={x + 7.3 * u} y={y + 3 * u - beam} width={1.4 * u} height={beam} fill="#f2feff" />
+          </g>
         </g>
       ) : null}
       {/* Obsidian base, inside the glass. */}
@@ -52,9 +54,11 @@ function BeaconBlock({ x, y, size, beam = 0 }: { x: number; y: number; size: num
       <polygon points={P([[2, 12], [8, 15], [8, 18], [2, 15]])} fill="#1b1030" />
       <polygon points={P([[8, 15], [14, 12], [14, 15], [8, 18]])} fill="#2a1a46" />
       {/* The core. */}
-      <polygon points={P([[5, 8], [8, 9.5], [11, 8], [8, 6.5]])} fill="#e6feff" />
-      <polygon points={P([[5, 8], [8, 9.5], [8, 13], [5, 11.5]])} fill="#5ef2ff" />
-      <polygon points={P([[8, 9.5], [11, 8], [11, 11.5], [8, 13]])} fill="#2fc7d6" />
+      <g data-beacon-core="">
+        <polygon points={P([[5, 8], [8, 9.5], [11, 8], [8, 6.5]])} fill="#e6feff" />
+        <polygon points={P([[5, 8], [8, 9.5], [8, 13], [5, 11.5]])} fill="#5ef2ff" />
+        <polygon points={P([[8, 9.5], [11, 8], [11, 11.5], [8, 13]])} fill="#2fc7d6" />
+      </g>
       {/* Glass faces and edges. */}
       <polygon points={P([[0, 4], [8, 8], [16, 4], [8, 0]])} fill="#bff3ff" fillOpacity="0.35" stroke="#e8fdff" strokeWidth={u * 0.7} />
       <polygon points={P([[0, 4], [8, 8], [8, 18], [0, 14]])} fill="#9fe6f5" fillOpacity="0.28" stroke="#e8fdff" strokeWidth={u * 0.7} />
@@ -194,9 +198,9 @@ function Camp({ ground }: { ground: number }) {
     { x: 776, p: 2 },
   ];
   return (
-    <g>
+    <g data-beacon="">
       {/* A soft pool of beacon light on the grass. */}
-      <ellipse cx={beaconX + 16} cy={ground + 2} rx="150" ry="14" fill="#5ef2ff" opacity="0.12" />
+      <ellipse data-beacon-pool="" cx={beaconX + 16} cy={ground + 2} rx="150" ry="14" fill="#5ef2ff" opacity="0.12" />
       <BeaconBlock x={beaconX} y={ground - 36} size={32} beam={ground + 40} />
       {spots.map(({ x, p }) => (
         <g key={x} transform={`translate(${x} ${ground - 30 * PX}) scale(${PX})`}>
@@ -248,11 +252,33 @@ export function World() {
   const ticket = useRef<HTMLDivElement>(null);
   const threads = useRef<(SVGLineElement | null)[]>([]);
 
-  // Depth parallax of the hills as the floor scrolls in.
+  // Depth parallax of the hills as the floor scrolls in; the moon clears its clouds on the way
+  // down, and the beacon waits 2 s once it is on screen, then lights up from the core.
+  // Without motion everything simply renders lit and clear.
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
+        const q = gsap.utils.selector(ref);
+        gsap
+          .timeline({ scrollTrigger: { trigger: ref.current, start: "top 60%", end: "max", scrub: 1 } })
+          .to(q("[data-moon-cloud]"), { xPercent: (i: number) => (i ? 80 : -80), opacity: 0.25, ease: "power1.inOut", duration: 1.2 }, 0)
+          .fromTo(q("[data-moon-face]"), { filter: "brightness(0.4)" }, { filter: "brightness(1)", ease: "power1.in" }, 0.3)
+          .fromTo(q("[data-moon-halo]"), { opacity: 0 }, { opacity: 1, ease: "power1.in" }, 0.5);
+
+        const lightUp = gsap
+          .timeline({ paused: true })
+          .from(q("[data-beacon-core]"), { opacity: 0.2, duration: 1.4, ease: "power1.inOut" })
+          .from(q("[data-beacon-pool]"), { opacity: 0, duration: 1.8, ease: "power1.inOut" }, 0.5)
+          .from(q("[data-beacon-beam]"), { scaleY: 0, transformOrigin: "50% 100%", duration: 2.6, ease: "power2.inOut" }, 0.7);
+        ScrollTrigger.create({
+          trigger: q("[data-beacon]")[0],
+          // clamp(): the hills' parallax starts the beacon lower than it ends, past the last scroll.
+          start: "clamp(bottom 92%)",
+          once: true,
+          onEnter: () => gsap.delayedCall(2, () => lightUp.play()),
+        });
+
         gsap.utils.toArray<SVGGElement>("[data-world-depth]", ref.current!).forEach((g) => {
           gsap.fromTo(
             g,
@@ -381,7 +407,12 @@ export function World() {
         {WORLD.band}
       </h2>
       <Overworld />
-      <span className={s.moon} aria-hidden="true" />
+      <span className={s.moon} aria-hidden="true">
+        <span className={s.moonHalo} data-moon-halo="" />
+        <span className={s.moonFace} data-moon-face="" />
+        <span className={`${s.moonCloud} ${s.moonCloudA}`} data-moon-cloud="" />
+        <span className={`${s.moonCloud} ${s.moonCloudB}`} data-moon-cloud="" />
+      </span>
 
       <div className={s.hang}>
         <div ref={rig} className={s.rig}>

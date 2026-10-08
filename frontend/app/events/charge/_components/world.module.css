@@ -265,13 +265,63 @@
   right: calc(var(--pillar) + clamp(18px, 9vw, 160px));
   width: clamp(44px, 6vw, 80px);
   aspect-ratio: 1;
+}
+
+.moonHalo,
+.moonFace {
+  position: absolute;
+  inset: 0;
+}
+
+.moonHalo {
+  box-shadow:
+    0 0 0 clamp(8px, 1vw, 14px) rgb(232 236 245 / 0.12),
+    0 0 60px 10px rgb(232 236 245 / 0.18);
+}
+
+.moonFace {
   background:
     linear-gradient(#c9cfdc 0 0) 22% 24% / 22% 22% no-repeat,
     linear-gradient(#c9cfdc 0 0) 66% 64% / 16% 16% no-repeat,
     linear-gradient(#d8dde8 0 0) 70% 20% / 12% 12% no-repeat,
     #e8ecf5;
-  box-shadow:
-    0 0 0 clamp(8px, 1vw, 14px) rgb(232 236 245 / 0.12),
-    0 0 60px 10px rgb(232 236 245 / 0.18);
   image-rendering: pixelated;
+}
+
+/* Two blocky clouds in front of the moon. They hide it until the floor scrolls in (World.tsx
+   drifts them apart); without motion they rest off to the sides and the moon is clear. */
+.moonCloud {
+  --c: #3a3266;
+  position: absolute;
+  background:
+    linear-gradient(var(--c) 0 0) 50% 0 / 70% 50% no-repeat,
+    linear-gradient(var(--c) 0 0) 0 100% / 100% 50% no-repeat;
+  filter: drop-shadow(0 4px 0 rgb(13 10 36 / 0.35));
+}
+
+.moonCloudA {
+  top: -8%;
+  left: -60%;
+  width: 200%;
+  height: 64%;
+}
+
+.moonCloudB {
+  --c: #322b5a;
+  top: 44%;
+  left: -50%;
+  width: 190%;
+  height: 66%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moonCloudA {
+    transform: translateX(-80%);
+    opacity: 0.25;
+  }
+
+  .moonCloudB {
+    transform: translateX(80%);
+    opacity: 0.25;
+  }
 }
