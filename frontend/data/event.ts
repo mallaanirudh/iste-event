@@ -1,7 +1,7 @@
-// Replace with the live Tally form link before publishing.
-export const TALLY_FORM_URL = 'https://tally.so/'
+export { REGISTRATION_URL } from './registration'
 
-export const EVENT_START_ISO = '2026-10-13T00:00:00+05:30'
+import { getFestivalEvent } from './festival-schedule'
+export const EVENT_START_ISO = getFestivalEvent('clutch').sessions[0].startsAt
 
 export const ORGANIZERS = [
   { name: 'Gamana Shenthar', phone: '+91 83174 31152', tel: '+918317431152' },

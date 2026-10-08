@@ -1,0 +1,341 @@
+/* Each selector is enabled by its stable review number in design-refinements.ts. */
+
+/* 1 — Quieter navigation, preserving the Aero-inspired scroll behavior. */
+.festival[data-ui-refinements~="1"] .festival-navbar-links {
+  gap: clamp(16px, 1.8vw, 24px);
+}
+.festival[data-ui-refinements~="1"]
+  .festival-navbar-links
+  > a:not(.festival-navbar-ticket) {
+  position: relative;
+  font-weight: 700;
+}
+.festival[data-ui-refinements~="1"]
+  .festival-navbar-links
+  > a:not(.festival-navbar-ticket)::after {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: #e9cb80;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.festival[data-ui-refinements~="1"]
+  .festival-navbar-links
+  > a[aria-current="location"]::after {
+  transform: scaleX(1);
+}
+.festival[data-ui-refinements~="1"]
+  .festival-navbar-links
+  .festival-navbar-ticket {
+  min-height: 44px;
+  padding-inline: 12px;
+  border-color: #a68a56;
+  border-radius: 4px;
+  font-size: 11px;
+  background: transparent;
+}
+.festival[data-ui-refinements~="1"] .festival-navbar-ticket .lucide-ticket {
+  display: none;
+}
+.festival[data-ui-refinements~="1"]
+  .festival-navbar-links
+  .festival-navbar-ticket:hover {
+  background: #ffd700;
+  color: #241037;
+}
+
+/* 2 — Fredoka headings and Nunito body text throughout the homepage. */
+.festival[data-ui-refinements~="2"] .festival-heading {
+  font-family: var(--font-festival-title), var(--font-nunito), sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.festival[data-ui-refinements~="2"] h2.festival-heading {
+  font-size: clamp(1.65rem, 2.8vw, 2.4rem);
+}
+.festival[data-ui-refinements~="2"] h3.festival-heading {
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+}
+.festival[data-ui-refinements~="2"] .festival-title {
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+}
+
+/* 3 — Muted gold furniture, with yellow reserved for calls to action. */
+.festival[data-ui-refinements~="3"]
+  :is(.festival-noticeboard, .festival-dialog) {
+  border-color: #876b46;
+  border-width: 2px;
+  box-shadow: 4px 5px 0 #140a24;
+}
+.festival[data-ui-refinements~="3"] .festival-noticeboard::before {
+  border-color: #a68a5630;
+}
+.festival[data-ui-refinements~="3"] .festival-noticeboard::after {
+  opacity: 0.65;
+}
+.festival[data-ui-refinements~="3"]
+  :is(.festival-chamber:hover, .festival-chamber:focus-within) {
+  border-color: #c2a469;
+}
+.festival[data-ui-refinements~="3"] .festival-chamber-sign {
+  border-color: color-mix(in srgb, var(--chamber-color) 20%, #876b46);
+}
+.festival[data-ui-refinements~="3"] .festival-card-label,
+.festival[data-ui-refinements~="3"] .festival-card-label > span {
+  color: #e9cb80;
+}
+.festival[data-ui-refinements~="3"] .festival-featured-button {
+  background: #ffd700;
+  color: #241037;
+}
+.festival[data-ui-refinements~="3"] .festival-countdown-cell {
+  border-color: #a68a5660;
+  color: #e9cb80;
+}
+
+/* 4 — Sparse static stars around the entrance, clear space below. */
+.festival[data-ui-refinements~="4"] .festival-stars {
+  bottom: auto;
+  height: min(860px, 100svh);
+  background-size:
+    210px 260px,
+    340px 380px;
+  opacity: 0.4;
+  mask-image: linear-gradient(#000 0%, #0008 55%, transparent 100%);
+}
+
+/* 5 — Slimmer gate frames; SVG bar and ornament details share this switch. */
+.festival[data-ui-refinements~="5"] .festival-entrance-gate {
+  width: clamp(112px, 12vw, 160px);
+}
+
+/* 6 — Equal-sized, event-specific illustration scenes. */
+.festival[data-ui-refinements~="6"]
+  .festival-chamber-scene
+  .festival-chamber-art {
+  display: block;
+  max-width: 300px;
+  height: 180px;
+  margin-inline: auto;
+}
+
+/* 7 — Comfortable descriptions and fewer small, spaced uppercase labels. */
+.festival[data-ui-refinements~="7"] .festival-description {
+  max-width: 38ch;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.75;
+}
+.festival[data-ui-refinements~="7"] .festival-chamber .festival-description {
+  margin-inline: auto;
+}
+.festival[data-ui-refinements~="7"]
+  :is(.festival-kicker, .festival-card-label, .festival-chamber-index) {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+.festival[data-ui-refinements~="7"] .festival-chamber-theme {
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+.festival[data-ui-refinements~="7"] .festival-chamber-discipline {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.festival[data-ui-refinements~="7"]
+  :is(.festival-sample-note, .festival-event-date) {
+  font-size: 11px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+/* 8 — Compact scoreboard with consistently aligned names and scores. */
+.festival[data-ui-refinements~="8"] .festival-scoreboard {
+  overflow: hidden;
+  border: 1px solid #876b4650;
+  border-radius: 4px;
+  background: #1d102e;
+}
+.festival[data-ui-refinements~="8"] .festival-scoreboard-header,
+.festival[data-ui-refinements~="8"] .festival-scoreboard-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding-inline: 12px;
+}
+.festival[data-ui-refinements~="8"] .festival-scoreboard-header {
+  padding-block: 12px;
+  color: #bda4d1;
+  font-size: 10px;
+  font-weight: 700;
+}
+.festival[data-ui-refinements~="8"] .festival-scoreboard-row {
+  min-height: 66px;
+  padding-block: 10px;
+  border-top: 1px solid #876b4630;
+}
+.festival[data-ui-refinements~="8"] .festival-scoreboard-row:nth-child(odd) {
+  background: #35204466;
+}
+.festival[data-ui-refinements~="8"] .festival-scoreboard-rank {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--medal-color);
+  font-size: 12px;
+  font-weight: 800;
+}
+.festival[data-ui-refinements~="8"] .festival-scoreboard-name {
+  color: #fff5df;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.festival[data-ui-refinements~="8"] .festival-scoreboard-domain {
+  margin-top: 2px;
+  color: #bda4d1;
+  font-size: 11px;
+}
+.festival[data-ui-refinements~="8"] .festival-scoreboard-points {
+  color: #e9cb80;
+  font-size: 15px;
+  font-weight: 800;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 9 — One motion language for buttons; shadows stay static. */
+.festival[data-ui-refinements~="9"]
+  :is(.festival-button, .festival-text-button, .festival-navbar-ticket) {
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.22s,
+    color 0.22s;
+}
+.festival[data-ui-refinements~="9"]
+  :is(.festival-button, .festival-text-button, .festival-navbar-ticket)
+  :is(.lucide-arrow-right, .lucide-arrow-up-right) {
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .festival[data-ui-refinements~="9"]
+    :is(
+      .festival-button,
+      .festival-text-button,
+      .festival-navbar-ticket
+    ):hover {
+    transform: translateY(-2px);
+  }
+  .festival[data-ui-refinements~="9"]
+    :is(.festival-button, .festival-text-button, .festival-navbar-ticket):hover
+    :is(.lucide-arrow-right, .lucide-arrow-up-right) {
+    transform: translateX(2px);
+  }
+}
+.festival[data-ui-refinements~="9"]
+  :is(.festival-button, .festival-text-button, .festival-navbar-ticket):active {
+  transform: translateY(1px) scale(0.98);
+}
+@media (prefers-reduced-motion: reduce) {
+  .festival[data-ui-refinements~="9"]
+    :is(.festival-button, .festival-text-button, .festival-navbar-ticket),
+  .festival[data-ui-refinements~="9"]
+    :is(.festival-button, .festival-text-button, .festival-navbar-ticket):is(
+      :hover,
+      :active
+    ),
+  .festival[data-ui-refinements~="9"]
+    :is(.festival-button, .festival-text-button, .festival-navbar-ticket)
+    :is(.lucide-arrow-right, .lucide-arrow-up-right),
+  .festival[data-ui-refinements~="9"]
+    :is(.festival-button, .festival-text-button, .festival-navbar-ticket):is(
+      :hover,
+      :active
+    )
+    :is(.lucide-arrow-right, .lucide-arrow-up-right) {
+    transform: none;
+  }
+}
+
+/* 10 — One closing message, one primary action and a tidy social row. */
+.festival[data-ui-refinements~="10"] .festival-footer-refined {
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid #876b4640;
+  background: #211030;
+}
+.festival[data-ui-refinements~="10"] .festival-footer-skyline {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  width: min(720px, 100%);
+  transform: translateX(-50%);
+  opacity: 0.3;
+  pointer-events: none;
+}
+.festival[data-ui-refinements~="10"] .festival-footer-main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 56px 20px 32px;
+  text-align: center;
+}
+.festival[data-ui-refinements~="10"] .festival-footer-main h2 {
+  max-width: 680px;
+}
+.festival[data-ui-refinements~="10"] .festival-footer-socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 24px;
+}
+.festival[data-ui-refinements~="10"] .festival-footer-socials a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+  color: #cbb9da;
+  font-size: 12px;
+  font-weight: 700;
+  transition: color 0.2s;
+}
+.festival[data-ui-refinements~="10"] .festival-footer-socials a:hover {
+  color: #ffd700;
+}
+.festival[data-ui-refinements~="10"] .festival-footer-bottom {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 24px;
+  max-width: 1136px;
+  margin-inline: auto;
+  padding: 16px 20px;
+  border-top: 1px solid #876b4630;
+  color: #bda4d1;
+  font-size: 11px;
+}
+.festival[data-ui-refinements~="10"] .festival-footer-bottom :is(a, button) {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}

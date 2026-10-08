@@ -66,7 +66,9 @@ export default function Intro({
     fill: 0,
   });
   const live = useRef({ muted, paused });
-  live.current = { muted, paused };
+  useEffect(() => {
+    live.current = { muted, paused };
+  }, [muted, paused]);
   const ac = useRef<AudioContext | null>(null);
   const pour = useRef<AudioBufferSourceNode | null>(null);
   const timers = useRef<number[]>([]);
@@ -170,19 +172,25 @@ export default function Intro({
   };
 
   useEffect(() => {
-    place(window.innerWidth * 0.14, window.innerHeight * 0.72);
+    place((root.current?.clientWidth ?? window.innerWidth) * 0.14, (root.current?.clientHeight ?? window.innerHeight) * 0.72);
+    const resize = () => place(
+      Math.max(16, Math.min(G.current.x, (root.current?.clientWidth ?? window.innerWidth) - 16)),
+      Math.max(16, Math.min(G.current.y, (root.current?.clientHeight ?? window.innerHeight) - 16)),
+    );
+    window.addEventListener("resize", resize);
     return () => {
+      window.removeEventListener("resize", resize);
       cancelAnimationFrame(mv.current);
       timers.current.forEach(clearTimeout);
       stopPour();
       void ac.current?.close();
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // When the briefing board closes, the arrow goes back to the door instead of jumping to the button.
   useEffect(() => {
-    if (!paused) place(window.innerWidth * 0.14, window.innerHeight * 0.72);
-  }, [paused]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!paused) place((root.current?.clientWidth ?? window.innerWidth) * 0.14, (root.current?.clientHeight ?? window.innerHeight) * 0.72);
+  }, [paused]);
 
   // ---- the pour: tank drains, flask fills with drops that land in it ----
   const win = () => {
@@ -235,8 +243,9 @@ export default function Intro({
 
   // ---- actions ----
   const move = (e: React.PointerEvent) => {
-    G.current.x = e.clientX;
-    G.current.y = e.clientY;
+    const bounds = root.current?.getBoundingClientRect();
+    G.current.x = e.clientX - (bounds?.left ?? 0);
+    G.current.y = e.clientY - (bounds?.top ?? 0);
     if (!mv.current)
       mv.current = requestAnimationFrame(() => {
         mv.current = 0;

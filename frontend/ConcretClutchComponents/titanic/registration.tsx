@@ -64,15 +64,9 @@ export function Registration() {
         </ul>
 
         <div className="mt-8 flex flex-col items-center gap-3 text-center">
-          {REGISTRATION_URL ? (
-            <WaxSealButton href={REGISTRATION_URL} external>
-              Open Captain&apos;s Form
-            </WaxSealButton>
-          ) : (
-            <p className="ink-border-soft hatch bg-parchment px-5 py-3 font-mono text-sm uppercase tracking-widest text-ink">
-              {'Registration form link dropping soon — watch this space'}
-            </p>
-          )}
+          <WaxSealButton href={REGISTRATION_URL} external>
+            Open Registration
+          </WaxSealButton>
           <p className="font-mono text-xs uppercase text-muted-foreground">Restricted to B.Tech 1st Year students</p>
         </div>
       </div>

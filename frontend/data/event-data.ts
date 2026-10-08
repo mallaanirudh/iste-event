@@ -1,7 +1,7 @@
-export const EVENT_DATE_ISO = '2026-10-24T10:00:00+05:30'
+import { getFestivalEvent } from './festival-schedule'
+export const EVENT_DATE_ISO = getFestivalEvent('concrete').sessions[0].startsAt
 
-/** Set to the live form URL once organizers publish it. */
-export const REGISTRATION_URL: string | null = null
+export { REGISTRATION_URL } from './registration'
 
 export type MiniGame = {
   id: number

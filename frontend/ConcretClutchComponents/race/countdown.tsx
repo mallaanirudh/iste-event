@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useScheduleClock } from '@/components/schedule/use-schedule-clock'
 
 function getParts(target: number, now: number) {
   const diff = Math.max(0, target - now)
@@ -17,13 +17,7 @@ function getParts(target: number, now: number) {
 
 export function Countdown({ target }: { target: string }) {
   const targetMs = new Date(target).getTime()
-  const [now, setNow] = useState<number | null>(null)
-
-  useEffect(() => {
-    setNow(Date.now())
-    const id = setInterval(() => setNow(Date.now()), 1000)
-    return () => clearInterval(id)
-  }, [])
+  const now = useScheduleClock()
 
   const { done, units } = getParts(targetMs, now ?? targetMs)
 

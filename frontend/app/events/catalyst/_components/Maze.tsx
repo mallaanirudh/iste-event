@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { EventNavbar } from "@/components/navigation/event-navbar";
 import { useEffect, useRef, useState } from "react";
 import styles from "../cata.module.css";
 import { BULLETINS, CODE_ORDER, CONTACT, TAUNTS } from "../_data/content";
@@ -8,7 +8,14 @@ import { buildMaze, C, H, W } from "../_lib/maze";
 import Board from "./Board";
 import Intro from "./Intro";
 import Locker from "./Locker";
-import TallyEmbed from "./TallyEmbed";
+import RegistrationTicket from "./RegistrationTicket";
+import { REGISTRATION_URL } from "@/data/registration";
+import { EventScheduleDetails } from "@/components/schedule/event-schedule-details";
+import {
+  formatEventDate,
+  formatEventTime,
+  getFestivalEvent,
+} from "@/data/festival-schedule";
 
 const WW = W * C;
 const WH = H * C;
@@ -29,7 +36,7 @@ const seeded = (seed: number) => () => {
   seed = (seed * 16807) % 2147483647;
   return seed / 2147483647;
 };
-const d = (i: number) => ({ "--i": i } as React.CSSProperties);
+const d = (i: number) => ({ "--i": i }) as React.CSSProperties;
 const pad = (n: number) => String(n).padStart(2, "0");
 const f1 = (n: number) => n.toFixed(1);
 
@@ -37,7 +44,7 @@ const f1 = (n: number) => n.toFixed(1);
 const L = 90;
 const RAYS = [0, 22.5, 45, 67.5, 90].map((a) => (a * Math.PI) / 180);
 const WEB_RAYS = RAYS.map(
-  (a) => `M0 0L${f1(Math.cos(a) * L)} ${f1(Math.sin(a) * L)}`
+  (a) => `M0 0L${f1(Math.cos(a) * L)} ${f1(Math.sin(a) * L)}`,
 ).join("");
 const WEB_RINGS = [0.28, 0.5, 0.72, 0.94]
   .map((f) =>
@@ -48,12 +55,12 @@ const WEB_RINGS = [0.28, 0.5, 0.72, 0.94]
           r = L * f,
           q = r * 0.8;
         return `M${f1(Math.cos(a) * r)} ${f1(Math.sin(a) * r)}Q${f1(
-          Math.cos(m) * q
+          Math.cos(m) * q,
         )} ${f1(Math.sin(m) * q)} ${f1(Math.cos(b) * r)} ${f1(
-          Math.sin(b) * r
+          Math.sin(b) * r,
         )}`;
       })
-      .join("")
+      .join(""),
   )
   .join("");
 const SPIDER_LEGS =
@@ -153,7 +160,7 @@ type World = ReturnType<typeof buildWorld>;
 
 const bulletinCell = (w: World, i: number) =>
   w.M.path[
-    Math.round(((i + 1) * (w.M.path.length - 1)) / (BULLETINS.length + 1))
+  Math.round(((i + 1) * (w.M.path.length - 1)) / (BULLETINS.length + 1))
   ];
 
 function hit(segs: number[][], x: number, y: number) {
@@ -177,6 +184,7 @@ type Fly = { t: string; x0: number; y0: number; x1: number; y1: number } | null;
 
 export default function Maze() {
   const stage = useRef<HTMLDivElement>(null);
+  const touchPointer = useRef<number | null>(null);
   const worldEl = useRef<HTMLDivElement>(null);
   const flaskEl = useRef<HTMLDivElement>(null);
   const flaskSvg = useRef<SVGSVGElement>(null);
@@ -188,7 +196,7 @@ export default function Maze() {
   const rec = useRef<HTMLSpanElement>(null);
   const secs = useRef(0);
   const au = useRef<ReturnType<typeof createAudio> | null>(null);
-  const closeRef = useRef<() => void>(() => {});
+  const closeRef = useRef<() => void>(() => { });
   const st = useRef({
     fx: C / 2,
     fy: C / 2,
@@ -213,21 +221,46 @@ export default function Maze() {
   const [muted, setMuted] = useState(false);
   const [phase, setPhase] = useState<"intro" | "maze">("intro");
   const [boardOpen, setBoardOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const detailsTarget = useRef<string | null>(null);
+
+  function showDetails(id: string) {
+    detailsTarget.current = id;
+    setPlain(true);
+  }
+  useEffect(() => {
+    if (!plain || !detailsTarget.current) return;
+    const frame = requestAnimationFrame(() => {
+      const target = document.getElementById(detailsTarget.current!);
+      if (target) {
+        target.scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+            .matches
+            ? "instant"
+            : "smooth",
+        });
+        target.focus({ preventScroll: true });
+      }
+      detailsTarget.current = null;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [plain]);
 
   // New random maze and code on every page load (browser only, so no hydration mismatch).
   // The intro restarts do not touch this, so the maze and code stay the same.
   useEffect(() => {
-    setWorld(buildWorld());
+    const frame = requestAnimationFrame(() => setWorld(buildWorld()));
+    return () => cancelAnimationFrame(frame);
   }, []);
   useEffect(() => {
     au.current = createAudio();
     return () => au.current?.stop();
   }, []);
   useEffect(() => {
-    au.current?.mute(muted || plain || unlocked);
-  }, [muted, plain, unlocked]);
+    au.current?.mute(muted || plain || unlocked || menuOpen);
+  }, [muted, plain, unlocked, menuOpen]);
   useEffect(() => {
-    const locked = open !== null || boardOpen;
+    const locked = open !== null || boardOpen || menuOpen;
     const g = st.current;
     g.lock = locked;
     // when the board or a popup closes, park the aim on the flask so it doesn't run to where the mouse was
@@ -235,7 +268,7 @@ export default function Maze() {
       g.px = g.fx - g.cx;
       g.py = g.fy - g.cy;
     }
-  }, [open, boardOpen]);
+  }, [open, boardOpen, menuOpen]);
   useEffect(() => {
     if (unlocked && !muted) au.current?.victory();
   }, [unlocked]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -263,7 +296,7 @@ export default function Maze() {
       const s = secs.current;
       if (rec.current)
         rec.current.textContent = `${pad(Math.floor(s / 3600))}:${pad(
-          Math.floor(s / 60) % 60
+          Math.floor(s / 60) % 60,
         )}:${pad(s % 60)}`;
     }, 1000);
     return () => clearInterval(id);
@@ -298,7 +331,7 @@ export default function Maze() {
         if (dist > 1) {
           const step = Math.min(
             dist,
-            Math.min(MAX_SPEED, Math.max(MIN_SPEED, dist * GAIN)) * dt
+            Math.min(MAX_SPEED, Math.max(MIN_SPEED, dist * GAIN)) * dt,
           );
           const n = Math.ceil(step / 6),
             sx = (dx / dist) * (step / n),
@@ -318,7 +351,7 @@ export default function Maze() {
         g.tilt += (target - g.tilt) * Math.min(1, dt * 9);
         flaskSvg.current?.style.setProperty(
           "rotate",
-          `${g.tilt.toFixed(2)}deg`
+          `${g.tilt.toFixed(2)}deg`,
         );
       }
 
@@ -339,9 +372,9 @@ export default function Maze() {
             g.grace = 3;
             const p = respawn.reduce((a, b) =>
               Math.hypot(a.x - g.fx, a.y - g.fy) >
-              Math.hypot(b.x - g.fx, b.y - g.fy)
+                Math.hypot(b.x - g.fx, b.y - g.fy)
                 ? a
-                : b
+                : b,
             );
             g.zx = p.x;
             g.zy = p.y;
@@ -362,11 +395,11 @@ export default function Maze() {
       const near = clamp(
         1 - Math.hypot(lk.x - g.fx, lk.y - g.fy) / (C * 3.5),
         0,
-        1
+        1,
       );
       const fear = Math.max(
         near * near,
-        g.grace > 0 ? 0 : clamp(1 - zd / (C * 1.5), 0, 1)
+        g.grace > 0 ? 0 : clamp(1 - zd / (C * 1.5), 0, 1),
       );
       el.style.setProperty("--heat", fear.toFixed(3));
       au.current?.update(dt, near, fear);
@@ -385,9 +418,22 @@ export default function Maze() {
   }, [plain, world, phase]);
 
   const aim = (e: React.PointerEvent) => {
+    if (
+      st.current.lock ||
+      (e.pointerType !== "mouse" && touchPointer.current !== e.pointerId)
+    )
+      return;
     const r = e.currentTarget.getBoundingClientRect();
     st.current.px = e.clientX - r.left;
     st.current.py = e.clientY - r.top;
+  };
+  const stopTouch = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (touchPointer.current !== e.pointerId) return;
+    touchPointer.current = null;
+    st.current.px = st.current.fx - st.current.cx;
+    st.current.py = st.current.fy - st.current.cy;
+    if (e.currentTarget.hasPointerCapture(e.pointerId))
+      e.currentTarget.releasePointerCapture(e.pointerId);
   };
   const glowText = (e: React.PointerEvent) => {
     card.current?.style.setProperty("--mx", `${e.clientX}px`);
@@ -406,7 +452,7 @@ export default function Maze() {
     g.cy = clamp(
       p.y - el.clientHeight / 2,
       0,
-      Math.max(0, WH - el.clientHeight)
+      Math.max(0, WH - el.clientHeight),
     );
     g.px = p.x - g.cx;
     g.py = p.y - g.cy;
@@ -460,110 +506,153 @@ export default function Maze() {
     }
     setOpen(null);
   };
-  closeRef.current = close;
+  useEffect(() => {
+    closeRef.current = close;
+  });
 
-  if (!world) return <div className={styles.stage} />;
+  const navigation = (
+    <EventNavbar
+      event="catalyst"
+      label="Catalyst"
+      topHref="#catalyst-top"
+      homeHref="/#chamber-catalyst-sq1"
+      items={
+        plain
+          ? [
+            { label: "Back to maze", onSelect: () => setPlain(false) },
+            { label: "Briefing", href: "#catalyst-briefing" },
+          ]
+          : [
+            {
+              label: "Event details",
+              onSelect: () => showDetails("catalyst-briefing"),
+            },
+          ]
+      }
+      action={{ label: "Register", href: REGISTRATION_URL, external: true }}
+      onMenuChange={setMenuOpen}
+    />
+  );
+
+  if (!world)
+    return (
+      <>
+        {navigation}
+        <div className={styles.stage}>
+          <div className="mx-auto max-w-xl px-5 pt-16 text-center text-[#e8f5db]">
+            <h1 className="text-xl font-bold">LABLOCK: Escape the Lab</h1>
+            <EventScheduleDetails
+              eventId="catalyst"
+              className="mt-4 text-sm font-semibold leading-relaxed"
+            />
+          </div>
+        </div>
+      </>
+    );
 
   const frags = CODE_ORDER.map((id, i) =>
-    seen.includes(id) ? String(world.code[i]) : "?"
+    seen.includes(id) ? String(world.code[i]) : "?",
   );
 
   if (plain) {
     return (
-      <main className={styles.pg}>
-        <div className={styles.pgBar}>
-          <button
-            type="button"
-            className={styles.btn}
-            onClick={() => setPlain(false)}
+      <>
+        {navigation}
+        <main className={styles.pg}>
+          <header
+            id="catalyst-briefing"
+            tabIndex={-1}
+            className={styles.pgHero}
           >
-            ← Back to the maze
-          </button>
-          <a href="#register" className={`${styles.btn} ${styles.pgGo}`}>
-            Register ↓
-          </a>
-        </div>
+            <p className={styles.pgPre}>ISTE Catalyst presents</p>
+            <h1>LABLOCK: Escape the Lab</h1>
+            <p className={styles.pgLede}>
+              A Chemical Engineering escape room. Diagnose a simulated process
+              emergency, stabilise the plant and find the shutdown code.
+            </p>
+            <a
+              href="https://Feisteval-2026.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.pgCta}
+            >
+              Register your team
+            </a>
+          </header>
 
-        <header className={styles.pgHero}>
-          <p className={styles.pgPre}>ISTE Catalyst presents</p>
-          <h1>LABLOCK: Escape the Lab</h1>
-          <p className={styles.pgLede}>
-            A Chemical Engineering escape room. Diagnose a simulated process
-            emergency, stabilise the plant and find the shutdown code.
-          </p>
-          <a href="#register" className={styles.pgCta}>
-            Register your team
-          </a>
-        </header>
+          <div className={styles.pgBody}>
+            <ul className={styles.pgFacts}>
+              <li>
+                <b>Date</b>
+                <span>
+                  {formatEventDate(getFestivalEvent("catalyst"))}
+                  <br />
+                  {formatEventTime(getFestivalEvent("catalyst"))}
+                </span>
+              </li>
+              <li>
+                <b>Team size</b>
+                <span>2–3 people</span>
+              </li>
+              <li>
+                <b>Open to</b>
+                <span>B.Tech 1st years</span>
+              </li>
+              <li>
+                <b>Duration</b>
+                <span>~120 minutes</span>
+              </li>
+            </ul>
 
-        <div className={styles.pgBody}>
-          <ul className={styles.pgFacts}>
-            <li>
-              <b>Date</b>
-              <span>Fri, 16 Oct 2026</span>
-            </li>
-            <li>
-              <b>Team size</b>
-              <span>2–3 people</span>
-            </li>
-            <li>
-              <b>Open to</b>
-              <span>B.Tech 1st years</span>
-            </li>
-            <li>
-              <b>Duration</b>
-              <span>~120 minutes</span>
-            </li>
-          </ul>
+            <ol className={styles.pgFlow} aria-label="How the event runs">
+              <li>
+                <i>1</i>Briefing
+              </li>
+              <li>
+                <i>2</i>Round 1<small>Process Diagnosis</small>
+              </li>
+              <li>
+                <i>3</i>Round 2<small>Process Stabilization</small>
+              </li>
+              <li>
+                <i>4</i>Results
+              </li>
+            </ol>
 
-          <ol className={styles.pgFlow} aria-label="How the event runs">
-            <li>
-              <i>1</i>Briefing
-            </li>
-            <li>
-              <i>2</i>Round 1<small>Process Diagnosis</small>
-            </li>
-            <li>
-              <i>3</i>Round 2<small>Process Stabilization</small>
-            </li>
-            <li>
-              <i>4</i>Results
-            </li>
-          </ol>
+            <div className={styles.pgGrid}>
+              {BULLETINS.map((b, i) => (
+                <section key={b.id} className={styles.pgCard}>
+                  <span className={styles.pgNum}>{pad(i + 1)}</span>
+                  <h2>{b.title}</h2>
+                  {b.lines.map((l) => (
+                    <p key={l}>{l}</p>
+                  ))}
+                  {b.list && (
+                    <ul>
+                      {b.list.map((l) => (
+                        <li key={l}>{l}</li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+              ))}
+            </div>
 
-          <div className={styles.pgGrid}>
-            {BULLETINS.map((b, i) => (
-              <section key={b.id} className={styles.pgCard}>
-                <span className={styles.pgNum}>{pad(i + 1)}</span>
-                <h2>{b.title}</h2>
-                {b.lines.map((l) => (
-                  <p key={l}>{l}</p>
-                ))}
-                {b.list && (
-                  <ul>
-                    {b.list.map((l) => (
-                      <li key={l}>{l}</li>
-                    ))}
-                  </ul>
-                )}
-              </section>
-            ))}
+            <p className={styles.pgContact}>{CONTACT}</p>
+
+            <section id="register" tabIndex={-1} className={styles.pgReg}>
+              <div className={styles.pgRegHead}>
+                <span>★ Golden ticket ★</span>
+                <span>Admit one team</span>
+              </div>
+              <h2>Register your team</h2>
+              <div className={styles.formWrap}>
+                <RegistrationTicket />
+              </div>
+            </section>
           </div>
-
-          <p className={styles.pgContact}>{CONTACT}</p>
-
-          <section id="register" className={styles.pgReg}>
-            <div className={styles.pgRegHead}>
-              <span>★ Golden ticket ★</span>
-              <span>Admit one team</span>
-            </div>
-            <h2>Register your team</h2>
-            <div className={styles.formWrap}>
-              <TallyEmbed />
-            </div>
-          </section>
-        </div>
-      </main>
+        </main>
+      </>
     );
   }
 
@@ -579,9 +668,10 @@ export default function Maze() {
   if (phase === "intro") {
     return (
       <>
+        {navigation}
         <Intro
           muted={muted}
-          paused={boardOpen}
+          paused={boardOpen || menuOpen}
           onDone={() => setPhase("maze")}
         />
         {board}
@@ -602,357 +692,368 @@ export default function Maze() {
   const barText =
     open?.kind === "bulletin"
       ? `Incident log · ${pad(
-          BULLETINS.findIndex((x) => x.id === open.id) + 1
-        )}`
+        BULLETINS.findIndex((x) => x.id === open.id) + 1,
+      )}`
       : open?.kind === "dead"
-      ? "Warning · route invalid"
-      : golden
-      ? "Golden ticket · issued"
-      : "Locker control";
+        ? "Warning · route invalid"
+        : golden
+          ? "Golden ticket · issued"
+          : "Locker control";
 
   return (
-    <div
-      ref={stage}
-      className={`${styles.stage} ${styles.arrive}`}
-      onPointerMove={aim}
-      onPointerDown={(e) => {
-        aim(e);
-        au.current?.start();
-      }}
-    >
+    <>
+      {navigation}
       <div
-        ref={worldEl}
-        className={styles.world}
-        style={{ width: WW, height: WH }}
-      >
-        <svg
-          width={WW}
-          height={WH}
-          viewBox={`0 0 ${WW} ${WH}`}
-          className={styles.maze}
-          aria-hidden="true"
-        >
-          <defs>
-            <radialGradient id="drop">
-              <stop offset="0" stopColor="#eafff0" stopOpacity=".9" />
-              <stop offset=".55" stopColor="#7dffa2" stopOpacity=".55" />
-              <stop offset="1" stopColor="#7dffa2" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-          {world.stains.map((s, i) => (
-            <ellipse
-              key={i}
-              cx={s.x}
-              cy={s.y}
-              rx={s.rx}
-              ry={s.ry}
-              fill={s.toxic ? "#2a7a46" : "#2a1c08"}
-              opacity={s.toxic ? 0.28 : 0.55}
-            />
-          ))}
-          {world.M.vents.map((v) => {
-            const o = center(v.c);
-            return (
-              <g
-                key={v.c}
-                className={styles.grate}
-                transform={`translate(${o.x - 17} ${o.y - 17})`}
-              >
-                <rect width="34" height="34" />
-                <path d="M6 9H28M6 17H28M6 25H28" />
-              </g>
-            );
-          })}
-          {world.drops.map((dr, i) => (
-            <circle
-              key={i}
-              cx={dr.x}
-              cy={dr.y}
-              r={dr.r}
-              fill="url(#drop)"
-              opacity=".26"
-            />
-          ))}
-          <path
-            d={world.WALLS}
-            className={styles.wallR}
-            transform="translate(-2 0)"
-          />
-          <path
-            d={world.WALLS}
-            className={styles.wallC}
-            transform="translate(2 0)"
-          />
-          <path d={world.WALLS} className={styles.walls} />
-          {world.webs.map((w, i) => (
-            <g
-              key={i}
-              transform={`translate(${w.x} ${w.y}) scale(${w.sx * w.k} ${
-                w.sy * w.k
-              })`}
-            >
-              <path d={WEB_RAYS} className={styles.web} />
-              <path d={WEB_RINGS} className={styles.webr} />
-              {w.sp && (
-                <g className={styles.spider} transform="translate(34 34)">
-                  <circle r="3" />
-                  <path d={SPIDER_LEGS} />
-                </g>
-              )}
-            </g>
-          ))}
-        </svg>
-
-        {BULLETINS.map((bl, i) => (
-          <button
-            key={bl.id}
-            type="button"
-            className={styles.pin}
-            style={px(bulletinCell(world, i))}
-            aria-label={bl.title}
-            onFocus={() => warp(bulletinCell(world, i))}
-            onClick={(e) =>
-              show(e, bulletinCell(world, i), { kind: "bulletin", id: bl.id })
-            }
-          >
-            !
-          </button>
-        ))}
-        {world.M.dead.map((c, n) => (
-          <button
-            key={c}
-            type="button"
-            className={`${styles.pin} ${styles.dead}`}
-            style={px(c)}
-            aria-label="Dead end sign"
-            onFocus={() => warp(c)}
-            onClick={(e) => show(e, c, { kind: "dead", n })}
-          >
-            ?
-          </button>
-        ))}
-        <button
-          type="button"
-          className={styles.locker}
-          style={px(world.M.end)}
-          aria-label="The locker"
-          onFocus={() => warp(world.M.end)}
-          onClick={(e) => show(e, world.M.end, { kind: "locker" })}
-        >
-          EXIT
-          <br />
-          LOCKER
-        </button>
-        <div ref={shadeEl} className={styles.shade} aria-hidden="true" />
-        {world.M.vents.map((v) => (
-          <div
-            key={v.c}
-            className={styles.vent}
-            aria-hidden="true"
-            style={{
-              ...px(v.c),
-              animationDelay: `${v.delay}s`,
-              animationDuration: `${v.dur}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      <div className={styles.fog} aria-hidden="true" />
-      <div className={styles.glow} aria-hidden="true" />
-      <div className={styles.dark} aria-hidden="true" />
-      <div className={styles.pulse} aria-hidden="true" />
-      <div className={styles.grain} aria-hidden="true" />
-      <div className={styles.cctv} aria-hidden="true" />
-      <div ref={flashEl} className={styles.flash} aria-hidden="true" />
-
-      {board}
-
-      <header className={styles.hud}>
-        <Link href="/" className={styles.brand}>
-          LABLOCK · Escape the Lab
-        </Link>
-        <span className={styles.recd} aria-hidden="true">
-          <i />
-          REC <span ref={rec}>00:00:00</span>
-        </span>
-        <div className={styles.tray} aria-label="Code fragments found">
-          Fragments:{" "}
-          {frags.map((f, i) => (
-            <b
-              key={i}
-              ref={(n) => {
-                slots.current[i] = n;
-              }}
-              className={seen.includes(CODE_ORDER[i]) ? styles.got : ""}
-            >
-              {f}
-            </b>
-          ))}
-        </div>
-        <div className={styles.tools}>
-          <button
-            type="button"
-            className={styles.btn}
-            aria-pressed={!(muted || unlocked)}
-            onClick={() => setMuted((m) => !m)}
-          >
-            Sound: {muted || unlocked ? "off" : "on"}
-          </button>
-          <button
-            type="button"
-            className={styles.btn}
-            onClick={() => setPlain(true)}
-          >
-            Skip the maze
-          </button>
-        </div>
-      </header>
-      <p className={styles.hint}>
-        Guide the flask with your cursor. Walls stop you. Push toward the screen
-        edge to keep walking. Don&apos;t stand still.
-      </p>
-
-      <div ref={flaskEl} className={styles.flask} aria-hidden="true">
-        <svg ref={flaskSvg} viewBox="0 0 40 52" width="44" height="57">
-          <path
-            d="M15 2H25V5H23V19L36 44Q38 50 32 50H8Q2 50 4 44L17 19V5H15Z"
-            fill="rgba(190,255,210,.16)"
-            stroke="#c9ffd9"
-            strokeWidth="2"
-          />
-          <path d="M8 36H32L36 44Q38 50 32 50H8Q2 50 4 44Z" fill="#5dff8e" />
-          <circle cx="16" cy="43" r="2" fill="#eaffef" />
-          <circle cx="24" cy="40" r="1.4" fill="#eaffef" />
-        </svg>
-      </div>
-
-      {fly && (
-        <div
-          className={styles.fly}
-          aria-hidden="true"
-          style={
-            {
-              "--x0": `${fly.x0}px`,
-              "--y0": `${fly.y0}px`,
-              "--x1": `${fly.x1}px`,
-              "--y1": `${fly.y1}px`,
-            } as React.CSSProperties
+        ref={stage}
+        className={`${styles.stage} ${styles.arrive}`}
+        onPointerMove={aim}
+        onPointerDown={(e) => {
+          if (
+            st.current.lock ||
+            (e.target instanceof Element &&
+              e.target.closest("button, a, [role='dialog']"))
+          )
+            return;
+          if (e.pointerType !== "mouse") {
+            touchPointer.current = e.pointerId;
+            e.currentTarget.setPointerCapture(e.pointerId);
           }
-        >
-          {fly.t}
-        </div>
-      )}
-
-      {open && (
+          aim(e);
+          au.current?.start();
+        }}
+        onPointerUp={stopTouch}
+        onPointerCancel={stopTouch}
+        onLostPointerCapture={stopTouch}
+      >
         <div
-          className={styles.backdrop}
-          onClick={close}
-          onPointerMove={glowText}
+          ref={worldEl}
+          className={styles.world}
+          style={{ width: WW, height: WH }}
         >
-          <div
-            ref={card}
-            tabIndex={-1}
-            role="dialog"
-            aria-modal="true"
-            aria-label={
-              b?.title ??
-              (open.kind === "dead"
-                ? "Dead end"
-                : golden
-                ? "Golden ticket"
-                : "The locker")
-            }
-            className={`${styles.card} ${
-              open.kind === "dead" ? styles.bad : ""
-            } ${golden ? styles.gold : ""}`}
-            style={
-              {
-                "--ox": `${origin.x}px`,
-                "--oy": `${origin.y}px`,
-              } as React.CSSProperties
-            }
-            onClick={(e) => e.stopPropagation()}
+          <svg
+            width={WW}
+            height={WH}
+            viewBox={`0 0 ${WW} ${WH}`}
+            className={styles.maze}
+            aria-hidden="true"
           >
-            <div className={styles.tape} aria-hidden="true" />
+            <defs>
+              <radialGradient id="drop">
+                <stop offset="0" stopColor="#eafff0" stopOpacity=".9" />
+                <stop offset=".55" stopColor="#7dffa2" stopOpacity=".55" />
+                <stop offset="1" stopColor="#7dffa2" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            {world.stains.map((s, i) => (
+              <ellipse
+                key={i}
+                cx={s.x}
+                cy={s.y}
+                rx={s.rx}
+                ry={s.ry}
+                fill={s.toxic ? "#2a7a46" : "#2a1c08"}
+                opacity={s.toxic ? 0.28 : 0.55}
+              />
+            ))}
+            {world.M.vents.map((v) => {
+              const o = center(v.c);
+              return (
+                <g
+                  key={v.c}
+                  className={styles.grate}
+                  transform={`translate(${o.x - 17} ${o.y - 17})`}
+                >
+                  <rect width="34" height="34" />
+                  <path d="M6 9H28M6 17H28M6 25H28" />
+                </g>
+              );
+            })}
+            {world.drops.map((dr, i) => (
+              <circle
+                key={i}
+                cx={dr.x}
+                cy={dr.y}
+                r={dr.r}
+                fill="url(#drop)"
+                opacity=".26"
+              />
+            ))}
+            <path
+              d={world.WALLS}
+              className={styles.wallR}
+              transform="translate(-2 0)"
+            />
+            <path
+              d={world.WALLS}
+              className={styles.wallC}
+              transform="translate(2 0)"
+            />
+            <path d={world.WALLS} className={styles.walls} />
+            {world.webs.map((w, i) => (
+              <g
+                key={i}
+                transform={`translate(${w.x} ${w.y}) scale(${w.sx * w.k} ${w.sy * w.k
+                  })`}
+              >
+                <path d={WEB_RAYS} className={styles.web} />
+                <path d={WEB_RINGS} className={styles.webr} />
+                {w.sp && (
+                  <g className={styles.spider} transform="translate(34 34)">
+                    <circle r="3" />
+                    <path d={SPIDER_LEGS} />
+                  </g>
+                )}
+              </g>
+            ))}
+          </svg>
+
+          {BULLETINS.map((bl, i) => (
+            <button
+              key={bl.id}
+              type="button"
+              className={styles.pin}
+              style={px(bulletinCell(world, i))}
+              aria-label={bl.title}
+              onFocus={() => warp(bulletinCell(world, i))}
+              onClick={(e) =>
+                show(e, bulletinCell(world, i), { kind: "bulletin", id: bl.id })
+              }
+            >
+              !
+            </button>
+          ))}
+          {world.M.dead.map((c, n) => (
+            <button
+              key={c}
+              type="button"
+              className={`${styles.pin} ${styles.dead}`}
+              style={px(c)}
+              aria-label="Dead end sign"
+              onFocus={() => warp(c)}
+              onClick={(e) => show(e, c, { kind: "dead", n })}
+            >
+              ?
+            </button>
+          ))}
+          <button
+            type="button"
+            className={styles.locker}
+            style={px(world.M.end)}
+            aria-label="The locker"
+            onFocus={() => warp(world.M.end)}
+            onClick={(e) => show(e, world.M.end, { kind: "locker" })}
+          >
+            EXIT
+            <br />
+            LOCKER
+          </button>
+          <div ref={shadeEl} className={styles.shade} aria-hidden="true" />
+          {world.M.vents.map((v) => (
+            <div
+              key={v.c}
+              className={styles.vent}
+              aria-hidden="true"
+              style={{
+                ...px(v.c),
+                animationDelay: `${v.delay}s`,
+                animationDuration: `${v.dur}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        <div className={styles.fog} aria-hidden="true" />
+        <div className={styles.glow} aria-hidden="true" />
+        <div className={styles.dark} aria-hidden="true" />
+        <div className={styles.pulse} aria-hidden="true" />
+        <div className={styles.grain} aria-hidden="true" />
+        <div className={styles.cctv} aria-hidden="true" />
+        <div ref={flashEl} className={styles.flash} aria-hidden="true" />
+
+        {board}
+
+        <div className={styles.hud} role="group" aria-label="Maze controls">
+          <span className={styles.recd} aria-hidden="true">
+            <i />
+            REC <span ref={rec}>00:00:00</span>
+          </span>
+          <div className={styles.tray} aria-label="Code fragments found">
+            Fragments:{" "}
+            {frags.map((f, i) => (
+              <b
+                key={i}
+                ref={(n) => {
+                  slots.current[i] = n;
+                }}
+                className={seen.includes(CODE_ORDER[i]) ? styles.got : ""}
+              >
+                {f}
+              </b>
+            ))}
+          </div>
+          <div className={styles.tools}>
             <button
               type="button"
-              className={styles.x}
-              onClick={close}
-              aria-label="Close"
+              className={styles.btn}
+              aria-pressed={!(muted || unlocked)}
+              onClick={() => setMuted((m) => !m)}
             >
-              ×
+              Sound: {muted || unlocked ? "off" : "on"}
             </button>
-            <div className={styles.bar} aria-hidden="true">
-              <i />
-              {barText}
-              <span>REC</span>
-            </div>
-            {b && (
-              <>
-                <h2>{b.title}</h2>
-                {b.lines.map((l, i) => (
-                  <p key={l} style={d(i + 1)}>
-                    {l}
-                  </p>
-                ))}
-                {b.list && (
-                  <ul>
-                    {b.list.map((l, i) => (
-                      <li key={l} style={d(b.lines.length + i + 1)}>
-                        {l}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                {digit && (
-                  <p ref={fragEl} className={styles.frag}>
-                    Code fragment: {digit}
-                  </p>
-                )}
-              </>
-            )}
-            {open.kind === "dead" && (
-              <>
-                <h2>Dead end</h2>
-                {/* TODO: put the dead-end meme image in this box (save it in public/cata/ and use next/image). */}
-                <div className={styles.imgSlot}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/cata/images.jpg"
-                    alt="A meme about reaching a dead end"
-                  />
-                </div>
-                <p style={d(1)}>{TAUNTS[open.n % TAUNTS.length]}</p>
-              </>
-            )}
-            {open.kind === "locker" &&
-              (unlocked ? (
-                <>
-                  <h2>Golden ticket</h2>
-                  <p style={d(1)}>
-                    The vault is open, and one golden ticket was inside. It
-                    admits one team to LABLOCK on Friday, 16 October 2026.
-                  </p>
-                  <div className={styles.ticket}>
-                    <div className={styles.tkHead}>
-                      <span>★ Golden ticket ★</span>
-                      <span>Admit one team</span>
-                    </div>
-                    <div className={styles.formWrap}>
-                      <TallyEmbed />
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <Locker
-                  code={world.code.join("")}
-                  onOpen={() => setUnlocked(true)}
-                />
-              ))}
+            <button
+              type="button"
+              className={styles.btn}
+              onClick={() => setPlain(true)}
+            >
+              Skip the maze
+            </button>
           </div>
         </div>
-      )}
-    </div>
+        <p className={styles.hint}>
+          Point with your mouse. On touch screens, hold and drag; release to
+          stop. Push toward the screen edge to keep walking. Walls stop you.
+        </p>
+
+        <div ref={flaskEl} className={styles.flask} aria-hidden="true">
+          <svg ref={flaskSvg} viewBox="0 0 40 52" width="44" height="57">
+            <path
+              d="M15 2H25V5H23V19L36 44Q38 50 32 50H8Q2 50 4 44L17 19V5H15Z"
+              fill="rgba(190,255,210,.16)"
+              stroke="#c9ffd9"
+              strokeWidth="2"
+            />
+            <path d="M8 36H32L36 44Q38 50 32 50H8Q2 50 4 44Z" fill="#5dff8e" />
+            <circle cx="16" cy="43" r="2" fill="#eaffef" />
+            <circle cx="24" cy="40" r="1.4" fill="#eaffef" />
+          </svg>
+        </div>
+
+        {fly && (
+          <div
+            className={styles.fly}
+            aria-hidden="true"
+            style={
+              {
+                "--x0": `${fly.x0}px`,
+                "--y0": `${fly.y0}px`,
+                "--x1": `${fly.x1}px`,
+                "--y1": `${fly.y1}px`,
+              } as React.CSSProperties
+            }
+          >
+            {fly.t}
+          </div>
+        )}
+
+        {open && (
+          <div
+            className={styles.backdrop}
+            onClick={close}
+            onPointerMove={glowText}
+          >
+            <div
+              ref={card}
+              tabIndex={-1}
+              role="dialog"
+              aria-modal="true"
+              aria-label={
+                b?.title ??
+                (open.kind === "dead"
+                  ? "Dead end"
+                  : golden
+                    ? "Golden ticket"
+                    : "The locker")
+              }
+              className={`${styles.card} ${open.kind === "dead" ? styles.bad : ""
+                } ${golden ? styles.gold : ""}`}
+              style={
+                {
+                  "--ox": `${origin.x}px`,
+                  "--oy": `${origin.y}px`,
+                } as React.CSSProperties
+              }
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className={styles.tape} aria-hidden="true" />
+              <button
+                type="button"
+                className={styles.x}
+                onClick={close}
+                aria-label="Close"
+              >
+                ×
+              </button>
+              <div className={styles.bar} aria-hidden="true">
+                <i />
+                {barText}
+                <span>REC</span>
+              </div>
+              {b && (
+                <>
+                  <h2>{b.title}</h2>
+                  {b.lines.map((l, i) => (
+                    <p key={l} style={d(i + 1)}>
+                      {l}
+                    </p>
+                  ))}
+                  {b.list && (
+                    <ul>
+                      {b.list.map((l, i) => (
+                        <li key={l} style={d(b.lines.length + i + 1)}>
+                          {l}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {digit && (
+                    <p ref={fragEl} className={styles.frag}>
+                      Code fragment: {digit}
+                    </p>
+                  )}
+                </>
+              )}
+              {open.kind === "dead" && (
+                <>
+                  <h2>Dead end</h2>
+                  {/* TODO: put the dead-end meme image in this box (save it in public/cata/ and use next/image). */}
+                  <div className={styles.imgSlot}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/cata/images.jpg"
+                      alt="A meme about reaching a dead end"
+                    />
+                  </div>
+                  <p style={d(1)}>{TAUNTS[open.n % TAUNTS.length]}</p>
+                </>
+              )}
+              {open.kind === "locker" &&
+                (unlocked ? (
+                  <>
+                    <h2>Golden ticket</h2>
+                    <p style={d(1)}>
+                      The vault is open, and one golden ticket was inside. It
+                      admits one team to LABLOCK on Friday, 16 October 2026.
+                    </p>
+                    <div className={styles.ticket}>
+                      <div className={styles.tkHead}>
+                        <span>★ Golden ticket ★</span>
+                        <span>Admit one team</span>
+                      </div>
+                      <div className={styles.formWrap}>
+                        <RegistrationTicket />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <Locker
+                    code={world.code.join("")}
+                    onOpen={() => setUnlocked(true)}
+                  />
+                ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

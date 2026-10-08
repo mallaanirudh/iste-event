@@ -1,30 +1,37 @@
-import { Briefing } from '../../../ConcretClutchComponents/briefing'
-import { Hero } from '../../../ConcretClutchComponents/hero'
-import { Leaderboard } from '../../../ConcretClutchComponents/leaderboard'
-import { PitWall, PitWallBar } from '../../../ConcretClutchComponents/pit-wall'
-import { Registration } from '../../../ConcretClutchComponents/registration'
-import { Rounds } from '../../../ConcretClutchComponents/rounds'
-import { SectionHeading } from '../../../ConcretClutchComponents/section-heading'
-import { SiteNav } from '../../../ConcretClutchComponents/site-nav'
-import { SpeedCanvas } from '../../../ConcretClutchComponents/speed-canvas'
+import { EventNavbar } from "@/components/navigation/event-navbar";
+import { REGISTRATION_URL } from "@/data/registration";
+import { Hero } from "@/ConcretClutchComponents/titanic/hero";
+import { Storyline } from "@/ConcretClutchComponents/titanic/storyline";
+import { Rounds } from "@/ConcretClutchComponents/titanic/rounds";
+import { Registration } from "@/ConcretClutchComponents/titanic/registration";
+import { Leaderboard } from "@/ConcretClutchComponents/titanic/leaderboard";
+import { CaptainsLog } from "@/ConcretClutchComponents/titanic/captains-log";
+import { OceanBackground } from "@/ConcretClutchComponents/titanic/ocean-background";
 
 export default function Page() {
   return (
     <>
-      <SpeedCanvas />
-      <SiteNav />
-      <main>
+      <OceanBackground />
+      <EventNavbar
+        event="concrete"
+        label="Concrete"
+        topHref="#concrete-top"
+        homeHref="/#chamber-concrete-sq1"
+        items={[
+          { label: "Briefing", href: "#briefing" },
+          { label: "Rounds", href: "#dispatch" },
+          { label: "Standings", href: "#manifest" },
+        ]}
+        action={{ label: "Register", href: REGISTRATION_URL, external: true }}
+      />
+      <main id="concrete-top" className="relative">
         <Hero />
-        <Briefing />
+        <Storyline />
         <Rounds />
         <Registration />
-        <section id="leaderboard" aria-labelledby="leaderboard-title" className="mx-auto max-w-6xl px-4 py-20">
-          <SectionHeading id="leaderboard-title" kicker="04 // LIVE STANDINGS" title="LEADERBOARD" />
-          <Leaderboard />
-        </section>
+        <Leaderboard />
       </main>
-      <PitWall />
-      <PitWallBar />
+      <CaptainsLog />
     </>
-  )
+  );
 }
