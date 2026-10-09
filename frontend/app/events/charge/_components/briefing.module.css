@@ -500,62 +500,6 @@ button.slot:focus-visible {
   color: #6b3300;
 }
 
-/* ---------- countdown (reused in the inventory caption) ---------- */
-
-.countRow,
-.countDone {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 2px;
-  margin: 0;
-  font-family: var(--font-tanker), Impact, sans-serif;
-  font-size: 18px;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: #1a110e;
-}
-
-.countDone {
-  font-size: 14px;
-}
-
-.unit {
-  margin-right: 4px;
-  font-size: 12px;
-}
-
-.unit:last-of-type {
-  margin-right: 0;
-}
-
-.placeholder {
-  opacity: 0.35;
-}
-
-.reelGroup {
-  display: inline-flex;
-}
-
-.window {
-  display: inline-block;
-  height: 1em;
-  overflow: hidden;
-}
-
-.reel {
-  display: flex;
-  flex-direction: column;
-  will-change: transform;
-}
-
-.reel > span {
-  display: block;
-  height: 1em;
-  width: 0.56em;
-  text-align: center;
-}
-
 @media (max-width: 1023px) {
   .text {
     max-width: 40rem;
@@ -575,3 +519,4 @@ button.slot:focus-visible {
     max-width: 300px;
   }
 }
+

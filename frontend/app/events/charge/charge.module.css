@@ -21,7 +21,7 @@
   --side: clamp(22px, 5vw, 88px);
   --pillar: 8px;
   --slab: 28px;
-  --nav-h: 76px;
+  --nav-h: 64px;
   --hair: color-mix(in oklab, var(--fg) 22%, transparent);
 
   --bg: #1a110e;
@@ -47,14 +47,9 @@
   .root {
     --pillar: 24px;
     --slab: 36px;
+    --nav-h: 72px;
     /* Content always starts clear of the copper pipe and its glow (pipe ends at pillar + 24px). */
     --side: max(clamp(22px, 5vw, 88px), calc(var(--pillar) + 48px));
-  }
-}
-
-@media (min-width: 901px) {
-  .root {
-    --nav-h: 85px;
   }
 }
 
@@ -81,12 +76,6 @@
 .root img {
   max-width: 100%;
   height: auto;
-}
-.root :where(main, section, article, .wrap) {
-  min-width: 0;
-}
-.root :where(h1, h2, h3, p, li) {
-  overflow-wrap: anywhere;
 }
 
 /* Static film grain: one fixed layer, never animated. Desktop mouse only: a full-screen
@@ -136,11 +125,24 @@
 }
 
 /*
+ * Desktop stacking (_lib/layers.ts): as the next floor slides over, the covered one sinks
+ * back and dims. --cover runs 0 to 1; `scale` and `filter` leave the pin's transform alone.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .floor {
+    --cover: 0;
+    scale: calc(1 - var(--cover) * 0.06);
+    filter: brightness(calc(1 - var(--cover) * 0.5));
+  }
+}
+
+/*
  * Phones and small tablets: floors are not viewport-snapped, so the floors below the roof
  * only need a short lead-in after their slab. Anchor jumps stop below the fixed nav instead.
  */
 @media (max-width: 899px) {
-  .floor:not(#top) {
+  /* [id] rather than #top: CSS Modules rename id selectors, attribute selectors are left alone. */
+  .floor:not([id="top"]) {
     padding-top: 40px;
     scroll-margin-top: var(--nav-h);
   }
@@ -268,19 +270,6 @@
     background-color 0.3s,
     color 0.3s;
   -webkit-tap-highlight-color: transparent;
-}
-
-@media (max-width: 479px) {
-  .displayXl {
-    font-size: clamp(44px, 11vw, 60px);
-  }
-  .btn {
-    max-width: 100%;
-    padding-inline: 18px;
-    white-space: normal;
-    text-align: center;
-    line-height: 1.2;
-  }
 }
 
 .root .btn {

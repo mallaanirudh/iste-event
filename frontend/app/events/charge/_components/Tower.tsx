@@ -62,7 +62,7 @@ export function Tower({ roof, children }: { roof: ReactNode; children: ReactNode
 
 /**
  * The slab between two floors. `roof` is the parapet the character stands on;
- * `foundation` closes the tower above the footer and carries no lamp.
+ * `foundation` closes the base of the tower and carries no lamp.
  */
 export function Slab({ roof = false, foundation = false }: { roof?: boolean; foundation?: boolean }) {
   if (foundation) return <div className={s.slab} aria-hidden="true" />;

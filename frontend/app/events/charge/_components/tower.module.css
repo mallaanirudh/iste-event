@@ -169,3 +169,10 @@
     animation: none;
   }
 }
+
+/* Stacking: the slab leads each floor over the one below it, so it casts the shadow. */
+@media (prefers-reduced-motion: no-preference) {
+  .slab {
+    box-shadow: 0 -22px 44px rgb(0 0 0 / 0.35);
+  }
+}

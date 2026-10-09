@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   metadataBase: siteUrl(),
   title: "Power the Beacon | ISTE Charge at Square One",
   description:
-    "A hardware auction and circuit build-off for the B.Tech batch of 2029, in teams of up to 3. Bid for parts, build a working circuit and light the beacon. Wednesday 14 October 2026, 6 to 11 PM, LHC A Seminar Hall, NITK Surathkal.",
+    "A hardware auction and circuit build-off for the B.Tech batch of 2029, in teams of up to 3. Bid for parts, build a working circuit and light the beacon. Wednesday 14 October 2026, 6 to 10:30 PM, LHC A Seminar Hall, NITK Surathkal.",
   openGraph: {
     title: "Power the Beacon",
     description: "Bid for parts. Build the circuit. Light the beacon. ISTE Charge at Square One.",

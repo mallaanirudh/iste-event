@@ -1,93 +1,119 @@
-/* Floor 3: the ground floor, in Wonka purple. Leaderboard, golden ticket, house rules. */
+/* Floor 3: the ground floor, in Wonka purple. The night's facts, house rules and contacts. */
 
 .ground {
-  gap: clamp(28px, 5vh, 48px);
+  gap: clamp(40px, 7vh, 80px);
 }
 
-.ticketBlock {
+/* ---------- closing headline and facts ---------- */
+
+.closing {
   display: grid;
-  gap: 18px;
-  scroll-margin-top: 88px;
+  gap: 14px;
 }
 
-@media (min-width: 1024px) {
-  .ticketBlock {
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-    column-gap: clamp(40px, 5vw, 80px);
-    align-items: start;
-  }
+.kicker {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  font-stretch: 88%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--enig);
 }
 
 .title {
   margin: 0;
+  max-width: 14ch;
   font-family: var(--font-tanker), Impact, sans-serif;
   font-weight: 400;
-  font-size: clamp(44px, 5.4vw, 84px);
+  font-size: clamp(48px, 6.2vw, 104px);
   line-height: 0.9;
   text-transform: uppercase;
   font-kerning: none;
-  color: var(--enig);
+  color: var(--bone);
 }
 
-.lede {
-  margin: 10px 0 0;
-  font-size: 17px;
-  line-height: 1.45;
-  font-weight: 500;
-}
-
-/* ---------- rules and organisers ---------- */
-
-.strip {
+/* The three facts, one per row, in the headline face. Each slides in from the left on scroll. */
+.facts {
   display: grid;
-  gap: 20px;
-  padding-bottom: clamp(20px, 3vh, 28px);
-  border-bottom: 2px solid rgb(255 255 255 / 0.12);
+  margin: clamp(12px, 3vh, 32px) 0 0;
+  border-top: 2px solid rgb(255 255 255 / 0.14);
 }
 
-/* On wide screens the strip needs extra room before the leaderboard; below that the floor's own
-   gap is enough. */
-@media (min-width: 1024px) {
-  .strip {
-    margin-bottom: clamp(28px, 5vh, 56px);
-  }
+.fact {
+  display: grid;
+  grid-template-columns: minmax(96px, 0.35fr) 1fr;
+  align-items: baseline;
+  gap: 16px;
+  padding: clamp(12px, 2.2vh, 20px) 0;
+  border-bottom: 2px solid rgb(255 255 255 / 0.14);
 }
 
-@media (min-width: 900px) {
-  .strip {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 48px;
-    align-items: start;
-  }
-}
-
-.stripTitle {
-  margin: 0 0 8px;
+.factLabel {
   font-size: 15px;
   font-weight: 700;
   font-stretch: 88%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--enig);
+}
+
+.factValue {
+  margin: 0;
+  font-family: var(--font-tanker), Impact, sans-serif;
+  font-size: clamp(30px, 4.4vw, 64px);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+
+/* ---------- rules and contacts ---------- */
+
+.panels {
+  display: grid;
+  gap: 16px;
+  scroll-margin-top: 88px;
+}
+
+@media (min-width: 900px) {
+  .panels {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 24px;
+  }
+}
+
+/* Panels in the Minecraft GUI's dark-slot language: a bevelled frame, no rounded corners. */
+.panel {
+  padding: clamp(20px, 3vw, 32px);
+  background: rgb(0 0 0 / 0.22);
+  border: 2px solid rgb(0 0 0 / 0.45);
+  box-shadow:
+    inset 2px 2px 0 rgb(255 255 255 / 0.08),
+    inset -2px -2px 0 rgb(0 0 0 / 0.25);
+}
+
+.panelTitle {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  font-stretch: 88%;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--enig);
 }
 
 .ruleList {
   display: grid;
-  gap: 8px;
+  gap: 12px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-@media (min-width: 900px) {
-  .ruleList {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
-  }
-}
-
 .ruleList li {
   position: relative;
-  padding-left: 20px;
-  font-size: 15px;
+  padding-left: 22px;
+  font-size: 16px;
   line-height: 1.5;
 }
 
