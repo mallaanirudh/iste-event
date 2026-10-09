@@ -45,7 +45,7 @@ export const chambers: Chamber[] = [
   },
   {
     id: "catalyst-sq1",
-    title: "Catalyst Sq1",
+    title: "Lablock",
     description:
       "Infinite doors, infinite choices. Can you navigate the labyrinth of the backrooms?",
     theme: "Escape Room",
@@ -58,7 +58,7 @@ export const chambers: Chamber[] = [
   },
   {
     id: "crypt-sq1",
-    title: "Crypt Sq1",
+    title: "Trust No Link",
     description:
       "The internet is lying. Hack the glitching terminals and find the core mainframe.",
     theme: "Glitch",
@@ -71,7 +71,7 @@ export const chambers: Chamber[] = [
   },
   {
     id: "clutch-sq1",
-    title: "Clutch Sq1",
+    title: "Magnetic Grand Prix",
     description:
       "Checkered flags and burning rubber. Only the fastest survive this high-octane circuit.",
     theme: "Formula 1",
@@ -84,7 +84,7 @@ export const chambers: Chamber[] = [
   },
   {
     id: "concrete-sq1",
-    title: "Concrete Sq1",
+    title: "Titanic",
     description:
       "Float it for Jack. A nautical engineering marvel hidden in the depths of the factory.",
     theme: "Nautical",
