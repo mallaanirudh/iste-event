@@ -66,7 +66,7 @@ export const chambers: Chamber[] = [
     sig: "Crypt",
     color: "#00e5ff",
     artwork: "terminal",
-    href: null,
+    href: "https://iste-crypt-ctf.indiasouthcentral.cloudapp.azure.com/",
     eventName: "Trust No Link",
   },
   {
