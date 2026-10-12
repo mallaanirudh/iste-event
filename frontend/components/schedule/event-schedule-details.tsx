@@ -18,7 +18,7 @@ export function EventScheduleDetails({
   if (!sessions.length) {
     return (
       <div className={className}>
-        <p className="mt-1 text-sm text-neutral-400">Schedule to be announced</p>
+        <p className="mt-1 text-sm text-neutral-400">""</p>
       </div>
     );
   }

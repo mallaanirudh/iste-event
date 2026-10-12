@@ -25,7 +25,9 @@ import { designRefinements, enabledRefinementIds } from "./design-refinements";
 import { FestivalFooter } from "./festival-footer";
 import { festivalEvents } from "@/data/festival-schedule";
 import { EventScheduleDetails } from "@/components/schedule/event-schedule-details";
+import { GlobalLeaderboardTable } from "@/components/leaderboards/global-leaderboard";
 import { chambers, type Chamber } from "./chamber-data";
+import { globalLeaderboard } from "@/data/leaderboards/global-leaderboard";
 import "./festival.css";
 import "./festival-refinements.css";
 
@@ -199,7 +201,7 @@ export default function FestivalHome() {
                   </span>
                 </div>
 
-                <LeaderboardComingSoon />
+                <GlobalLeaderboardTable entries={globalLeaderboard} />
               </article>
             </Reveal>
           </div>
@@ -359,7 +361,9 @@ export default function FestivalHome() {
           </button>
         </div>
 
-        {modal === "leaderboard" && <LeaderboardComingSoon />}
+        {modal === "leaderboard" && (
+  <GlobalLeaderboardTable entries={globalLeaderboard} />
+)}
 
         {modal === "chamber" && (
           <>
