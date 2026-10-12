@@ -355,3 +355,8 @@
 @media (prefers-reduced-motion: reduce) {
   .root :global(*), .root :global(*::before), .root :global(*::after) { animation: none !important; transition: none !important; }
 }
+.team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

@@ -27,10 +27,10 @@ export type LeaderboardEntry = {
   id: string;
   teamId: string;
   teamCode: string;
+  teamName: string;
   rank: number | null;
   points: number;
 };
-
 export type MegaEvent = {
   id: string;
   name: string;
@@ -82,13 +82,30 @@ export function toRound(v: unknown): PublicRound | null {
 
 export function toEntry(v: unknown): LeaderboardEntry | null {
   if (!isObj(v)) return null;
+
   const { id, teamId, teamCode, rank, points } = v;
-  if (!str(id) || !str(teamId) || !str(teamCode) || !intOrNull(rank ?? null) || !int(points)) {
+  const teamName = v.teamName ?? teamCode;
+
+  if (
+    !str(id) ||
+    !str(teamId) ||
+    !str(teamCode) ||
+    !str(teamName) ||
+    !intOrNull(rank ?? null) ||
+    !int(points)
+  ) {
     return null;
   }
-  return { id, teamId, teamCode, rank: (rank as number | null) ?? null, points };
-}
 
+  return {
+    id,
+    teamId,
+    teamCode,
+    teamName,
+    rank: (rank as number | null) ?? null,
+    points,
+  };
+}
 export function toMegaEvent(v: unknown): MegaEvent | null {
   if (!isObj(v)) return null;
   const { id, name, description, registrationOpenAt, registrationCloseAt } = v;
