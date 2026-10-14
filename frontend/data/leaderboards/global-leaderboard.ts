@@ -8,7 +8,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
     teamCode: "CF-014",
     teamName: "Minty jamun",
     rank: 1,
-    points: 15,
+    points: 23,
   },
   {
     id: "2",
@@ -16,7 +16,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
     teamCode: "CF-018",
     teamName: "Astrix",
     rank: 2,
-    points: 14,
+    points: 20,
   },
   {
     id: "4",
@@ -67,11 +67,35 @@ export const globalLeaderboard: LeaderboardEntry[] = [
     points: 10,
   },
   {
+    id: "11",
+    teamId: "11",
+    teamCode: "CF-NEW-001",
+    teamName: "smiley",
+    rank: 9,
+    points: 7,
+  },
+  {
+    id: "12",
+    teamId: "12",
+    teamCode: "CF-NEW-002",
+    teamName: "neurocooked",
+    rank: 10,
+    points: 5,
+  },
+  {
+    id: "13",
+    teamId: "13",
+    teamCode: "CF-NEW-003",
+    teamName: "NOTRUST",
+    rank: 11,
+    points: 4,
+  },
+  {
     id: "9",
     teamId: "9",
     teamCode: "CF-039",
     teamName: "Flames",
-    rank: 9,
+    rank: 12,
     points: 2,
   },
   {
@@ -79,7 +103,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
     teamId: "10",
     teamCode: "CF-045",
     teamName: "Lithium",
-    rank: 9,
+    rank: 12,
     points: 2,
   },
 ];

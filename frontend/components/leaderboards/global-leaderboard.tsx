@@ -14,15 +14,16 @@ export function GlobalLeaderboardTable({
   );
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full max-h-[600px] overflow-y-auto overflow-x-auto rounded-lg">
       <table className="w-full text-left">
-        <thead>
+        <thead className="sticky top-0 z-10 bg-[#171020]">
           <tr className="border-b border-[#b68a40]/40 text-xs uppercase tracking-wider text-[#c4acd9]">
             <th className="px-3 py-3">Rank</th>
             <th className="px-3 py-3">Team</th>
             <th className="px-3 py-3 text-right">Points</th>
           </tr>
         </thead>
+
         <tbody>
           {rows.map((team) => (
             <tr
@@ -32,6 +33,7 @@ export function GlobalLeaderboardTable({
               <td className="px-3 py-4 font-bold text-[#ffd700]">
                 {team.rank ?? "—"}
               </td>
+
               <td className="px-3 py-4">
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
                   <strong>{team.teamCode}</strong>
@@ -40,6 +42,7 @@ export function GlobalLeaderboardTable({
                   </span>
                 </div>
               </td>
+
               <td className="px-3 py-4 text-right font-black">
                 {team.points}
               </td>
