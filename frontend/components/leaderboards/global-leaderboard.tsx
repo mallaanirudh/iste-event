@@ -35,12 +35,7 @@ export function GlobalLeaderboardTable({
               </td>
 
               <td className="px-3 py-4">
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <strong>{team.teamCode}</strong>
-                  <span className="text-sm text-[#c4acd9]">
-                    {team.teamName}
-                  </span>
-                </div>
+                <strong>{team.teamName}</strong>
               </td>
 
               <td className="px-3 py-4 text-right font-black">
