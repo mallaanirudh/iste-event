@@ -1,8 +1,8 @@
 import type { LeaderboardEntry } from "@/lib/api/types";
 
 // Combined Square One totals. Equal points share a competition rank.
-// ABCDEFGH is included under abcdefg; Zusammane is included under Zussamen.
-// Empty team codes mean no official code was supplied for that new team.
+// Team codes verified against the registration sheet on 2026-11-07.
+// Source: https://docs.google.com/spreadsheets/d/1MVcaDRvyF5umOwlygxC0MN3AyzwgBQn1LAcCrAuYvEc/edit
 export const globalLeaderboard: LeaderboardEntry[] = [
   {
     id: "2",
@@ -23,7 +23,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
   {
     id: "11",
     teamId: "11",
-    teamCode: "CF-NEW-001",
+    teamCode: "CF-063",
     teamName: "smiley",
     rank: 3,
     points: 24,
@@ -32,7 +32,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
     id: "5",
     teamId: "5",
     teamCode: "CF-021",
-    teamName: "Zussamen",
+    teamName: "Zusammen",
     rank: 4,
     points: 21,
   },
@@ -40,7 +40,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
     id: "3",
     teamId: "3",
     teamCode: "CF-058",
-    teamName: "abcdefg",
+    teamName: "Abcdefg",
     rank: 5,
     points: 19,
   },
@@ -71,7 +71,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
   {
     id: "14",
     teamId: "14",
-    teamCode: "",
+    teamCode: "CF-079",
     teamName: "ManyuElectronics",
     rank: 6,
     points: 12,
@@ -79,7 +79,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
   {
     id: "18",
     teamId: "18",
-    teamCode: "",
+    teamCode: "CF-119",
     teamName: "Failed Abortions",
     rank: 6,
     points: 12,
@@ -87,7 +87,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
   {
     id: "15",
     teamId: "15",
-    teamCode: "",
+    teamCode: "CF-085",
     teamName: "Zeus",
     rank: 11,
     points: 11,
@@ -95,7 +95,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
   {
     id: "17",
     teamId: "17",
-    teamCode: "",
+    teamCode: "CF-020",
     teamName: "Team 2",
     rank: 11,
     points: 11,
@@ -111,7 +111,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
   {
     id: "16",
     teamId: "16",
-    teamCode: "",
+    teamCode: "CF-097",
     teamName: "NPS",
     rank: 13,
     points: 10,
@@ -119,7 +119,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
   {
     id: "12",
     teamId: "12",
-    teamCode: "CF-NEW-002",
+    teamCode: "CF-007",
     teamName: "neurocooked",
     rank: 15,
     points: 5,
@@ -127,7 +127,7 @@ export const globalLeaderboard: LeaderboardEntry[] = [
   {
     id: "13",
     teamId: "13",
-    teamCode: "CF-NEW-003",
+    teamCode: "CF-067",
     teamName: "NOTRUST",
     rank: 16,
     points: 4,

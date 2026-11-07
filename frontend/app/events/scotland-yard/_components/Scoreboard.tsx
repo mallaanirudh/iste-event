@@ -136,7 +136,8 @@ export default function Scoreboard({
                     <td>{r.rank ?? "-"}</td>
 
                     <td className="team">
-                      <strong>{r.teamName}</strong>
+                      <strong>{r.teamCode}</strong>
+                      <span style={{ marginLeft: "10px" }}>{r.teamName}</span>
                     </td>
 
                     <td>{r.points}</td>

@@ -1,6 +1,7 @@
-
 import type { LeaderboardEntry } from "@/lib/api/types";
 
+// Team codes verified against the registration sheet on 2026-11-07.
+// Source: https://docs.google.com/spreadsheets/d/1MVcaDRvyF5umOwlygxC0MN3AyzwgBQn1LAcCrAuYvEc/edit
 export const ScotlandLeaderboard: LeaderboardEntry[] = [
   {
     id: "1",
@@ -22,7 +23,7 @@ export const ScotlandLeaderboard: LeaderboardEntry[] = [
     id: "3",
     teamId: "3",
     teamCode: "CF-058",
-    teamName: "abcdefg",
+    teamName: "Abcdefg",
     rank: 3,
     points: 11,
   },
@@ -38,7 +39,7 @@ export const ScotlandLeaderboard: LeaderboardEntry[] = [
     id: "5",
     teamId: "5",
     teamCode: "CF-021",
-    teamName: "Zussamen",
+    teamName: "Zusammen",
     rank: 4,
     points: 12,
   },
